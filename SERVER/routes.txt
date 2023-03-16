@@ -1,0 +1,9 @@
+login	POST
+signup	POST
+account POST
+reservations POST
+search GET
+main
+publish POST
+trip GET
+404
