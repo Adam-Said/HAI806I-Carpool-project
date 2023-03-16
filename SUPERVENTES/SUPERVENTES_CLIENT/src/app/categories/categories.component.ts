@@ -11,8 +11,8 @@ import { Observable } from 'rxjs';
 })
 export class CategoriesComponent implements OnInit {
 
-  private user: Observable<string>;
-  private categories: String[] = new Array();
+  public user: Observable<string>;
+  public categories: String[] = new Array();
 
   constructor(private router: Router,
               private authService: AuthentificationService,
@@ -26,7 +26,7 @@ export class CategoriesComponent implements OnInit {
     });
   }
 
-  produitsParCategorie(categorie) {
+  produitsParCategorie(categorie:any) {
     this.router.navigate(['/produits', categorie]);
   }
 }

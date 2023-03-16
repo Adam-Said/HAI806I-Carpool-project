@@ -1,0 +1,1 @@
+curl -X POST localhost:8888/user/connexion -H 'Content-Type: application/json' -d '{"email":"claire.delune@mailserver.fr", "password":"123456"}'

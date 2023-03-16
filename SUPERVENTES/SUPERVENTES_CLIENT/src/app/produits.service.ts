@@ -25,7 +25,7 @@ export class ProduitsService {
         return this.http.get(this.urlBase+'produits');
     }
 
-    getProduitsParCategorie(categorie): Observable<any> {
+    getProduitsParCategorie(categorie:any): Observable<any> {
         return this.http.get(this.urlBase+'produits/'+categorie);
     }
 

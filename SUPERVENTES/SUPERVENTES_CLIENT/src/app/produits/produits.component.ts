@@ -11,8 +11,8 @@ import { Observable } from 'rxjs';
 })
 export class ProduitsComponent implements OnInit {
 
-    private user: Observable<string>;
-    private produits: Object[] = new Array();
+    public user: Observable<string>;
+    public produits: any[] = new Array();  //  Object[]
     
     constructor(private route: ActivatedRoute,
                 private authService: AuthentificationService,

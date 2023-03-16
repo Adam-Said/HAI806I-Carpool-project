@@ -9,8 +9,8 @@ import { AuthentificationService } from '../authentification.service'
 })
 export class ConnexionComponent {
 
-  private utilisateur = {"email":"", "password":""};
-  private message: string = "";
+  public utilisateur = {"email":"", "password":""};
+  public message: string = "";
   
   constructor(private authService: AuthentificationService,
               private router: Router) { }
