@@ -1,0 +1,21 @@
+<nav class="navbar navbar-dark bg-dark navbar-fixed-top navbar-expand">
+  <div class="container-fluid">
+    <ul *ngIf="!(user|async)" class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link active" routerLink="/user/connexion">Se connecter</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" routerLink="/produits">Liste des produits</a>
+        </li>
+    </ul>
+    <ul *ngIf="user|async" class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link active" routerLink="/produits">Liste des produit</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" (click)="deconnexion()">Déconnexion de {{user|async}}</a>
+        </li>
+    </ul>
+  </div>
+</nav>
+

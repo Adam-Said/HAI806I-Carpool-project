@@ -1,0 +1,10 @@
+* { font-size: 8pt; }
+.card { font-size: 8pt;
+	margin: 5px;
+	padding: 5px;
+        background-color: rgba(221, 243, 171);
+      }
+button { font-size: 8pt;
+         background-color: rgba(244, 235, 66);
+       }
+

@@ -1,0 +1,7 @@
+div { margin-top: 10px; }
+.card-header { body-size: 8pt;
+      background-color: rgba(244, 235, 66);
+     }
+.card { body-size: 8pt;
+      background-color: rgba(221, 243, 171);
+     }

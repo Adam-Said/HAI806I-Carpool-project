@@ -1,0 +1,12 @@
+form {background-color: rgba(221, 243, 171);
+      display: inline-block;
+      margin-top : 10px;
+      padding: 5px;
+      font-size: 7pt;}
+form>label { font-size: 7pt; font-weight: bold; margin: 0px; }
+input { font-size: 7pt; height: 16px; width: 200px; margin: 3px; }
+input[type=submit] { font-size: 7pt; font-weight: bold; height: 20px;
+        background-color: rgba(244, 235, 66);
+      }
+p { font-size: 7pt; font-weight: bold; margin-top: 10px; }
+
