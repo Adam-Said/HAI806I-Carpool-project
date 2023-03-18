@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "ini": "^3.0.1"
+    "express": "^4.18.2",
+    "ini": "^3.0.1",
+    "mongodb": "^5.1.0"
   }
 }

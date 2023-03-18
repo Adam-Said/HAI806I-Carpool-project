@@ -17,7 +17,7 @@ const config = ini.parse(fs.readFileSync('./db.ini', 'utf-8'));
 const port = process.env.PORT || 3000;
 const username = config.username;
 const password = config.password;
-const uri = "mongodb+srv://"+ username +":"+ password +"@cluster0.ydior1v.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://" + username + ":" + password + "@cluster0.ydior1v.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri);
 
 app.get('/', (req, res) => {
@@ -47,24 +47,17 @@ app.get('/carpool/:departure/:arrival', async (req, res) => {
             departure,
             arrival,
         };
-        // if (date) {
-        //     const dateObj = new Date(date);
-        //     filter.date = {
-        //         $gte: dateObj,
-        //         $lt: new Date(dateObj.getTime() + (24 * 60 * 60 * 1000))
-        //     };
-        // } else {
-        //     // Set default date to today
-        //     filter.date = {
-        //         $gte: new Date().setHours(0, 0, 0, 0),
-        //         $lte: new Date().setHours(23, 59, 59, 999)
-        //     };
-        //     console.log(filter.date);
-        // }
+        if (date) {
+            const dateObj = new Date(date);
+            dateObj.setHours(0, 0, 0, 0);
+            filter.date = {
+                $gte: dateObj,
+                $lte: new Date(dateObj.getTime() + (24 * 60 * 60 * 1000) - 1)
+            };
+        }
         if (seat) {
             filter.seats = { $gte: parseInt(seat) };
-        }
-        else {
+        } else {
             filter.seats = { $gte: 1 };
         }
         const documents = await db.collection("carpool").find(filter).toArray();
@@ -74,6 +67,8 @@ app.get('/carpool/:departure/:arrival', async (req, res) => {
         res.status(500).send('Error connecting to database');
     }
 });
+
+
 
 
 app.listen(port, () => {
