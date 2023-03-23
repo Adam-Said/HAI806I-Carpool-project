@@ -1,5 +1,5 @@
 <div class="searchBar card flex flex-column md:flex-row gap-3">
-    <form class="searchBar p-inputgroup" (submit)="getCarpools()"> 
+    <form class="searchBar p-inputgroup" (ngSubmit)="getAllCarpools($event)">
         <input id="departure" class="startInput" pInputText placeholder="Départ" />
         <input id="arrival" class="destinationInput" pInputText placeholder="Destination" />
         <p-calendar class="dateInput" formControlName="date" placeholder="Date" [showIcon]="true"></p-calendar>
@@ -21,13 +21,4 @@
         </div>
         <p-button class="searchButton" type="submit" icon="pi pi-search" styleClass="p-button-rounded p-button-success"></p-button>
     </form >
-
-    <div *ngIf="carpools.length > 0">
-        <h2>Results:</h2>
-        <ul>
-          <li *ngFor="let carpool of carpools">
-            {{ carpool.driver }} is offering a carpool from {{ carpool.departure }} to {{ carpool.arrival }}
-          </li>
-        </ul>
-      </div>
 </div>
