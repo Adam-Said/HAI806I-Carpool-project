@@ -1,15 +1,18 @@
 const { MongoClient } = require('mongodb');
 const bcrypt = require("bcryptjs")
 const express = require("express");
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const ini = require('ini');
 
-const saltRounds = 10
 const app = express();
+const ACCESS_TOKEN_SECRET = '123';
 
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -28,7 +31,7 @@ app.get('/', (req, res) => {
     res.send('CarPoule API is running!');
 });
 
-app.get('/carpool', async (req, res) => {
+app.get('/search', async (req, res) => {
     try {
         await client.connect();
         const db = client.db('CarPoule');
@@ -41,7 +44,7 @@ app.get('/carpool', async (req, res) => {
 });
 
 
-app.get('/carpool/:departure/:arrival', async (req, res) => {
+app.get('/search/:departure/:arrival', async (req, res) => {
     try {
         await client.connect();
         const db = client.db('CarPoule');
@@ -114,35 +117,81 @@ app.post('/signup', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     try {
-        await client.connect();
-        const db = client.db('CarPoule');
-        const { email, password } = req.body;
+      await client.connect();
+      const db = client.db('CarPoule');
+      const { email, password } = req.body;
+  
+      if (!email || !password) {
+        return res.status(400).send('Missing parameters');
+      }
+  
+      lowEmail = email.toLowerCase();
+      const user = await db.collection('user').findOne({ email: lowEmail });
+  
+      if (!user) {
+        return res.status(401).send('Invalid user');
+      }
+  
+      // Compare the submitted password with the hashed password stored in the database
+      const passwordMatch = await bcrypt.compare(password, user.password);
+  
+      if (!passwordMatch) {
+        return res.status(401).send('Invalid password');
+      }
+  
+      // If passwords match, create a JWT token with the user's data
+      const accessToken = jwt.sign({ email: user.email }, ACCESS_TOKEN_SECRET);
+  
+      // Set the JWT token as a cookie in the response
+      res.cookie('auth', accessToken, {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'strict',
+      });
+  
+      // Redirect the user to the /profile route
+      res.status(201).json({ user });
+  
+    } catch (err) {
+      console.error('Failed to connect to MongoDB', err);
+      res.status(500).send('Error connecting to database');
+    }
+  });
 
-        if (!email || !password) {
+app.get('/profile', authenticateToken, async (req, res) => {
+    try {
+    await client.connect();
+    const db = client.db('CarPoule');
+    const user = await db.collection('user').findOne({ email: req.user.email });
+    res.json({
+        name: user.name,
+        email: user.email,
+        firstname: user.firstname
+    });
+    } catch (err) {
+    console.error('Failed to connect to MongoDB', err);
+    res.status(500).send('Error connecting to database');
+    }
+});
+  
+
+app.put('/publish', authenticateToken, async (req, res) => {
+    try {
+        const { departure, arrival, date, time, seats } = req.body;
+        if (!departure || !arrival || !date || !time || !seats) {
             return res.status(400).send('Missing parameters');
         }
-
-        lowEmail = email.toLowerCase();
-        const user = await db.collection('user').findOne({ email: lowEmail });
-
-        if (!user) {
-            return res.status(401).send('Invalid user');
-        }
-
-        // Compare the submitted password with the hashed password stored in the database
-        const passwordMatch = await bcrypt.compare(password, user.password);
-
-        if (!passwordMatch) {
-            return res.status(401).send('Invalid password');
-        }
-
-        // If passwords match, send a success response with the user's data
-        res.json({
-            id: user._id,
-            name: user.name,
-            email: user.email,
-        });
-
+        const db = client.db('CarPoule');
+        const carpool = {
+            user: req.user.email,
+            departure: departure,
+            arrival: arrival,
+            date: new Date(date),
+            time: time,
+            seats: parseInt(seats)
+        };
+        const result = await db.collection('carpool').insertOne(carpool);
+        res.status(201).json({ id: result.insertedId });
     } catch (err) {
         console.error('Failed to connect to MongoDB', err);
         res.status(500).send('Error connecting to database');
@@ -150,23 +199,21 @@ app.post('/login', async (req, res) => {
 });
 
 
+function authenticateToken(req, res, next) {
+    const token = req.cookies.auth;
+    if (!token) return res.sendStatus(401);
+  
+    jwt.verify(token, ACCESS_TOKEN_SECRET, (err, user) => {
+      if (err) return res.sendStatus(403);
+      req.user = user;
+      next();
+    });
+}
+  
+
+
 
 
 app.listen(port, () => {
-    // pass = "azert";
-    // bcrypt.genSalt(saltRounds, function (saltError, salt) {
-    //     if (saltError) {
-    //         throw saltError
-    //     } else {
-    //         bcrypt.hash(pass, salt, function (hashError, hash) {
-    //             if (hashError) {
-    //                 throw hashError
-    //             } else {
-    //                 console.log(hash)
-    //                 //$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K
-    //             }
-    //         })
-    //     }
-    // })
     console.log(`Server listening on port ${port}`);
 });

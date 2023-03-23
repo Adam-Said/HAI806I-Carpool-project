@@ -1,8 +1,8 @@
-login	POST
-signup	POST
-account POST
+login	POST OK
+signup	POST OK
+account POST OK
 reservations POST
-search GET
+search GET OK
 main
 publish POST
 trip GET
