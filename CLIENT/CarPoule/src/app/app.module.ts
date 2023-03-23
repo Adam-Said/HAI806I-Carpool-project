@@ -14,6 +14,11 @@ import { CalendarModule } from 'primeng/calendar';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import { LoginpageComponent } from './loginpage/loginpage.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CardModule } from 'primeng/card';
+import { PasswordModule } from 'primeng/password';
+import { DividerModule } from 'primeng/divider';
+import { InputTextModule } from 'primeng/inputtext';
+
 
 @NgModule({
   declarations: [
@@ -33,6 +38,10 @@ import { HttpClientModule } from '@angular/common/http';
     AutoCompleteModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    CardModule,
+    PasswordModule,
+    DividerModule,
+    InputTextModule
   ],
   providers: [],
   bootstrap: [AppComponent]
