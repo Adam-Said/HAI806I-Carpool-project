@@ -1,26 +1,15 @@
-<body>
-    <div class="searchBar card flex flex-column md:flex-row gap-3">
-        <form class="searchBar p-inputgroup">
-            <input id="departure" class="startInput" pInputText placeholder="Départ" />
-            <input id="arrival" class="destinationInput" pInputText placeholder="Destination" />
-            <p-calendar class="dateInput" formControlName="date" placeholder="Date" [showIcon]="true"></p-calendar>
-            <div class="flex-auto">
-                <p-inputNumber
-                    class="inputPassenger"
-                    [showButtons]="true"
-                    buttonLayout="horizontal"
-                    inputId="horizontal"
-                    spinnerMode="horizontal"
-                    [step]="1"
-                    [min]="1"
-                    [max]="8"
-                    decrementButtonClass="p-button-info"
-                    incrementButtonClass="p-button-info"
-                    incrementButtonIcon="pi pi-plus"
-                    decrementButtonIcon="pi pi-minus"
-                ></p-inputNumber>
-            </div>
-            <p-button class="searchButton" type="submit" icon="pi pi-search" styleClass="p-button-rounded p-button-success"></p-button>
-        </form >
-    </div>
-</body>
+<div class="searchBar card flex flex-column md:flex-row gap-3">
+    <form (submit)="searchCarpools($event)">
+        <input [(ngModel)]="departure" name="departure" class="startInput" pInputText placeholder="Départ" />
+        <input [(ngModel)]="arrival" name="arrival" class="destinationInput" pInputText placeholder="Destination" />
+        <p-calendar [(ngModel)]="date" name="date" class="dateInput" placeholder="Date" [showIcon]="true"></p-calendar>
+        <div class="flex-auto">
+            <p-inputNumber [(ngModel)]="seats" name="seats" class="inputPassenger" [showButtons]="true"
+                buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [step]="1" [min]="1" [max]="8"
+                decrementButtonClass="p-button-info" incrementButtonClass="p-button-info"
+                incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></p-inputNumber>
+        </div>
+        <p-button class="searchButton" type="submit" icon="pi pi-search"
+            styleClass="p-button-rounded p-button-success"></p-button>
+    </form>
+</div>

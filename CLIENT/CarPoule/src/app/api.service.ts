@@ -1,30 +1,30 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Carpool } from './models/carpool.model';
-
-
-const BASE_URL = 'http://localhost:3000'; // replace with your server URL
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
+  private baseUrl = 'http://localhost:3000';
 
-  constructor(private http: HttpClient) { }
+  constructor(private httpClient: HttpClient) { }
 
   getAll(): Observable<Carpool[]> {
-    return this.http.get<Carpool[]>(`${BASE_URL}/search/`);
+    const url = `${this.baseUrl}/search`;
+    return this.httpClient.get<Carpool[]>(url);
   }
 
-  getCarpool(departure: string, arrival: string): Observable<Carpool[]> {
-    const url = `${BASE_URL}/search/${departure}/${arrival}`;
-    return this.http.get<Carpool[]>(url);
+  searchCarpools(departure: string, arrival: string, date: string, seats: number): Observable<Carpool[]> {
+    const url = `${this.baseUrl}/search/${departure}/${arrival}`;
+    let params = new HttpParams();
+    if (date) {
+      params = params.append('date', date);
+    }
+    if (seats) {
+      params = params.append('seat', seats.toString());
+    }
+    return this.httpClient.get<Carpool[]>(url, { params });
   }
-  
-  getCarpooltest(): Observable<Carpool[]> {
-    const url = `${BASE_URL}/search`;
-    return this.http.get<Carpool[]>(url);
-  }
-  
 }
