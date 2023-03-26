@@ -81,7 +81,7 @@ app.post('/signup', async (req, res) => {
     try {
         await client.connect();
         const db = client.db('CarPoule');
-        const { email, password, name, firstname } = req.body;
+        const { email, password, name, firstname, birthdate, pref_smoking, pref_animals, pref_talk, phone_number } = req.body;
 
         // Check if user already exists with the given email
         const existingUser = await db.collection('user').findOne({ email });
@@ -89,7 +89,7 @@ app.post('/signup', async (req, res) => {
             return res.status(400).send('User with this email already exists');
         }
 
-        if (!email || !password || !name || !firstname) {
+        if (!email || !password || !name || !firstname || !birthdate || !phone_number) {
             return res.status(400).send('Missing parameters');
         }
 
@@ -101,7 +101,29 @@ app.post('/signup', async (req, res) => {
             email: email.toLowerCase(),
             password: hashedPassword,
             name: name,
-            firstname: firstname
+            firstname: firstname,
+            birthdate: birthdate,
+            pref_smoking: pref_smoking || false,
+            pref_animals: pref_animals || false,
+            pref_talk: pref_talk || false,
+            phone_number: phone_number,
+            payment_method: {
+                type: '',
+                card_num: '',
+                card_cvc: '',
+                card_exp: new Date()
+            },
+            rating: 0.0,
+            vehicule: {
+                brand: '',
+                model: '',
+                registration: '',
+                color: '',
+                place_number: 0,
+                type: ''
+            },
+            carpool_num: 0,
+            profile_pic: 0
         };
 
         // Insert the new user document into the "user" collection
@@ -115,65 +137,68 @@ app.post('/signup', async (req, res) => {
     }
 });
 
+
+
+
 app.post('/login', async (req, res) => {
     try {
-      await client.connect();
-      const db = client.db('CarPoule');
-      const { email, password } = req.body;
-  
-      if (!email || !password) {
-        return res.status(400).send('Missing parameters');
-      }
-  
-      lowEmail = email.toLowerCase();
-      const user = await db.collection('user').findOne({ email: lowEmail });
-  
-      if (!user) {
-        return res.status(401).send('Invalid user');
-      }
-  
-      // Compare the submitted password with the hashed password stored in the database
-      const passwordMatch = await bcrypt.compare(password, user.password);
-  
-      if (!passwordMatch) {
-        return res.status(401).send('Invalid password');
-      }
-  
-      // If passwords match, create a JWT token with the user's data
-      const accessToken = jwt.sign({ email: user.email }, ACCESS_TOKEN_SECRET);
-  
-      // Set the JWT token as a cookie in the response
-      res.cookie('auth', accessToken, {
-        httpOnly: true,
-        secure: false,
-        sameSite: 'strict',
-      });
-  
-      // Redirect the user to the /profile route
-      res.status(201).json({ user });
-  
+        await client.connect();
+        const db = client.db('CarPoule');
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).send('Missing parameters');
+        }
+
+        lowEmail = email.toLowerCase();
+        const user = await db.collection('user').findOne({ email: lowEmail });
+
+        if (!user) {
+            return res.status(401).send('Invalid user');
+        }
+
+        // Compare the submitted password with the hashed password stored in the database
+        const passwordMatch = await bcrypt.compare(password, user.password);
+
+        if (!passwordMatch) {
+            return res.status(401).send('Invalid password');
+        }
+
+        // If passwords match, create a JWT token with the user's data
+        const accessToken = jwt.sign({ email: user.email }, ACCESS_TOKEN_SECRET);
+
+        // Set the JWT token as a cookie in the response
+        res.cookie('auth', accessToken, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'strict',
+        });
+
+        // Redirect the user to the /profile route
+        res.status(201).json({ user });
+
     } catch (err) {
-      console.error('Failed to connect to MongoDB', err);
-      res.status(500).send('Error connecting to database');
+        console.error('Failed to connect to MongoDB', err);
+        res.status(500).send('Error connecting to database');
     }
-  });
+});
 
 app.get('/profile', authenticateToken, async (req, res) => {
     try {
-    await client.connect();
-    const db = client.db('CarPoule');
-    const user = await db.collection('user').findOne({ email: req.user.email });
-    res.json({
-        name: user.name,
-        email: user.email,
-        firstname: user.firstname
-    });
+        await client.connect();
+        const db = client.db('CarPoule');
+        const user = await db.collection('user').findOne({ email: req.user.email });
+        res.json({
+            name: user.name,
+            email: user.email,
+            firstname: user.firstname
+        });
     } catch (err) {
-    console.error('Failed to connect to MongoDB', err);
-    res.status(500).send('Error connecting to database');
+        console.error('Failed to connect to MongoDB', err);
+        res.status(500).send('Error connecting to database');
     }
 });
-  
+
 
 app.put('/publish', authenticateToken, async (req, res) => {
     try {
@@ -202,14 +227,14 @@ app.put('/publish', authenticateToken, async (req, res) => {
 function authenticateToken(req, res, next) {
     const token = req.cookies.auth;
     if (!token) return res.sendStatus(401);
-  
+
     jwt.verify(token, ACCESS_TOKEN_SECRET, (err, user) => {
-      if (err) return res.sendStatus(403);
-      req.user = user;
-      next();
+        if (err) return res.sendStatus(403);
+        req.user = user;
+        next();
     });
 }
-  
+
 
 
 

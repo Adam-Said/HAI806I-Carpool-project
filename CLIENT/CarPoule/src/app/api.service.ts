@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Carpool } from './models/carpool.model';
+import { User } from './models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +27,9 @@ export class ApiService {
       params = params.append('seat', seats.toString());
     }
     return this.httpClient.get<Carpool[]>(url, { params });
+  }
+
+  registerUser(user: User): Observable<any> {
+    return this.httpClient.post<any>(`${this.baseUrl}/signup`, user);
   }
 }
