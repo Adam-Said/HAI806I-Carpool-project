@@ -10,8 +10,20 @@
     margin-top: 7vh;
 }
 
+.optionsLabels{
+    font-size: 10px;
+}
+
+.icons{
+    margin-right: 1vw;
+}
+
 body{
     padding: 3vw;
+}
+
+.options{
+    margin-top: 4vh;
 }
 
 .inputs{

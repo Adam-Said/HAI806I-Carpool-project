@@ -1,0 +1,92 @@
+<body>
+    <div class="formContainer cardContainer">
+        <div class="card flex justify-content-center">
+            <p-card class="card" [style]="{ width: '90%'}">
+                <ng-template pTemplate="header">
+                    <img alt="Card" src="https://primefaces.org/cdn/primeng/images/usercard.png" />
+                </ng-template>
+
+                <div class="card flex justify-content-center">
+                    <h2 class="title">Register</h2>
+                </div>
+
+                <div class="card flex justify-content-center">
+                    <input type="text" class="inputs" placeholder="Name" pInputText id="name" />
+                </div>
+
+                <div class="card flex justify-content-center">
+                    <input type="text" class="inputs" placeholder="First Name" pInputText id="firstname" />
+                </div>
+
+                <div class="card flex justify-content-center">
+                    <p-calendar class="inputs" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" placeholder="Birth Date" [showIcon]="true"></p-calendar>
+                </div>
+                
+                <div class="card flex justify-content-center">
+                    <input pInputText pKeyFilter="int" type="number" class="inputs" [style]="{'width':'80%'}" placeholder="Phone Number"/>
+                </div>
+
+                <div class="card flex justify-content-center">
+                    <input type="text" class="inputs" placeholder="E-mail" pInputText id="username" />
+                </div>
+
+                <div class="card flex justify-content-center"> 
+                    <div class="pass ">
+                        <p-password [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" placeholder="Password" [toggleMask]="true">
+                            <ng-template pTemplate="header">
+                                <h6>Pick a password</h6>
+                            </ng-template>
+                            <ng-template pTemplate="footer">
+                                <p-divider></p-divider>
+                                <p class="mt-2">Suggestions</p>
+                                <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+                                    <li>At least one lowercase</li>
+                                    <li>At least one uppercase</li>
+                                    <li>At least one numeric</li>
+                                    <li>Minimum 8 characters</li>
+                                </ul>
+                            </ng-template>
+                        </p-password>
+                    </div>
+                </div>
+
+                <div class="card flex justify-content-center"> 
+                    <div class="pass ">
+                        <p-password [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" placeholder="Confirm Password" [toggleMask]="true" [feedback]="false"></p-password>
+                    </div>
+                </div>
+
+                <div class="options card flex justify-content-center">
+                    <mat-icon class="icons">pets</mat-icon>
+                    <p-selectButton [options]="Options">
+                        <ng-template let-item>
+                            <mat-icon>{{item.icon}}</mat-icon>
+                        </ng-template>
+                    </p-selectButton>
+                </div>
+
+                <div class="options card flex justify-content-center">
+                    <mat-icon class="icons">record_voice_over</mat-icon>
+                    <p-selectButton [options]="Options" >
+                        <ng-template let-item>
+                            <mat-icon>{{item.icon}}</mat-icon>
+                        </ng-template>
+                    </p-selectButton>
+                </div>
+                
+                <div class="options card flex justify-content-center">
+                    <mat-icon class="icons">smoking_rooms</mat-icon>
+                    <p-selectButton [options]="Options">
+                        <ng-template let-item>
+                            <mat-icon>{{item.icon}}</mat-icon>
+                        </ng-template>
+                    </p-selectButton>
+                </div>
+                
+                <div class="card button flex justify-content-center">
+                    <p-button label="Create Account" icon="pi pi-check" type="submit"></p-button>
+                </div>
+            </p-card>
+        </div>
+    </div>
+</body>

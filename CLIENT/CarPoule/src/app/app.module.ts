@@ -18,13 +18,16 @@ import { CardModule } from 'primeng/card';
 import { PasswordModule } from 'primeng/password';
 import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
-
+import { NewAccountComponent } from './new-account/new-account.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
-    LoginpageComponent
+    LoginpageComponent,
+    NewAccountComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +44,9 @@ import { InputTextModule } from 'primeng/inputtext';
     CardModule,
     PasswordModule,
     DividerModule,
-    InputTextModule
+    InputTextModule,
+    SelectButtonModule,
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,25 +1,31 @@
-<div class="cardContainer">
-    <div class="card flex justify-content-center">
-        <p-card [style]="{ width: '360px' }">
-            <ng-template pTemplate="header">
-                <img alt="Card" src="https://primefaces.org/cdn/primeng/images/usercard.png" />
-            </ng-template>
+<body>
+    <div class="formContainer cardContainer">
+        <div class="card flex justify-content-center">
+            <p-card class="card" [style]="{ width: '90%'}">
+                <ng-template pTemplate="header">
+                    <img alt="Card" src="https://primefaces.org/cdn/primeng/images/usercard.png" />
+                </ng-template>
 
-            <div class="card flex justify-content-center">
-                <h2 class="title">Login</h2>
-            </div>
+                <div class="card flex justify-content-center">
+                    <h2 class="title">Login</h2>
+                </div>
 
-            <div class="card flex justify-content-center">
-                <input type="text" class="inputs" placeholder="E-mail" pInputText id="username" />
-            </div>
+                <div class="card flex justify-content-center">
+                    <input type="text" class="inputs" placeholder="E-mail" pInputText id="username" />
+                </div>
 
-            <div class="card flex justify-content-center">
-                <p-password class="password" formControlName="value" placeholder="Password" [feedback]="false" [toggleMask]="true"></p-password>
-            </div>
+                <div class="card flex justify-content-center"> 
+                    <div class="pass ">
+                        <p-password [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" inputStyleClass="w-full"  styleClass="w-full p-password p-component p-inputwrapper p-input-icon-right" placeholder="Password" id="password" [toggleMask]="true" [feedback]="false"/>
+                    </div>
+                </div>
+                
 
-            <div class="card button flex justify-content-center">
-                <p-button label="Login" icon="pi pi-check"></p-button>
-            </div>
-        </p-card>
+                <div class="card button flex justify-content-center">
+                    <p-button label="Login" icon="pi pi-check" type="submit"></p-button>
+                </div>
+            </p-card>
+        </div>
     </div>
-</div>
+</body>
+

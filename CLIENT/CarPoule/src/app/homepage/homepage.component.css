@@ -5,6 +5,10 @@
     margin-top: 3vh;
 }
 
+body{
+    padding: 5vw;
+}
+
 .searchBar{
     display: flex;
     justify-content: center;
