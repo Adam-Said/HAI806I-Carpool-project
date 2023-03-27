@@ -22,6 +22,7 @@ import { NewAccountComponent } from './new-account/new-account.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { MatIconModule } from '@angular/material/icon';
 import { SearchpageComponent } from './searchpage/searchpage.component';
+import { ProfilepageComponent } from './profilepage/profilepage.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { SearchpageComponent } from './searchpage/searchpage.component';
     HomepageComponent,
     LoginpageComponent,
     NewAccountComponent,
-    SearchpageComponent
+    SearchpageComponent,
+    ProfilepageComponent
   ],
   imports: [
     BrowserModule,

@@ -11,6 +11,10 @@
     align-items: center;
 }
 
+body{
+    padding : 5vw;
+}
+
 .startInput {
     width: 30vw;
     height: 5vh;

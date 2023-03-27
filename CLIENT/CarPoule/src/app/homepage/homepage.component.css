@@ -5,18 +5,18 @@
     margin-top: 3vh;
 }
 
-body{
+body {
     padding: 5vw;
 }
 
-.searchBar{
+.searchBar {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.startInput{
-    width: 30vw;
+.startInput {
+    width: 20vw;
     height: 5vh;
     border: solid 1px grey;
     color: black;
@@ -28,12 +28,12 @@ body{
 }
 
 .dateInput{
-    width: 10vw;
+    width: 2vw;
     margin-left: 2vw;
 }
 
 .destinationInput{
-    width: 30vw;
+    width: 20vw;
     height: 5vh;
     border: solid 1px grey;
     color: black;
