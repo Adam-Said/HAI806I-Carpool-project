@@ -1,9 +1,10 @@
-login	POST OK
-signup	POST OK
+login    POST OK
+signup    POST OK
 account POST OK
-reservations POST
+reservations POST OK
 search GET OK
-main
-publish POST
-trip GET
-404
+main OK
+publish PUT OK
+trip GET OK
+update POST OK
+delete DELETE OK

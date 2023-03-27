@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const bcrypt = require("bcryptjs")
 const express = require("express");
 const jwt = require('jsonwebtoken');
@@ -77,6 +77,26 @@ app.get('/search/:departure/:arrival', async (req, res) => {
 
 });
 
+app.get('/carpool/:id', async (req, res) => {
+    try {
+        await client.connect();
+        const db = client.db('CarPoule');
+        const { id } = req.params;
+        const filter = {
+            _id: new ObjectId(id),
+        };
+        const documents = await db.collection("carpool").find(filter).toArray();
+        res.json(documents);
+    } catch (err) {
+        console.error('Failed to connect to MongoDB', err);
+        res.status(500).send('Error connecting to database');
+    }
+
+
+});
+
+
+
 app.post('/signup', async (req, res) => {
     try {
         await client.connect();
@@ -129,6 +149,20 @@ app.post('/signup', async (req, res) => {
         // Insert the new user document into the "user" collection
         const result = await db.collection('user').insertOne(newUser);
 
+        const payload = {
+            email: user.email,
+            id: user._id // Add the user's ID as a claim in the JWT
+        };
+
+        const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET);
+
+        // Set the JWT token as a cookie in the response
+        res.cookie('auth', accessToken, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'strict',
+        });
+
         // Send a success response with the new user's ID
         res.status(201).json({ id: result.insertedId });
     } catch (err) {
@@ -163,9 +197,13 @@ app.post('/login', async (req, res) => {
         if (!passwordMatch) {
             return res.status(401).send('Invalid password');
         }
+        const payload = {
+            email: user.email,
+            id: user._id // Add the user's ID as a claim in the JWT
+        };
 
         // If passwords match, create a JWT token with the user's data
-        const accessToken = jwt.sign({ email: user.email }, ACCESS_TOKEN_SECRET);
+        const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET);
 
         // Set the JWT token as a cookie in the response
         res.cookie('auth', accessToken, {
@@ -192,6 +230,7 @@ app.get('/profile', authenticateToken, async (req, res) => {
             name: user.name,
             email: user.email,
             firstname: user.firstname
+
         });
     } catch (err) {
         console.error('Failed to connect to MongoDB', err);
@@ -202,18 +241,22 @@ app.get('/profile', authenticateToken, async (req, res) => {
 
 app.put('/publish', authenticateToken, async (req, res) => {
     try {
-        const { departure, arrival, date, time, seats } = req.body;
-        if (!departure || !arrival || !date || !time || !seats) {
+        const { departure, arrival, date, time, seats, highway, price } = req.body;
+        if (!departure || !arrival || !date || !time || !seats || !highway || !price) {
             return res.status(400).send('Missing parameters');
         }
         const db = client.db('CarPoule');
+        const [year, month, day] = date.split('-');
+        const [hour, minute] = time.split('-');
         const carpool = {
-            user: req.user.email,
+            driver: req.user.email,
             departure: departure,
             arrival: arrival,
-            date: new Date(date),
-            time: time,
-            seats: parseInt(seats)
+            date: new Date(year, month - 1, day, hour, minute),
+            seats: parseInt(seats),
+            highway: highway,
+            price: parseInt(price),
+            passengers: [],
         };
         const result = await db.collection('carpool').insertOne(carpool);
         res.status(201).json({ id: result.insertedId });
@@ -222,6 +265,104 @@ app.put('/publish', authenticateToken, async (req, res) => {
         res.status(500).send('Error connecting to database');
     }
 });
+
+// app.put('/carpool/:id', authenticateToken, async (req, res) => {
+//     try {
+//       const { departure, arrival, date, time, seats, highway, price } = req.body;
+//       const { id } = req.params;
+//       if (!id) {
+//         return res.status(400).send('Missing id parameter');
+//       }
+//       const db = client.db('CarPoule');
+//       const filter = {
+//         _id: new ObjectId(id),
+//         driver: req.user.email
+//       };
+//       const carpool = await db.collection('carpool').findOne(filter);
+//       if (!carpool) {
+//         return res.status(404).send('Carpool not found');
+//       }
+//       const updates = {};
+//       if (departure) updates.departure = departure;
+//       if (arrival) updates.arrival = arrival;
+//       if (date && time) {
+//         const [year, month, day] = date.split('-');
+//         const [hour, minute] = time.split('-');
+//         updates.date = new Date(year, month - 1, day, hour, minute);
+//       }
+//       if (seats) updates.seats = parseInt(seats);
+//       if (highway) updates.highway = highway;
+//       if (price) updates.price = parseInt(price);
+//       const result = await db.collection('carpool').updateOne(filter, { $set: updates });
+//       res.status(200).json({ updatedCount: result.modifiedCount });
+//     } catch (err) {
+//       console.error('Failed to connect to MongoDB', err);
+//       res.status(500).send('Error connecting to database');
+//     }
+//   });
+
+app.delete('/carpool/:id', authenticateToken, async (req, res) => {
+    try {
+        const db = client.db('CarPoule');
+        const collection = db.collection('carpool');
+        const carpoolId = req.params.id;
+
+        // Find the carpool in the database
+        const carpool = await collection.findOne({ _id: new ObjectId(carpoolId) });
+
+        // Check if the authenticated user is the driver of the carpool
+        if (req.user.email !== carpool.driver) {
+            return res.status(401).send('Unauthorized');
+        }
+
+        // Delete the carpool from the database
+        const result = await collection.deleteOne({ _id: new ObjectId(carpoolId) });
+        if (result.deletedCount === 0) {
+            return res.status(404).send('Carpool not found');
+        }
+
+        res.status(204).send();
+    } catch (err) {
+        console.error('Failed to connect to MongoDB', err);
+        res.status(500).send('Error connecting to database');
+    }
+});
+
+app.post('/carpool/:id/book', authenticateToken, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const db = client.db('CarPoule');
+        const carpool = await db.collection('carpool').findOne({ _id: new ObjectId(id) });
+
+        if (!carpool) {
+            return res.status(404).send('Carpool not found');
+        }
+
+        if (carpool.driver.toString() === req.user.id) {
+            return res.status(400).send('Driver cannot book a seat in their own carpool');
+        }
+
+
+        // Check if the carpool is full
+        if (carpool.passengers.length >= carpool.seats) {
+            return res.status(400).send('Carpool is full');
+        }
+
+        // Add the user's ID to the passengers array
+        const updatedCarpool = await db.collection('carpool').findOneAndUpdate(
+            { _id: new ObjectId(id) },
+            { $push: { passengers: new ObjectId(req.user.id) } },
+            { returnOriginal: false }
+        );
+
+        res.json(updatedCarpool.value);
+    } catch (err) {
+        console.error('Failed to connect to MongoDB', err);
+        res.status(500).send('Error connecting to database');
+    }
+});
+
+
 
 
 function authenticateToken(req, res, next) {
