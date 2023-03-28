@@ -18,8 +18,6 @@ export class LoginpageComponent {
       .subscribe(
         (response) => {
           console.log('User logged in successfully');
-          const token = response.headers.get('auth');
-          localStorage.setItem('auth', token);
           // Redirect to profile page
           this.router.navigate(['/profile']);
         },
