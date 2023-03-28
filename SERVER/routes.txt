@@ -8,3 +8,4 @@ publish PUT OK
 trip GET OK
 update POST OK
 delete DELETE OK
+edit_account POST OK

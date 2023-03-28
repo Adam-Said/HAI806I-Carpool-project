@@ -13,12 +13,14 @@ const ACCESS_TOKEN_SECRET = '123';
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', '*');
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*'); // Set the specific origin of your Angular app here
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
     next();
 });
+
 
 const config = ini.parse(fs.readFileSync('./db.ini', 'utf-8'));
 const port = process.env.PORT || 3000;
@@ -101,7 +103,7 @@ app.post('/signup', async (req, res) => {
     try {
         await client.connect();
         const db = client.db('CarPoule');
-        const { email, password, name, firstname, birthdate, pref_smoking, pref_animals, pref_talk, phone_number } = req.body;
+        const { email, password, name, firstname, birthdate, pref_smoking, pref_animals, pref_talk, phone } = req.body;
 
         // Check if user already exists with the given email
         const existingUser = await db.collection('user').findOne({ email });
@@ -109,7 +111,7 @@ app.post('/signup', async (req, res) => {
             return res.status(400).send('User with this email already exists');
         }
 
-        if (!email || !password || !name || !firstname || !birthdate || !phone_number) {
+        if (!email || !password || !name || !firstname || !birthdate || !phone) {
             return res.status(400).send('Missing parameters');
         }
 
@@ -126,21 +128,19 @@ app.post('/signup', async (req, res) => {
             pref_smoking: pref_smoking || false,
             pref_animals: pref_animals || false,
             pref_talk: pref_talk || false,
-            phone_number: phone_number,
+            phone: phone,
             payment_method: {
-                type: '',
                 card_num: '',
                 card_cvc: '',
                 card_exp: new Date()
             },
             rating: 0.0,
-            vehicule: {
+            vehicle: {
                 brand: '',
                 model: '',
                 registration: '',
                 color: '',
-                place_number: 0,
-                type: ''
+                place_number: 0
             },
             carpool_num: 0,
             profile_pic: 0
@@ -150,15 +150,15 @@ app.post('/signup', async (req, res) => {
         const result = await db.collection('user').insertOne(newUser);
 
         const payload = {
-            email: user.email,
-            id: user._id // Add the user's ID as a claim in the JWT
+            email: result.email,
+            id: result._id // Add the user's ID as a claim in the JWT
         };
 
         const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET);
 
         // Set the JWT token as a cookie in the response
         res.cookie('auth', accessToken, {
-            httpOnly: true,
+            httpOnly: false,
             secure: false,
             sameSite: 'strict',
         });
@@ -237,6 +237,98 @@ app.get('/profile', authenticateToken, async (req, res) => {
         res.status(500).send('Error connecting to database');
     }
 });
+
+app.post('/profile/edit', authenticateToken, async (req, res) => {
+    try {
+        const { email, password, phone, pref_animals, pref_talk, pref_smoking, brand, model, color, registration, seats, card_num, card_cvc, card_exp } = req.body;
+        const db = client.db('CarPoule');
+        const user = await db.collection('user').findOne({ _id: new ObjectId(req.user.id) });
+
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+        // Update email if provided and not already taken by another user
+        if (email) {
+            const emailTaken = await db.collection('users').findOne({ email: email });
+            if (emailTaken) {
+                return res.status(400).send('Email already taken');
+            }
+            user.email = email;
+        }
+
+        // Update password if provided
+        if (password) {
+            user.password = await bcrypt.hash(password, 10);
+        }
+
+        if (phone) {
+            user.phone = phone;
+        }
+
+        // Update preferences if provided
+        if (pref_animals !== undefined) {
+            user.pref_animals = pref_animals;
+        }
+        if (pref_talk !== undefined) {
+            user.pref_talk = pref_talk;
+        }
+        if (pref_smoking !== undefined) {
+            user.pref_smoking = pref_smoking;
+        }
+
+        // Update vehicles if provided
+        if (brand || model || color || registration || seats) {
+            const vehicle = user.vehicle || {};
+            if (brand) {
+                vehicle.brand = brand;
+            }
+            if (model) {
+                vehicle.model = model;
+            }
+            if (color) {
+                vehicle.color = color;
+            }
+            if (registration) {
+                vehicle.registration = registration;
+            }
+            if (seats) {
+                vehicle.seats = parseInt(seats);
+            }
+            user.vehicle = vehicle;
+        }
+
+        if (card_num || card_cvc || card_exp) {
+            const payment = user.payment_method || {};
+            if (card_num) {
+                payment.card_num = card_num;
+            }
+            if (card_cvc) {
+                payment.card_cvc = card_cvc;
+            }
+            if (card_exp) {
+                const [year, month, day] = card_exp.split('-')
+                payment.card_exp = new Date(year, month - 1, day);
+            }
+            user.payment_method = payment;
+        }
+
+
+        // Save the updated user object to the database
+        const result = await db.collection('user').findOneAndUpdate(
+            { _id: new ObjectId(req.user.id) },
+            { $set: user },
+            { returnOriginal: false }
+        );
+
+        res.status(200).json("User updated");
+    } catch (err) {
+        console.error('Failed to connect to MongoDB', err);
+        res.status(500).send('Error connecting to database');
+    }
+});
+
+
 
 
 app.put('/publish', authenticateToken, async (req, res) => {

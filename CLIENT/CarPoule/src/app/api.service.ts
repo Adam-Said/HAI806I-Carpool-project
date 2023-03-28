@@ -3,6 +3,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Carpool } from './models/carpool.model';
 import { User } from './models/user.model';
+import { tap } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +34,13 @@ export class ApiService {
   registerUser(user: User): Observable<any> {
     return this.httpClient.post<any>(`${this.baseUrl}/signup`, user);
   }
+
+  login(email: string, password: string): Observable<any> {
+    const body = { email: email, password: password };
+    return this.httpClient.post<any>(`${this.baseUrl}/login`, body, { withCredentials: true });
+  }
+
+
 }
 
 

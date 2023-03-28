@@ -3,7 +3,7 @@ export class User {
     name?: string;
     firstname?: string;
     birthdate?: string;
-    phone_number?: string;
+    phone?: string;
     email?: string;
     password?: string;
     pref_smoking?: boolean;

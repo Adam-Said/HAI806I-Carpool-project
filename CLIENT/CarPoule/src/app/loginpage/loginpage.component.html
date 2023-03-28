@@ -9,23 +9,28 @@
                 <div class="card flex justify-content-center">
                     <h2 class="title">Login</h2>
                 </div>
-
-                <div class="card flex justify-content-center">
-                    <input type="text" class="inputs" placeholder="E-mail" pInputText id="username" />
-                </div>
-
-                <div class="card flex justify-content-center"> 
-                    <div class="pass ">
-                        <p-password [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" inputStyleClass="w-full"  styleClass="w-full p-password p-component p-inputwrapper p-input-icon-right" placeholder="Password" id="password" [toggleMask]="true" [feedback]="false"/>
+                <form (ngSubmit)="onSubmit()">
+                    <div class="card flex justify-content-center">
+                        <input type="text" class="inputs" placeholder="E-mail" pInputText id="username"
+                            [(ngModel)]="email" name="email" />
                     </div>
-                </div>
-                
 
-                <div class="card button flex justify-content-center">
-                    <p-button label="Login" icon="pi pi-check" type="submit"></p-button>
-                </div>
+                    <div class="card flex justify-content-center">
+                        <div class="pass">
+                            <p-password [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+                                inputStyleClass="w-full"
+                                styleClass="w-full p-password p-component p-inputwrapper p-input-icon-right"
+                                placeholder="Password" id="password" [toggleMask]="true" [feedback]="false"
+                                [(ngModel)]="password" name="password"></p-password>
+                        </div>
+                    </div>
+
+
+                    <div class="card button flex justify-content-center">
+                        <p-button label="Login" icon="pi pi-check" type="submit"></p-button>
+                    </div>
+                </form>
             </p-card>
         </div>
     </div>
 </body>
-
