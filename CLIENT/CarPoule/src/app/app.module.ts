@@ -23,7 +23,9 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { MatIconModule } from '@angular/material/icon';
 import { SearchpageComponent } from './searchpage/searchpage.component';
 import { ProfilepageComponent } from './profilepage/profilepage.component';
-
+import { PublishPageComponent } from './publish-page/publish-page.component';
+import {InputTextareaModule} from 'primeng/inputtextarea';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @NgModule({
   declarations: [
@@ -32,10 +34,12 @@ import { ProfilepageComponent } from './profilepage/profilepage.component';
     LoginpageComponent,
     NewAccountComponent,
     SearchpageComponent,
-    ProfilepageComponent
+    ProfilepageComponent,
+    PublishPageComponent,
   ],
   imports: [
     BrowserModule,
+    InputTextareaModule,
     ButtonModule,
     AppRoutingModule,
     MatSlideToggleModule,
@@ -47,6 +51,7 @@ import { ProfilepageComponent } from './profilepage/profilepage.component';
     BrowserAnimationsModule,
     HttpClientModule,
     CardModule,
+    InputSwitchModule,
     PasswordModule,
     DividerModule,
     InputTextModule,

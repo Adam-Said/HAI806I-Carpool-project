@@ -1,6 +1,6 @@
 @import url('https://fonts.cdnfonts.com/css/gotham-rounded');
 
-.cardContainer, .card{
+.card{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,6 +12,13 @@
 
 .optionsLabels{
     font-size: 10px;
+}
+
+.subTitle{
+    font-size: 1.4em;
+    font-weight: 300;
+    margin-bottom: 2vh;
+    margin-top: 4vh;
 }
 
 .icons{
@@ -36,6 +43,20 @@ body{
     margin-top: 4vh;
 }
 
+.highway{
+    margin-top: 3vh;
+    margin-right: 1vw;
+}
+
+.inputPassenger{
+    width: 40%;
+    border-radius: 6px;
+    border: solid 1px ced4da;
+    font-family: 'Gotham Rounded', sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+    margin-top: 4vh;
+}
 
 .pass{
     margin-top: 5vh;
