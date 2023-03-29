@@ -203,17 +203,17 @@ app.post('/login', async (req, res) => {
         };
 
         // If passwords match, create a JWT token with the user's data
-        const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET);
+        const token = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '2h' });
 
         // Set the JWT token as a cookie in the response
-        res.cookie('auth', accessToken, {
-            httpOnly: true,
-            secure: false,
-            sameSite: 'strict',
-        });
+        // res.cookie('auth', accessToken, {
+        //     httpOnly: true,
+        //     secure: false,
+        //     sameSite: 'strict',
+        // });
 
         // Redirect the user to the /profile route
-        res.status(201).json({ user });
+        res.status(201).send({ token });
 
     } catch (err) {
         console.error('Failed to connect to MongoDB', err);
@@ -223,20 +223,21 @@ app.post('/login', async (req, res) => {
 
 app.get('/profile', authenticateToken, async (req, res) => {
     try {
-        await client.connect();
+        const userId = req.query.id;
         const db = client.db('CarPoule');
-        const user = await db.collection('user').findOne({ email: req.user.email });
-        res.json({
-            name: user.name,
-            email: user.email,
-            firstname: user.firstname
-
-        });
+        const user = await db.collection('user').findOne({ _id: new ObjectId(userId) });
+        if (user) {
+            res.json(user);
+        } else {
+            res.status(404).send('User not found');
+        }
     } catch (err) {
         console.error('Failed to connect to MongoDB', err);
         res.status(500).send('Error connecting to database');
     }
 });
+
+
 
 app.post('/profile/edit', authenticateToken, async (req, res) => {
     try {
@@ -457,15 +458,18 @@ app.post('/carpool/:id/book', authenticateToken, async (req, res) => {
 
 
 
-function authenticateToken(req, res, next) {
+async function authenticateToken(req, res, next) {
     const token = req.cookies.auth;
     if (!token) return res.sendStatus(401);
 
-    jwt.verify(token, ACCESS_TOKEN_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403);
+    try {
+        const payload = jwt.verify(token, ACCESS_TOKEN_SECRET);
+        const user = await User.findById(payload.userId);
         req.user = user;
         next();
-    });
+    } catch (error) {
+        return res.status(401).send({ error: 'Unauthorized' });
+    }
 }
 
 

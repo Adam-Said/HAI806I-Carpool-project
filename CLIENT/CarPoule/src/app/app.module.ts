@@ -24,7 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { SearchpageComponent } from './searchpage/searchpage.component';
 import { ProfilepageComponent } from './profilepage/profilepage.component';
 import { PublishPageComponent } from './publish-page/publish-page.component';
-import {InputTextareaModule} from 'primeng/inputtextarea';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputSwitchModule } from 'primeng/inputswitch';
 
 @NgModule({

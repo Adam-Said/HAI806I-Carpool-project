@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Router } from '@angular/router';
+import jwt_decode from 'jwt-decode';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-loginpage',
@@ -18,8 +20,9 @@ export class LoginpageComponent {
       .subscribe(
         (response) => {
           console.log('User logged in successfully');
-          // Redirect to profile page
+          localStorage.setItem('token', response.token);
           this.router.navigate(['/profile']);
+          // Redirect to profile page
         },
         (error) => {
           console.error('Failed to log in user');

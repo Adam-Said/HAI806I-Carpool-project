@@ -10,7 +10,9 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ApiService {
+
   private baseUrl = 'http://localhost:3000';
+  private TOKEN_KEY = '123';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -37,7 +39,7 @@ export class ApiService {
 
   login(email: string, password: string): Observable<any> {
     const body = { email: email, password: password };
-    return this.httpClient.post<any>(`${this.baseUrl}/login`, body, { withCredentials: true });
+    return this.httpClient.post<any>(`${this.baseUrl}/login`, body);
   }
 
 

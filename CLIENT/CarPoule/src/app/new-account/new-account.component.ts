@@ -52,9 +52,8 @@ export class NewAccountComponent {
       .subscribe(
         (data) => {
           console.log('User registered successfully');
+          localStorage.setItem('token', data.token);
           // Redirect to profile page
-          localStorage.setItem('auth', data.user.accessToken);
-
           this.router.navigate(['/profile']);
         },
         (error) => {
