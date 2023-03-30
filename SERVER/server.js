@@ -154,11 +154,11 @@ app.post('/signup', async (req, res) => {
             id: result._id // Add the user's ID as a claim in the JWT
         };
 
-        const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET);
+        const token = jwt.sign(payload, ACCESS_TOKEN_SECRET);
 
         // Set the JWT token as a cookie in the response
-        res.cookie('auth', accessToken, {
-            httpOnly: false,
+        res.cookie('auth', token, {
+            httpOnly: true,
             secure: false,
             sameSite: 'strict',
         });
@@ -206,14 +206,14 @@ app.post('/login', async (req, res) => {
         const token = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '2h' });
 
         // Set the JWT token as a cookie in the response
-        // res.cookie('auth', accessToken, {
-        //     httpOnly: true,
-        //     secure: false,
-        //     sameSite: 'strict',
-        // });
+        res.cookie('auth', token, {
+            httpOnly: false,
+            secure: false,
+            sameSite: 'strict',
+        });
 
         // Redirect the user to the /profile route
-        res.status(201).send({ token });
+        res.status(201).send({ id: user._id });
 
     } catch (err) {
         console.error('Failed to connect to MongoDB', err);
@@ -223,7 +223,7 @@ app.post('/login', async (req, res) => {
 
 app.get('/profile', authenticateToken, async (req, res) => {
     try {
-        const userId = req.query.id;
+        const userId = req.user._id;
         const db = client.db('CarPoule');
         const user = await db.collection('user').findOne({ _id: new ObjectId(userId) });
         if (user) {
@@ -463,9 +463,15 @@ async function authenticateToken(req, res, next) {
     if (!token) return res.sendStatus(401);
 
     try {
-        const payload = jwt.verify(token, ACCESS_TOKEN_SECRET);
-        const user = await User.findById(payload.userId);
+        await client.connect();
+        const db = client.db('CarPoule');
+
+        const payload = jwt.verify(token, ACCESS_TOKEN_SECRET, { expiresIn: '2h' });
+        console.log(payload);
+
+        const user = await db.collection('user').findOne({ _id: new ObjectId(payload.id) });
         req.user = user;
+        console.log(user);
         next();
     } catch (error) {
         return res.status(401).send({ error: 'Unauthorized' });

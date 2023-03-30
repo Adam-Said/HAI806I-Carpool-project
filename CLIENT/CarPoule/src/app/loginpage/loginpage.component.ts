@@ -20,12 +20,11 @@ export class LoginpageComponent {
       .subscribe(
         (response) => {
           console.log('User logged in successfully');
-          localStorage.setItem('token', response.token);
           this.router.navigate(['/profile']);
           // Redirect to profile page
         },
         (error) => {
-          console.error('Failed to log in user');
+          console.error('Failed to log in user : ' + error.message);
           // TODO: handle error (e.g., show an error message, clear form fields)
         }
       );

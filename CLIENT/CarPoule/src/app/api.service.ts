@@ -34,14 +34,19 @@ export class ApiService {
   }
 
   registerUser(user: User): Observable<any> {
-    return this.httpClient.post<any>(`${this.baseUrl}/signup`, user);
+    return this.httpClient.post<any>(`${this.baseUrl}/signup`, user, { withCredentials: true });
   }
 
   login(email: string, password: string): Observable<any> {
     const body = { email: email, password: password };
-    return this.httpClient.post<any>(`${this.baseUrl}/login`, body);
+    return this.httpClient.post<any>(`${this.baseUrl}/login`, body, { withCredentials: true });
   }
 
+  getUserInfo(): Observable<any> {
+    return this.httpClient.get<any>(`${this.baseUrl}/profile`, {
+      withCredentials: true
+    });
+  }
 
 }
 

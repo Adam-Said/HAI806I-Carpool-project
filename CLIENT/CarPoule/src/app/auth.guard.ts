@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import jwt_decode from 'jwt-decode';
+import { CookieService } from 'ngx-cookie-service';
+
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
-    constructor(private router: Router) { }
+    constructor(private router: Router, private cookieService: CookieService) { }
 
     canActivate(): boolean {
-        const token = localStorage.getItem('token');
+        const token = this.cookieService.get('auth');
         if (!token) {
+            console.log('No token found');
             this.router.navigate(['/login']);
             return false;
         }
@@ -22,13 +25,9 @@ export class AuthGuard implements CanActivate {
             }
             const expiry = decodedToken.exp;
             if (expiry < Date.now() / 1000) {
-                localStorage.removeItem('token');
+                this.cookieService.delete('auth');
                 throw new Error('Token expired');
             }
-            // const verifiedToken: any = jwt.verify(token, '123');
-            // if (!verifiedToken) {
-            //     throw new Error('Invalid token');
-            // }
             return true;
         } catch (error) {
             console.log(error);
@@ -36,4 +35,5 @@ export class AuthGuard implements CanActivate {
             return false;
         }
     }
+
 }
