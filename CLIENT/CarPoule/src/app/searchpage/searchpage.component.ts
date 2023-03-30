@@ -50,6 +50,18 @@ export class SearchpageComponent {
     // Make an HTTP request to search for carpool data
     this.apiService.searchCarpools(departure, arrival, date, seats).subscribe((data: Carpool[]) => {
       this.carpools = data;
+      // Update the URL with the search parameters
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams: {
+          departure: departure,
+          arrival: arrival,
+          date: date ? date.toISOString() : null,
+          seats: seats
+        },
+        queryParamsHandling: 'merge'
+      });
     });
+
   }
 }

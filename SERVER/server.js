@@ -64,6 +64,14 @@ app.get('/search/:departure/:arrival', async (req, res) => {
                 $lte: new Date(dateObj.getTime() + (24 * 60 * 60 * 1000) - 1)
             };
         }
+        else {
+            const dateObj = new Date();
+            dateObj.setHours(0, 0, 0, 0);
+            filter.date = {
+                $gte: dateObj,
+                $lte: new Date(dateObj.getTime() + (24 * 60 * 60 * 1000) - 1)
+            };
+        }
         if (seat) {
             filter.seats = { $gte: parseInt(seat) };
         } else {
