@@ -147,24 +147,25 @@ app.post('/signup', async (req, res) => {
         };
 
         // Insert the new user document into the "user" collection
-        const result = await db.collection('user').insertOne(newUser);
+        const user = await db.collection('user').insertOne(newUser);
 
         const payload = {
-            email: result.email,
-            id: result._id // Add the user's ID as a claim in the JWT
+            email: user.email,
+            id: user._id // Add the user's ID as a claim in the JWT
         };
 
-        const token = jwt.sign(payload, ACCESS_TOKEN_SECRET);
+        // If passwords match, create a JWT token with the user's data
+        const token = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '2h' });
 
         // Set the JWT token as a cookie in the response
         res.cookie('auth', token, {
-            httpOnly: true,
+            httpOnly: false,
             secure: false,
             sameSite: 'strict',
         });
 
-        // Send a success response with the new user's ID
-        res.status(201).json({ id: result.insertedId });
+        // Redirect the user to the /profile route
+        res.status(201).send({ id: user._id });
     } catch (err) {
         console.error('Failed to connect to MongoDB', err);
         res.status(500).send('Error connecting to database');
@@ -467,11 +468,9 @@ async function authenticateToken(req, res, next) {
         const db = client.db('CarPoule');
 
         const payload = jwt.verify(token, ACCESS_TOKEN_SECRET, { expiresIn: '2h' });
-        console.log(payload);
 
         const user = await db.collection('user').findOne({ _id: new ObjectId(payload.id) });
         req.user = user;
-        console.log(user);
         next();
     } catch (error) {
         return res.status(401).send({ error: 'Unauthorized' });
