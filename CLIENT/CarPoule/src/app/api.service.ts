@@ -48,6 +48,10 @@ export class ApiService {
     });
   }
 
+  publishCarpool(data: any): Observable<any> {
+    console.log('data', data);
+    return this.httpClient.put(`${this.baseUrl}/publish`, data, { withCredentials: true });
+  }
 }
 
 

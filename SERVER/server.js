@@ -17,7 +17,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200'); // Set the specific origin of your Angular app here
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
     next();
 });
 
@@ -343,23 +343,23 @@ app.post('/profile/edit', authenticateToken, async (req, res) => {
 
 app.put('/publish', authenticateToken, async (req, res) => {
     try {
-        const { departure, arrival, date, time, seats, highway, price } = req.body;
-        if (!departure || !arrival || !date || !time || !seats || !highway || !price) {
+        const { departure, arrival, date, seats, highway, price, description } = req.body;
+        if (!departure || !arrival || !date || !seats || !highway || !price || !description) {
             return res.status(400).send('Missing parameters');
         }
         const db = client.db('CarPoule');
-        const [year, month, day] = date.split('-');
-        const [hour, minute] = time.split('-');
         const carpool = {
-            driver: req.user.email,
+            driver: req.user._id,
             departure: departure,
             arrival: arrival,
-            date: new Date(year, month - 1, day, hour, minute),
+            date: new Date(date),
             seats: parseInt(seats),
             highway: highway,
             price: parseInt(price),
             passengers: [],
+            description: description,
         };
+
         const result = await db.collection('carpool').insertOne(carpool);
         res.status(201).json({ id: result.insertedId });
     } catch (err) {
