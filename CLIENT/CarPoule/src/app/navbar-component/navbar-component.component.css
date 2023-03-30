@@ -1,0 +1,64 @@
+
+@import url('https://fonts.cdnfonts.com/css/gotham-rounded');
+
+.navbar{
+    background-color: white;
+    position: sticky;
+    box-shadow: grey 0px 0px 1px;
+    top: 0;
+    font-family: 'Gotham Rounded', sans-serif;
+    z-index: 999;
+}
+
+.title{
+    font-size: 1.7vw;
+    margin-left: 1vw;
+}
+
+.example-icon {
+    margin-right: 1vw;
+}
+
+.homeButton{
+    text-decoration: none;
+    color: #3c74ee;
+    cursor: pointer;
+}
+
+.menuAction{
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+}
+
+.menuIcons{
+    margin-right: 0.5vw;
+}
+
+
+.homeButton:hover{
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.avatarContainer, .menuContainer, .menuAction{
+    display: flex;
+    align-items: center;
+}
+
+.menuItem{
+    margin-right: 1vw;
+    font-size: 1.5vw;
+    background-color: #3c74ee;
+    border-radius: 1em;
+    padding: 0.2vw 1.2vw 0.2vw 1.2vw;
+    transition: ease-in-out;
+}
+
+.menuItem:hover{
+    background-color: #477cef;
+}

@@ -1,3 +1,4 @@
+<app-navbar-component></app-navbar-component>
 <body>
     <div class="formContainer cardContainer">
         <div class="card flex justify-content-center">
@@ -12,15 +13,13 @@
                 <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
 
                     <div class="card flex justify-content-center">
-                        <p-autoComplete placeholder="Departure City" [style]="{'width':'100%'}"
+                        <p-autoComplete class="inputs" placeholder="Departure City" [style]="{'width':'100%'}"
                             [inputStyle]="{'width':'100%'}" formControlName="departure"
                             [suggestions]="filteredCountries" (completeMethod)="filterCountry($event)"></p-autoComplete>
-
                     </div>
 
                     <div class="card flex justify-content-center">
-
-                        <p-autoComplete placeholder="Arrival City" [style]="{'width':'100%'}"
+                        <p-autoComplete class="inputs" placeholder="Arrival City" [style]="{'width':'100%'}"
                             [inputStyle]="{'width':'100%'}" formControlName="arrival" [suggestions]="filteredCountries"
                             (completeMethod)="filterCountry($event)"></p-autoComplete>
                     </div>

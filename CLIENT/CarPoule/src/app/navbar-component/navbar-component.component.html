@@ -1,0 +1,13 @@
+<mat-toolbar class="navbar">
+    <mat-toolbar-row>
+        <span class="title"><a class="homeButton" [routerLink]="['/']">Carpoule</a></span>
+        <span class="example-spacer"></span>
+        <span class="menuItem menuContainer"><a class="menuAction" [routerLink]="['/publish']"><mat-icon class="menuIcons">directions_car</mat-icon>My trips</a></span>
+        <span class="menuItem menuContainer"><a class="menuAction" [routerLink]="['/publish']"><mat-icon class="menuIcons">add_circle_outline</mat-icon>Publish a trip</a></span>
+        <a [routerLink]="['/profile']"><p-avatar class="avatarContainer" image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-2" size="large" shape="circle"></p-avatar></a>
+        
+        <p-toast></p-toast>
+        <p-menu #menu  [popup]="true"></p-menu>
+        <button pButton type="button" (click)="menu.toggle($event)" icon="pi pi-bars" label="Show"></button>
+    </mat-toolbar-row>
+</mat-toolbar>

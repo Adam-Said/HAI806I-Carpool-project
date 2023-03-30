@@ -3,6 +3,7 @@ import { CountriesService } from '../countries.service';
 import { Observable } from 'rxjs';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ApiService } from '../api.service';
+import { NavbarComponentComponent } from '../navbar-component/navbar-component.component';
 
 @Component({
   selector: 'app-publish-page',

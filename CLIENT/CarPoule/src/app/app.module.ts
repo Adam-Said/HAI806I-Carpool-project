@@ -26,6 +26,11 @@ import { ProfilepageComponent } from './profilepage/profilepage.component';
 import { PublishPageComponent } from './publish-page/publish-page.component';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { NavbarComponentComponent } from './navbar-component/navbar-component.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { AvatarModule } from 'primeng/avatar';
+import { MenuModule } from 'primeng/menu';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -36,6 +41,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     SearchpageComponent,
     ProfilepageComponent,
     PublishPageComponent,
+    NavbarComponentComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,8 +51,11 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     MatSlideToggleModule,
     MatCardModule,
     InputNumberModule,
+    AvatarModule,
+    MenuModule,
     MatTabsModule,
     CalendarModule,
+    ToastModule,
     AutoCompleteModule,
     BrowserAnimationsModule,
     HttpClientModule,
@@ -58,7 +67,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     SelectButtonModule,
     MatIconModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatToolbarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

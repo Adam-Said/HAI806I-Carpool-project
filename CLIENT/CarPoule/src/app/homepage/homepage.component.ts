@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Carpool } from '../models/carpool.model';
 import { OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NavbarComponentComponent } from '../navbar-component/navbar-component.component';
 
 @Component({
   selector: 'app-homepage',
