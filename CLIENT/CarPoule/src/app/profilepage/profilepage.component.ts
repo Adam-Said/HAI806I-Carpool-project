@@ -22,8 +22,13 @@ export class ProfilepageComponent implements OnInit {
     model: string;
     registration: string;
     color: string;
-    place_number: number;
-  } = { brand: '', model: '', registration: '', color: '', place_number: 0 };
+    seats: number;
+  } = { brand: '', model: '', registration: '', color: '', seats: 0 };
+  payment_method: {
+    card_num: string;
+    card_cvc: string;
+    card_exp: Date;
+  } = { card_num: '', card_cvc: '', card_exp: new Date() };
 
   constructor(private apiService: ApiService, private cookieService: CookieService) { }
 
@@ -42,6 +47,7 @@ export class ProfilepageComponent implements OnInit {
         this.pref_talk = data.pref_talk;
         this.pref_smoking = data.pref_smoking;
         this.vehicle = data.vehicle;
+        this.payment_method = data.payment_method;
       },
       (err) => {
         console.error(err);

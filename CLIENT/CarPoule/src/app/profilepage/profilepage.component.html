@@ -37,41 +37,65 @@
 
                 <div class="card preference flex justify-content-center">
                     <mat-icon class="icons">pets</mat-icon>
-                    <p class="optionsPrefs" *ngIf="pref_animals">Pets allowed</p>
+                    <p class="optionsPrefs" *ngIf="pref_animals; else no_animals">Pets allowed</p>
+                    <ng-template class="optionsPrefs" #no_animals>No pets</ng-template>
                 </div>
 
                 <div class="card preference flex justify-content-center">
                     <mat-icon class="icons">record_voice_over</mat-icon>
-                    <p class="optionsPrefs" *ngIf="pref_talk">Pretty shy</p>
+                    <p class="optionsPrefs" *ngIf="pref_talk; else no_talk">Talkative</p>
+                    <ng-template class="optionsPrefs" #no_talk>Pretty shy</ng-template>
                 </div>
 
                 <div class="card preference flex justify-content-center">
                     <mat-icon class="icons">smoking_rooms</mat-icon>
-                    <p class="optionsPrefs" *ngIf="pref_smoking">Smoking allowed</p>
+                    <p class="optionsPrefs" *ngIf="pref_smoking; else no_smoke">Smoking allowed</p>
+                    <ng-template class="optionsPrefs" #no_smoke>No smoking</ng-template>
                 </div>
 
                 <div class="card flex justify-content-center">
                     <h4 class="subTitle">Vehicle informations</h4>
                 </div>
 
-                <div class="card preference flex justify-content-center">
+                <div class="card preference flex justify-content-center"
+                    *ngIf="vehicle.brand || vehicle.model || vehicle.registration || vehicle.color || vehicle.seats">
                     <mat-icon class="icons">directions_car</mat-icon>
-                    <p class="optionsPrefs">{{ vehicle.brand }}</p>
+                    <p class="optionsPrefs">{{ vehicle.brand || 'No vehicle information' }}</p>
                 </div>
 
-                <div class="card preference flex justify-content-center">
+                <div class="card preference flex justify-content-center"
+                    *ngIf="vehicle.brand || vehicle.model || vehicle.registration || vehicle.color || vehicle.seats">
                     <mat-icon class="icons">local_car_wash</mat-icon>
-                    <p class="optionsPrefs">{{ vehicle.model }}</p>
+                    <p class="optionsPrefs">{{ vehicle.model || 'No vehicle information' }}</p>
                 </div>
 
-                <div class="card preference flex justify-content-center">
+                <div class="card preference flex justify-content-center"
+                    *ngIf="vehicle.brand || vehicle.model || vehicle.registration || vehicle.color || vehicle.seats">
                     <mat-icon class="icons">airline_seat_legroom_normal</mat-icon>
-                    <p class="optionsPrefs">{{ vehicle.place_number }} seats</p>
+                    <p class="optionsPrefs">{{ vehicle.seats || 'No vehicle information' }} seats</p>
+                </div>
+
+                <div class="card preference flex justify-content-center"
+                    *ngIf="vehicle.brand || vehicle.model || vehicle.registration || vehicle.color || vehicle.seats">
+                    <mat-icon class="icons">color_lens</mat-icon>
+                    <p class="optionsPrefs">{{ vehicle.color || 'No vehicle information' }}</p>
+                </div>
+
+
+                <div class="card flex justify-content-center">
+                    <h4 class="subTitle">Payment information</h4>
                 </div>
 
                 <div class="card preference flex justify-content-center">
-                    <mat-icon class="icons">color_lens</mat-icon>
-                    <p class="optionsPrefs">{{ vehicle.color }}</p>
+                    <mat-icon class="icons">credit_card</mat-icon>
+                    <p class="optionsPrefs">{{ payment_method.card_num ? '**** **** **** ' +
+                        payment_method.card_num.slice(-4) : 'No payment method' }}</p>
+                </div>
+
+                <div class="card preference flex justify-content-center"
+                    *ngIf="payment_method.card_cvc && payment_method.card_exp">
+                    <mat-icon class="icons">event</mat-icon>
+                    <p class="optionsPrefs">{{ payment_method.card_exp | date: 'MM/yy' }}</p>
                 </div>
 
                 <div class="button card flex justify-content-center">
