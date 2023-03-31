@@ -32,6 +32,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { ColorPickerModule } from 'primeng/colorpicker';
     InputTextareaModule,
     ButtonModule,
     AppRoutingModule,
+    MatMenuModule,
     MatSlideToggleModule,
     MatCardModule,
     InputNumberModule,

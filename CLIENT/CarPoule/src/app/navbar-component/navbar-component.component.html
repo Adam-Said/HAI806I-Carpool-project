@@ -5,13 +5,16 @@
         <span class="menuItem menuContainer"><a class="menuAction" [routerLink]="['/publish']"><mat-icon class="menuIcons">directions_car</mat-icon>My trips</a></span>
         <span class="menuItem menuContainer"><a class="menuAction" [routerLink]="['/publish']"><mat-icon class="menuIcons">add_circle_outline</mat-icon>Publish a trip</a></span>
         
-        <p-avatar #avatar class="avatarContainer" alt="Logo" aria-haspopup="true" image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-2" size="large" shape="circle"></p-avatar>
-        
-        <p-contextMenu [target]="avatar" [model]="items" triggerEvent="click">
-            <ng-template let-item pTemplate="item">
-                <div class="menu-item">{{item.label}}</div>
-            </ng-template>
-        </p-contextMenu>
-
+        <p-avatar [matMenuTriggerFor]="menu" class="avatarContainer" alt="Logo" aria-haspopup="true" image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-2" size="large" shape="circle"></p-avatar>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item [routerLink]="['/profile']">
+              <mat-icon>person_pin</mat-icon>
+              <span>My Profile</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>logout</mat-icon>
+              <span>Logout</span>
+            </button>
+        </mat-menu>
     </mat-toolbar-row>
 </mat-toolbar>
