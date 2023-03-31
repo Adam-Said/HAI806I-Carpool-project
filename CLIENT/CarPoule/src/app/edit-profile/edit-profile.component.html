@@ -110,7 +110,10 @@
                     <p-calendar name="expirationDate" class="inputs" [style]="{'width':'100%'}"
                         [inputStyle]="{'width':'100%'}" placeholder="Card Expiration Date" id="expirationDate" [showIcon]="true"></p-calendar>
                 </div>
-                
+
+                <div class="button card flex justify-content-center">
+                    <p-button label="Save informations" icon="pi pi-save" type="submit" [routerLink]="['/profile']"></p-button>
+                </div>
             </p-card>
         </div>
     </div>
