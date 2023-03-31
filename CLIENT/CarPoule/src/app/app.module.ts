@@ -32,9 +32,11 @@ import { AvatarModule } from 'primeng/avatar';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { ColorPickerModule } from 'primeng/colorpicker';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule} from '@angular/material/menu';
 import { MyTripsComponent } from './my-trips/my-trips.component';
-import {MatExpansionModule} from '@angular/material/expansion';
+import { MatExpansionModule} from '@angular/material/expansion';
+import { TripModalComponent } from './trip-modal/trip-modal.component';
+import { AvatarGroupModule } from 'primeng/avatargroup';
 
 @NgModule({
   declarations: [
@@ -48,6 +50,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
     NavbarComponentComponent,
     EditProfileComponent,
     MyTripsComponent,
+    TripModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,6 +71,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
     ColorPickerModule,
     HttpClientModule,
     CardModule,
+    AvatarGroupModule,
     InputSwitchModule,
     PasswordModule,
     DividerModule,

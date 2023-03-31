@@ -1,25 +1,30 @@
-<div class="searchBar card flex flex-column md:flex-row gap-3">
-    <form [formGroup]="searchForm" (ngSubmit)="searchCarpools()">
-        <input formControlName="departure" class="startInput" pInputText placeholder="Départ" />
-        <input formControlName="arrival" class="destinationInput" pInputText placeholder="Destination" />
-        <p-calendar formControlName="date" class="dateInput" placeholder="Date" [showIcon]="true"></p-calendar>
-        <div class="flex-auto">
-            <p-inputNumber formControlName="seats" class="inputPassenger" [showButtons]="true" buttonLayout="horizontal"
-                inputId="horizontal" spinnerMode="horizontal" [step]="1" [min]="1" [max]="8"
-                decrementButtonClass="p-button-info" incrementButtonClass="p-button-info"
-                incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus">
-            </p-inputNumber>
-        </div>
-        <p-button class="searchButton" type="submit" icon="pi pi-search" styleClass="p-button-rounded p-button-success">
-        </p-button>
-    </form>
-</div>
+<app-navbar-component></app-navbar-component>
 
-<div class="resultCard card" *ngIf="carpools.length > 0">
-    <div *ngFor="let carpool of carpools">
-        <h3>{{ carpool.departure }} - {{ carpool.arrival }}</h3>
-        <p>Date: {{ carpool.date | date }}</p>
-        <p>Price: {{ carpool.price }}€</p>
-        <p>Seats: {{ carpool.seats }}</p>
+<body>
+    <div class="searchBar card flex flex-column md:flex-row gap-3">
+        <form [formGroup]="searchForm" (ngSubmit)="searchCarpools()">
+            <input formControlName="departure" class="startInput" pInputText placeholder="Départ" />
+            <input formControlName="arrival" class="destinationInput" pInputText placeholder="Destination" />
+            <p-calendar formControlName="date" class="dateInput" [style]="{width: '10vw'}" placeholder="Date" [showIcon]="true"></p-calendar>
+            <div class="flex-auto inputPassenger">
+                <p-inputNumber formControlName="seats" class="inputPassenger" [style]="{'width':'100%'}" [showButtons]="true" buttonLayout="horizontal"
+                    inputId="horizontal" spinnerMode="horizontal" [step]="1" [min]="1" [max]="8"
+                    decrementButtonClass="p-button-info" incrementButtonClass="p-button-info"
+                    incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus">
+                </p-inputNumber>
+            </div>
+            <p-button class="searchButton" type="submit" icon="pi pi-search" styleClass="p-button-rounded p-button-success">
+            </p-button>
+        </form>
     </div>
-</div>
+
+    <div class="resultCard card" *ngIf="carpools.length > 0">
+        <div *ngFor="let carpool of carpools">
+            <h3>{{ carpool.departure }} - {{ carpool.arrival }}</h3>
+            <p>Date: {{ carpool.date | date }}</p>
+            <p>Price: {{ carpool.price }}€</p>
+            <p>Seats: {{ carpool.seats }}</p>
+        </div>
+    </div>
+
+</body>

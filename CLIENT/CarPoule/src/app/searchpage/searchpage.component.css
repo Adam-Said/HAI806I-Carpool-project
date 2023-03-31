@@ -16,7 +16,7 @@ body{
 }
 
 .startInput {
-    width: 30vw;
+    width: 20vw;
     height: 5vh;
     border: solid 1px grey;
     color: black;
@@ -28,12 +28,11 @@ body{
 }
 
 .dateInput {
-    width: 10vw;
     margin-left: 2vw;
 }
 
 .destinationInput {
-    width: 30vw;
+    width: 20vw;
     height: 5vh;
     border: solid 1px grey;
     color: black;

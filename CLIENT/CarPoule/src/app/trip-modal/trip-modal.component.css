@@ -1,0 +1,79 @@
+body{
+    padding: 3vh;
+}
+
+.cardContainer {
+    border-radius: 1em !important;
+    width: 90% !important;
+    padding: 2vw;
+    margin-top: 5vh;
+}
+
+.resButton{
+    margin-right: 2vw;
+}
+
+.reservationContainer {
+    border-radius: 1em !important;
+    width: 90% !important;
+    padding: 0.5vw;
+    margin-top: 5vh;
+}
+
+.buttonContainer {
+    width: 90% !important;
+    margin-top: 5vh;
+    background-color: white;
+    box-shadow: none;
+    padding-left: 2vw;
+}
+
+.tripCard{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.description{
+    margin-top: 5vh;
+    font-size: 1.2em;
+}
+
+.passengers{
+    margin-top: 5vh;
+    margin-bottom: 2vh;
+    font-size: 1.2em;
+}
+
+.title{
+    font-size: 2em;
+    font-weight: bold;
+    margin-left: 0.5vw;
+}
+
+.subtitle{
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.icons{
+    margin-right: 1vw;
+    scale: 1.5;
+}
+
+.content{
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    font-size: 1.3em;
+}
+
+.resContent{
+    font-size: 1.3em;
+}
+
+.newRes{
+    margin-left: 1vw;
+    font-size: 1.5em;
+    font-weight: 300;
+}
+

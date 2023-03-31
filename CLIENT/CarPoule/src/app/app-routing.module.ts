@@ -9,6 +9,7 @@ import { ProfilepageComponent } from './profilepage/profilepage.component';
 import { PublishPageComponent } from './publish-page/publish-page.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { MyTripsComponent } from './my-trips/my-trips.component';
+import { TripModalComponent } from './trip-modal/trip-modal.component';
 import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'profile/edit', component: EditProfileComponent, canActivate: [AuthGuard] },
   { path: 'trips', component: MyTripsComponent, canActivate: [AuthGuard] },
   { path: 'carpool/:id', component: SearchpageComponent },
+  { path: 'trip', component: TripModalComponent },
 ];
 
 @NgModule({
