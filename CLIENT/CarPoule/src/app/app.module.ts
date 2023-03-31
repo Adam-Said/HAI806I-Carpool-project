@@ -33,6 +33,8 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import {MatMenuModule} from '@angular/material/menu';
+import { MyTripsComponent } from './my-trips/my-trips.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -45,12 +47,14 @@ import {MatMenuModule} from '@angular/material/menu';
     PublishPageComponent,
     NavbarComponentComponent,
     EditProfileComponent,
+    MyTripsComponent,
   ],
   imports: [
     BrowserModule,
     InputTextareaModule,
     ButtonModule,
     AppRoutingModule,
+    MatExpansionModule,
     MatMenuModule,
     MatSlideToggleModule,
     MatCardModule,

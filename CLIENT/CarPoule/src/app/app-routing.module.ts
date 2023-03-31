@@ -8,6 +8,7 @@ import { SearchpageComponent } from './searchpage/searchpage.component';
 import { ProfilepageComponent } from './profilepage/profilepage.component';
 import { PublishPageComponent } from './publish-page/publish-page.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { MyTripsComponent } from './my-trips/my-trips.component';
 import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfilepageComponent, canActivate: [AuthGuard] },
   { path: 'publish', component: PublishPageComponent, canActivate: [AuthGuard] },
   { path: 'profile/edit', component: EditProfileComponent, canActivate: [AuthGuard] },
+  { path: 'trips', component: MyTripsComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({
