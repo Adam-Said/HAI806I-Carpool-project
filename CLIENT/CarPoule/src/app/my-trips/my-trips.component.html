@@ -1,0 +1,41 @@
+<app-navbar-component></app-navbar-component>
+<body>
+    <div class="cardsContainer">
+        <p-card header="My reservations">
+            <div *ngFor="let trip of futureTrips">
+                <p-card [style]="{ width: '100%'}" header="{{ trip.title }}"  subheader="{{ trip.date }}">
+                    <p>{{ trip.description }}</p>
+                    <p>Seats number : {{ trip.passenger }}</p>
+                    <p>Price : {{ trip.price }} €</p>
+                    <p>Driver Name : {{ trip.driverName }}</p>
+                    <p [ngStyle]="{'color': trip.approved === '1' ? 'green' : 'orange'}">State : {{ trip.state }}</p>
+                </p-card>
+            </div>
+        </p-card>
+
+        <div class="pastTripsContainer">
+            <mat-expansion-panel hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title class="cardTitle">
+                        Past trips
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        You can see your past trips here as a passenger or a driver.
+                        <mat-icon>keyboard_arrow_down</mat-icon>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <div *ngFor="let trip of trips">
+                    <p-card [style]="{ width: '100%'}" header="{{ trip.title }}"  subheader="{{ trip.date }}">
+                        <p>{{ trip.description }}</p>
+                        <p>Seats number : {{ trip.passenger }}</p>
+                        <p>Price : {{ trip.price }} €</p>
+                        <p>Driver Name : {{ trip.driverName }}</p>
+                        <p>Status : {{ trip.status }}</p>
+                    </p-card>
+                </div>
+
+            </mat-expansion-panel>
+        </div>
+    </div>
+</body>

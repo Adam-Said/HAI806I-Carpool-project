@@ -1,0 +1,34 @@
+body{
+    padding: 3vh;
+}
+
+:host ::ng-deep .p-card {
+    border-radius: 1em !important;
+    width: 90%;
+    margin-top: 5vh;
+}
+
+.p-element{
+    display: flex;
+    justify-content: center;
+}
+
+.cardContainer{
+    display: flex;
+    justify-content: center;
+}
+
+.mat-expansion-panel{
+    width: 90%;
+    border-radius: 1em;
+}
+
+.pastTripsContainer{
+    margin-top: 5vh;
+    display: flex;
+    justify-content: center;
+}
+
+.cardTitle{
+    font-size: 1.5em;
+}
