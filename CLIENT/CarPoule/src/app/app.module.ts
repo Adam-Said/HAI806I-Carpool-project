@@ -27,7 +27,7 @@ import { PublishPageComponent } from './publish-page/publish-page.component';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { NavbarComponentComponent } from './navbar-component/navbar-component.component';
-import { MatToolbarModule} from '@angular/material/toolbar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { AvatarModule } from 'primeng/avatar';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ContextMenuModule } from 'primeng/contextmenu';

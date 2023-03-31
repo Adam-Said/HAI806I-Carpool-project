@@ -250,9 +250,9 @@ app.get('/profile', authenticateToken, async (req, res) => {
 
 app.post('/profile/edit', authenticateToken, async (req, res) => {
     try {
-        const { email, password, phone, pref_animals, pref_talk, pref_smoking, brand, model, color, registration, seats, card_num, card_cvc, card_exp } = req.body;
+        const { name, firstname, email, phone, birthdate, pref_animals, pref_talk, pref_smoking, brand, model, color, registration, card_num, card_cvc, card_exp } = req.body;
         const db = client.db('CarPoule');
-        const user = await db.collection('user').findOne({ _id: new ObjectId(req.user.id) });
+        const user = await db.collection('user').findOne({ _id: new ObjectId(req.user._id) });
 
         if (!user) {
             return res.status(404).send('User not found');
@@ -268,12 +268,23 @@ app.post('/profile/edit', authenticateToken, async (req, res) => {
         }
 
         // Update password if provided
-        if (password) {
-            user.password = await bcrypt.hash(password, 10);
+        // if (password) {
+        //     user.password = await bcrypt.hash(password, 10);
+        // }
+        if (name) {
+            user.name = name;
+        }
+
+        if (firstname) {
+            user.firstname = firstname;
         }
 
         if (phone) {
             user.phone = phone;
+        }
+
+        if (birthdate) {
+            user.birthdate = birthdate;
         }
 
         // Update preferences if provided
@@ -288,7 +299,7 @@ app.post('/profile/edit', authenticateToken, async (req, res) => {
         }
 
         // Update vehicles if provided
-        if (brand || model || color || registration || seats) {
+        if (brand || model || color || registration) {
             const vehicle = user.vehicle || {};
             if (brand) {
                 vehicle.brand = brand;
@@ -301,9 +312,6 @@ app.post('/profile/edit', authenticateToken, async (req, res) => {
             }
             if (registration) {
                 vehicle.registration = registration;
-            }
-            if (seats) {
-                vehicle.seats = parseInt(seats);
             }
             user.vehicle = vehicle;
         }
@@ -326,7 +334,7 @@ app.post('/profile/edit', authenticateToken, async (req, res) => {
 
         // Save the updated user object to the database
         const result = await db.collection('user').findOneAndUpdate(
-            { _id: new ObjectId(req.user.id) },
+            { _id: new ObjectId(req.user._id) },
             { $set: user },
             { returnOriginal: false }
         );
