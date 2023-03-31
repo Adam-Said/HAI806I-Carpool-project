@@ -27,10 +27,11 @@ import { PublishPageComponent } from './publish-page/publish-page.component';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { NavbarComponentComponent } from './navbar-component/navbar-component.component';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatToolbarModule} from '@angular/material/toolbar';
 import { AvatarModule } from 'primeng/avatar';
-import { MenuModule } from 'primeng/menu';
-import { ToastModule } from 'primeng/toast';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { ContextMenuModule } from 'primeng/contextmenu';
+import { ColorPickerModule } from 'primeng/colorpicker';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { ToastModule } from 'primeng/toast';
     ProfilepageComponent,
     PublishPageComponent,
     NavbarComponentComponent,
+    EditProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,12 +54,12 @@ import { ToastModule } from 'primeng/toast';
     MatCardModule,
     InputNumberModule,
     AvatarModule,
-    MenuModule,
     MatTabsModule,
+    ContextMenuModule,
     CalendarModule,
-    ToastModule,
     AutoCompleteModule,
     BrowserAnimationsModule,
+    ColorPickerModule,
     HttpClientModule,
     CardModule,
     InputSwitchModule,

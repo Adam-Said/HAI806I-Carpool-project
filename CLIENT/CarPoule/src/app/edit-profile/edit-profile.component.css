@@ -1,0 +1,89 @@
+@import url('https://fonts.cdnfonts.com/css/gotham-rounded');
+
+.card{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body{
+    padding: 3vw;
+}
+
+.inputs{
+    width: 80%;
+    border-radius: 6px;
+    border: solid 1px ced4da;
+    font-family: 'Gotham Rounded', sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+    margin-top: 3vh;
+}
+
+.preference{
+    margin-top: 2vh;
+}
+
+.userinfos{
+    font-weight: 300;
+    margin-top: 1vh;
+}
+
+.optionsPrefs{
+    margin: 0;
+    font-weight: 500;
+}
+
+.colorInput{
+    margin-top: 2vh;
+}
+
+.colorChoice{
+    margin-right: 1vw;
+}
+
+.pass{
+    margin-top: 5vh;
+    width: 60%;
+}
+
+.title{
+    font-size: 1.9em;
+    font-weight: 500;
+    margin-bottom: 1vh;
+}
+
+.subTitle{
+    font-size: 1.4em;
+    font-weight: 300;
+    margin-bottom: 2vh;
+    margin-top: 4vh;
+}
+
+.button{
+    margin-top: 4vh;
+}
+
+.icons{
+    margin-right: 1vw;
+}
+
+.image--cover {
+    width: 10vw;
+    height: 10vw;
+    border-radius: 50%;
+    margin: 20px;
+  
+    object-fit: cover;
+    object-position: center right;
+}
+
+.wrapper{
+    margin-bottom: 3vh;
+}
+
+.options{
+    margin-top: 4vh;
+}
+
+

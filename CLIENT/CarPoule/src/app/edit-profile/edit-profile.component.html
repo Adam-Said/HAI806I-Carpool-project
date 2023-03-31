@@ -1,0 +1,117 @@
+<app-navbar-component></app-navbar-component>
+
+<body>
+    <div class="formContainer">
+        <div class="card flex justify-content-center">
+            <p-card class="card" [style]="{ width: '100%'}">
+                <ng-template pTemplate="header">
+                    <img alt="Card" src="https://primefaces.org/cdn/primeng/images/usercard.png" />
+                </ng-template>
+
+                <div class="card flex justify-content-center">
+                    <h2 class="title">Modify my informations</h2>
+                </div>
+
+                <div class="card flex justify-content-center">
+                    <h4 class="subTitle">General informations</h4>
+                </div>
+                
+                <div class="card flex justify-content-center">
+                    <input name="name" type="text" class="inputs" placeholder="Name" pInputText id="name"/>
+                </div>
+
+                <div class="card flex justify-content-center">
+                    <input name="firstname" type="text" class="inputs" placeholder="First Name" pInputText
+                        id="firstname"/>
+                </div>
+
+                <div class="card flex justify-content-center">
+                    <input name="firstname" type="text" class="inputs" placeholder="E-mail" pInputText
+                        id="firstname"/>
+                </div>
+
+                <div class="card flex justify-content-center">
+                    <input name="phone" pInputText pKeyFilter="int" type="number" class="inputs"
+                        [style]="{'width':'80%'}" placeholder="Phone Number" id="phone" />
+                </div>
+
+                <div class="card flex justify-content-center">
+                    <p-calendar name="birthdate" class="inputs" [style]="{'width':'100%'}"
+                        [inputStyle]="{'width':'100%'}" placeholder="Birth Date" id="birthdate" [showIcon]="true"></p-calendar>
+                </div>
+
+                <div class="card flex justify-content-center">
+                    <h4 class="subTitle">Your Preferences</h4>
+                </div>
+
+                <div class="options card flex justify-content-center">
+                    <mat-icon class="icons">pets</mat-icon>
+                    <p-selectButton name="pref_animals" id="pref_animals"
+                        [options]="Options">
+                        <ng-template let-item>
+                            <mat-icon>{{item.icon}}</mat-icon>
+                        </ng-template>
+                    </p-selectButton>
+                </div>
+
+                <div class="options card flex justify-content-center">
+                    <mat-icon class="icons">record_voice_over</mat-icon>
+                    <p-selectButton name="pref_talk" id="pref_talk" [options]="Options">
+                        <ng-template let-item>
+                            <mat-icon>{{item.icon}}</mat-icon>
+                        </ng-template>
+                    </p-selectButton>
+                </div>
+
+                <div class="options card flex justify-content-center">
+                    <mat-icon class="icons">smoking_rooms</mat-icon>
+                    <p-selectButton name="pref_smoking" id="pref_smoking"
+                        [options]="Options">
+                        <ng-template let-item>
+                            <mat-icon>{{item.icon}}</mat-icon>
+                        </ng-template>
+                    </p-selectButton>
+                </div>
+
+                <div class="card flex justify-content-center">
+                    <h4 class="subTitle">Vehicle informations</h4>
+                </div>
+
+                <div class="card flex justify-content-center">
+                    <input name="vehiculeBrand" type="text" class="inputs" placeholder="Vehicule Brand" pInputText
+                        id="vehiculeBrand"/>
+                </div>
+
+                <div class="card flex justify-content-center">
+                    <input name="vehiculeModel" type="text" class="inputs" placeholder="Vehicule Model" pInputText
+                        id="vehiculeModel"/>
+                </div>
+
+                <div class="card colorInput flex justify-content-center">
+                    <p-colorPicker class="colorChoice"></p-colorPicker>
+                    <p class="optionsPrefs">Vehicule Color</p>
+                </div>
+
+                <div class="card flex justify-content-center">
+                    <h4 class="subTitle">Payment informations</h4>
+                </div>
+
+                <div class="card flex justify-content-center">
+                    <input name="cardNumber" type="text" class="inputs" placeholder="Card Number" pInputText
+                        id="cardNumber"/>
+                </div>
+
+                <div class="card flex justify-content-center">
+                    <input name="cardCode" type="text" class="inputs" placeholder="Card Code" pInputText
+                        id="cardCode"/>
+                </div>
+
+                <div class="card flex justify-content-center">
+                    <p-calendar name="expirationDate" class="inputs" [style]="{'width':'100%'}"
+                        [inputStyle]="{'width':'100%'}" placeholder="Card Expiration Date" id="expirationDate" [showIcon]="true"></p-calendar>
+                </div>
+                
+            </p-card>
+        </div>
+    </div>
+</body>
