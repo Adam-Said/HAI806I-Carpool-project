@@ -36,4 +36,13 @@ export class AuthGuard implements CanActivate {
         }
     }
 
+    isLoggedIn(): boolean {
+        return this.cookieService.check('auth');
+    }
+
+    logout(): void {
+        this.cookieService.delete('auth');
+        this.router.navigate(['/']);
+    }
+
 }

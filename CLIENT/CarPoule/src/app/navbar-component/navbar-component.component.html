@@ -1,20 +1,26 @@
 <mat-toolbar class="navbar">
-    <mat-toolbar-row>
-        <span class="title"><a class="homeButton" [routerLink]="['/']">Carpoule</a></span>
-        <span class="example-spacer"></span>
-        <span class="menuItem menuContainer"><a class="menuAction" [routerLink]="['/publish']"><mat-icon class="menuIcons">directions_car</mat-icon>My trips</a></span>
-        <span class="menuItem menuContainer"><a class="menuAction" [routerLink]="['/publish']"><mat-icon class="menuIcons">add_circle_outline</mat-icon>Publish a trip</a></span>
-        
-        <p-avatar [matMenuTriggerFor]="menu" class="avatarContainer" alt="Logo" aria-haspopup="true" image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-2" size="large" shape="circle"></p-avatar>
-        <mat-menu #menu="matMenu">
-            <button mat-menu-item [routerLink]="['/profile']">
-              <mat-icon>person_pin</mat-icon>
-              <span>My Profile</span>
-            </button>
-            <button mat-menu-item>
-              <mat-icon>logout</mat-icon>
-              <span>Logout</span>
-            </button>
-        </mat-menu>
-    </mat-toolbar-row>
+  <mat-toolbar-row>
+    <span class="title"><a class="homeButton" [routerLink]="['/']">Carpoule</a></span>
+    <span class="example-spacer"></span>
+    <span class="menuItem menuContainer"><a class="menuAction" [routerLink]="['/publish']"><mat-icon
+          class="menuIcons">directions_car</mat-icon>My trips</a></span>
+    <span class="menuItem menuContainer"><a class="menuAction" [routerLink]="['/publish']"><mat-icon
+          class="menuIcons">add_circle_outline</mat-icon>Publish a trip</a></span>
+
+    <ng-container *ngIf="isLoggedIn()">
+      <p-avatar [matMenuTriggerFor]="menu" class="avatarContainer" alt="Logo" aria-haspopup="true"
+        image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-2" size="large"
+        shape="circle"></p-avatar>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item [routerLink]="['/profile']">
+          <mat-icon>person_pin</mat-icon>
+          <span>My Profile</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </ng-container>
+  </mat-toolbar-row>
 </mat-toolbar>
