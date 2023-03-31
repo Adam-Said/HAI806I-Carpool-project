@@ -1,15 +1,18 @@
 <app-navbar-component></app-navbar-component>
+
 <body>
     <div class="cardsContainer">
         <p-card header="My reservations">
-            <div *ngFor="let trip of futureTrips">
-                <p-card [style]="{ width: '100%'}" header="{{ trip.title }}"  subheader="{{ trip.date }}">
-                    <p>{{ trip.description }}</p>
-                    <p>Seats number : {{ trip.passenger }}</p>
-                    <p>Price : {{ trip.price }} €</p>
-                    <p>Driver Name : {{ trip.driverName }}</p>
-                    <p [ngStyle]="{'color': trip.approved === '1' ? 'green' : 'orange'}">State : {{ trip.state }}</p>
-                </p-card>
+            <div *ngFor="let trip of trips">
+                <a [routerLink]="['/carpool', trip._id]">
+                    <p-card [style]="{ width: '100%'}" header="{{ trip.departure}} - {{trip.arrival}}"
+                        subheader="{{ trip.date }}">
+                        <p>{{ trip.description }}</p>
+                        <p>Number of seat booked : {{ trip.seats }}</p>
+                        <p>Price : {{ trip.price }} €</p>
+                        <p>Driver : {{ trip.driver }}</p>
+                    </p-card>
+                </a>
             </div>
         </p-card>
 
@@ -25,14 +28,16 @@
                     </mat-panel-description>
                 </mat-expansion-panel-header>
 
-                <div *ngFor="let trip of trips">
-                    <p-card [style]="{ width: '100%'}" header="{{ trip.title }}"  subheader="{{ trip.date }}">
-                        <p>{{ trip.description }}</p>
-                        <p>Seats number : {{ trip.passenger }}</p>
-                        <p>Price : {{ trip.price }} €</p>
-                        <p>Driver Name : {{ trip.driverName }}</p>
-                        <p>Status : {{ trip.status }}</p>
-                    </p-card>
+                <div *ngFor="let trip of pastTrips">
+                    <a [routerLink]="['/carpool', trip._id]">
+                        <p-card [style]="{ width: '100%'}" header="{{ trip.departure}} - {{trip.arrival}}"
+                            subheader="{{ trip.date }}">
+                            <p>{{ trip.description }}</p>
+                            <p>Number of seat booked : {{ trip.seats }}</p>
+                            <p>Price : {{ trip.price }} €</p>
+                            <p>Driver : {{ trip.driver }}</p>
+                        </p-card>
+                    </a>
                 </div>
 
             </mat-expansion-panel>

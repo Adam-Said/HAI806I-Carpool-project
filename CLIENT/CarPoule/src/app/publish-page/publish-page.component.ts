@@ -28,7 +28,7 @@ export class PublishPageComponent implements OnInit {
       arrival: ['', Validators.required],
       date: [null, Validators.required],
       seats: [1, [Validators.required, Validators.min(1)]],
-      highway: [false],
+      highway: [true],
       price: [15, [Validators.required, Validators.min(1)]],
       description: ['', Validators.maxLength(300)]
     });

@@ -452,25 +452,65 @@ app.post('/carpool/:id/book', authenticateToken, async (req, res) => {
             return res.status(400).send('Driver cannot book a seat in their own carpool');
         }
 
-
         // Check if the carpool is full
         if (carpool.passengers.length >= carpool.seats) {
             return res.status(400).send('Carpool is full');
         }
 
-        // Add the user's ID to the passengers array
-        const updatedCarpool = await db.collection('carpool').findOneAndUpdate(
-            { _id: new ObjectId(id) },
-            { $push: { passengers: new ObjectId(req.user.id) } },
-            { returnOriginal: false }
-        );
+        // Check if there is already a pending document for this carpool
+        const pendingCarpool = await db.collection('pending').findOne({ carpool_id: new ObjectId(id) });
 
-        res.json(updatedCarpool.value);
+        if (pendingCarpool) {
+            // Update the existing pending document
+            await db.collection('pending').findOneAndUpdate(
+                { carpool_id: new ObjectId(id) },
+                { $push: { passengers: { passenger_id: new ObjectId(req.user.id), booking_date: new Date() } } },
+                { returnOriginal: false }
+            );
+        } else {
+            // Add a new pending document
+            const newPendingCarpool = await db.collection('pending').insertOne({
+                carpool_id: new ObjectId(id),
+                passengers: [{ passenger_id: new ObjectId(req.user.id), booking_date: new Date() }]
+            });
+        }
+
+        res.json({ message: 'Booking successful' });
     } catch (err) {
         console.error('Failed to connect to MongoDB', err);
         res.status(500).send('Error connecting to database');
     }
 });
+
+app.get('/trips', authenticateToken, async (req, res) => {
+    try {
+        const db = client.db('CarPoule');
+        const carpools = await db.collection('carpool').find({
+            $or: [
+                { driver: new ObjectId(req.user._id) },
+                { passengers: { $in: [new ObjectId(req.user._id)] } }
+            ]
+        }).toArray();
+
+        // Get driver names from user collection
+        const driverIds = [...new Set(carpools.map(carpool => carpool.driver))];
+        const drivers = await db.collection('user').find({ _id: { $in: driverIds } }).toArray();
+        const driverMap = new Map(drivers.map(driver => [driver._id.toString(), driver.firstname]));
+
+
+        // Add driver name to each carpool
+        carpools.forEach(carpool => {
+            carpool.driver = driverMap.get(carpool.driver.toString());
+        });
+
+        res.json(carpools);
+    } catch (err) {
+        console.error('Failed to connect to MongoDB', err);
+        res.status(500).send('Error connecting to database');
+    }
+});
+
+
 
 
 

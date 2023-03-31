@@ -20,6 +20,7 @@ const routes: Routes = [
   { path: 'publish', component: PublishPageComponent, canActivate: [AuthGuard] },
   { path: 'profile/edit', component: EditProfileComponent, canActivate: [AuthGuard] },
   { path: 'trips', component: MyTripsComponent, canActivate: [AuthGuard] },
+  { path: 'carpool/:id', component: SearchpageComponent },
 ];
 
 @NgModule({

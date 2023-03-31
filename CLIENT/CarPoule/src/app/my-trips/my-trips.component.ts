@@ -1,63 +1,48 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../api.service';
+
+
+interface Trip {
+  _id: number;
+  departure: string;
+  arrival: string;
+  date: string;
+  price: number;
+  seats: number;
+  description: string;
+}
 
 @Component({
   selector: 'app-my-trips',
   templateUrl: './my-trips.component.html',
   styleUrls: ['./my-trips.component.css']
 })
-export class MyTripsComponent {
-  trips = [
-    {
-      title: 'Montpellier - Toulouse',
-      date: "27/03/2022",
-      passenger: "3",
-      driverName: "John Doe",
-      price: "100",
-      status: 'Driver',
-      description: 'J\étais en train de me lécher le cul quand d\'un coup j\'ai'
-    },
-    {
-      title: 'Marseille - Salon de Provence',
-      date: "27/03/2022",
-      passenger: "3",
-      driverName: "John Doe",
-      price: "100",
-      status: 'Passenger',
-      description: 'This is the description for trip 2'
-    },
-    {
-      title: 'Manosque - Marseille',
-      date: "27/03/2022",
-      passenger: "3",
-      price: "100",
-      status: 'Passenger',
-      driverName: "John Doe",
-      description: 'This is the description for trip 3'
-    }
-  ];
+export class MyTripsComponent implements OnInit {
+  trips: any[] = [];
+  pastTrips: any[] = [];
 
-  futureTrips = [
-    {
-      title: 'Montpellier - Nîmes',
-      date: "27/03/2022",
-      passenger: "3",
-      driverName: "John Doe",
-      approved: "0",
-      price: "100",
-      state: 'Waiting for approval',
-      status: 'Driver',
-      description: 'J\étais en train de me lécher le cul quand d\'un coup j\'ai'
-    },
-    {
-      title: 'Montpellie - Marseille',
-      date: "27/03/2022",
-      passenger: "32",
-      driverName: "John Doe",
-      approved: "1",
-      price: "98",
-      state: 'Approved',
-      status: 'Passenger',
-      description: 'This is the description for trip 2'
-    }
-  ];
+  constructor(private apiService: ApiService) { }
+
+  public formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+  }
+
+  ngOnInit(): void {
+    this.apiService.getTrips().subscribe(
+      (data: Trip[]) => {
+        this.trips = data.filter(trip => new Date(trip.date) >= new Date());
+        this.pastTrips = data.filter(trip => new Date(trip.date) < new Date());
+
+        // format dates for display
+        this.trips.forEach(trip => {
+          trip.date = this.formatDate(trip.date);
+        });
+
+        this.pastTrips.forEach(trip => {
+          trip.date = this.formatDate(trip.date);
+        });
+      }
+    );
+  }
 }

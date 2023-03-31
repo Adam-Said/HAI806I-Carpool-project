@@ -72,6 +72,10 @@ export class ApiService {
   publishCarpool(data: any): Observable<any> {
     return this.httpClient.put(`${this.baseUrl}/publish`, data, { withCredentials: true });
   }
+
+  getTrips(): Observable<any> {
+    return this.httpClient.get<any>(`${this.baseUrl}/trips`, { withCredentials: true });
+  }
 }
 
 
