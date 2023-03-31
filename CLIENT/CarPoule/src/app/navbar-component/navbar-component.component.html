@@ -7,7 +7,7 @@
     <span class="menuItem menuContainer"><a class="menuAction" [routerLink]="['/publish']"><mat-icon
           class="menuIcons">add_circle_outline</mat-icon>Publish a trip</a></span>
 
-    <ng-container *ngIf="isLoggedIn()">
+    <ng-container *ngIf="isLoggedIn(); else loginSignup">
       <p-avatar [matMenuTriggerFor]="menu" class="avatarContainer" alt="Logo" aria-haspopup="true"
         image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-2" size="large"
         shape="circle"></p-avatar>
@@ -22,5 +22,20 @@
         </button>
       </mat-menu>
     </ng-container>
+    <ng-template #loginSignup>
+      <p-avatar [matMenuTriggerFor]="menu" class="avatarContainer" alt="Logo" aria-haspopup="true"
+        image="assets/avatar.png" styleClass="mr-2" size="large" shape="circle"></p-avatar>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item [routerLink]="['/login']">
+          <mat-icon>person_pin</mat-icon>
+          <span>Login</span>
+        </button>
+        <button mat-menu-item [routerLink]="['/login']">
+          <mat-icon>control_point</mat-icon>
+          <span>Sign up</span>
+        </button>
+      </mat-menu>
+    </ng-template>
+
   </mat-toolbar-row>
 </mat-toolbar>
