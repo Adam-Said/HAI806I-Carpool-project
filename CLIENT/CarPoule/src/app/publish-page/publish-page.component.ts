@@ -56,8 +56,7 @@ export class PublishPageComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('form group:', this.formGroup);
-    console.log('form group validity:', this.formGroup.valid);
+
     if (this.formGroup.valid) {
       this.apiService.publishCarpool(this.formGroup.value).subscribe(
         (response: any) => {

@@ -48,8 +48,28 @@ export class ApiService {
     });
   }
 
+  updateUserInfo(data: any): Observable<any> {
+    const body = {
+      firstname: data.firstname,
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      birthdate: data.birthdate,
+      pref_animals: data.pref_animals,
+      pref_talk: data.pref_talk,
+      pref_smoking: data.pref_smoking,
+      brand: data.vehicleBrand,
+      model: data.vehicleModel,
+      color: data.vehicleColor,
+      registration: data.vehicleRegistration,
+      card_num: data.cardNumber,
+      card_cvc: data.cardCode,
+      card_exp: data.cardExpiration
+    }
+    return this.httpClient.post<any>(`${this.baseUrl}/profile/edit`, body, { withCredentials: true });
+  }
+
   publishCarpool(data: any): Observable<any> {
-    console.log('data', data);
     return this.httpClient.put(`${this.baseUrl}/publish`, data, { withCredentials: true });
   }
 }
