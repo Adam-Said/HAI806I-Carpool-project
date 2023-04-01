@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Carpool } from './models/carpool.model';
 import { User } from './models/user.model';
 import { tap } from 'rxjs/operators';
+import jwt_decode from 'jwt-decode';
 
 
 @Injectable({
@@ -75,6 +76,29 @@ export class ApiService {
 
   getTrips(): Observable<any> {
     return this.httpClient.get<any>(`${this.baseUrl}/trips`, { withCredentials: true });
+  }
+
+  getCarpool(id: string): Observable<any> {
+    return this.httpClient.get<any>(`${this.baseUrl}/carpool/${id}`, { withCredentials: true });
+  }
+
+  getPending(id: string): Observable<any> {
+    return this.httpClient.get<any>(`${this.baseUrl}/pending/${id}`, { withCredentials: true });
+  }
+
+  acceptPending(idCarpool: string, idPassenger: string): Observable<any> {
+    const body = { carpool_id: idCarpool, passenger_id: idPassenger };
+    return this.httpClient.post<any>(`${this.baseUrl}/pending/accept`, body, { withCredentials: true });
+  }
+
+  rejectPending(idCarpool: string, idPassenger: string): Observable<any> {
+    const body = { carpool_id: idCarpool, passenger_id: idPassenger };
+    return this.httpClient.post<any>(`${this.baseUrl}/pending/reject`, body, { withCredentials: true });
+  }
+
+  bookSeat(idCarpool: string): Observable<any> {
+    const body = { carpool_id: idCarpool };
+    return this.httpClient.post<any>(`${this.baseUrl}/carpool/` + idCarpool + `/book`, body, { withCredentials: true });
   }
 }
 

@@ -98,13 +98,106 @@ app.get('/carpool/:id', async (req, res) => {
         const documents = await db.collection("carpool").find(filter).toArray();
         res.json(documents);
     } catch (err) {
-        console.error('Failed to connect to MongoDB', err);
-        res.status(500).send('Error connecting to database');
+        res.status(500).send('No carpool found');
     }
 
 
 });
 
+app.get('/pending/:id', authenticateToken, async (req, res) => {
+    try {
+        await client.connect();
+        const db = client.db('CarPoule');
+        const { id } = req.params;
+        const filter = {
+            carpool_id: new ObjectId(id),
+        };
+        const documents = await db.collection("pending").find(filter).toArray();
+        if (documents.length == 0)
+            res.status(201).send('No pending found');
+        else {
+            res.json(documents);
+        }
+    } catch (err) {
+        res.status(500).send('No pending found');
+    }
+
+
+});
+
+app.post('/pending/accept', async (req, res) => {
+    try {
+        await client.connect();
+        const db = client.db('CarPoule');
+        const { carpool_id, passenger_id } = req.body;
+
+        // Remove the passenger from the passengers array in the corresponding carpool document
+        const filter = { carpool_id: new ObjectId(carpool_id) };
+        const update = { $pull: { passengers: { passenger_id: new ObjectId(passenger_id) } } };
+        const result = await db.collection('pending').updateOne(filter, update);
+
+        // If no document was updated, return an error
+        if (result.matchedCount === 0) {
+            return res.status(404).send('No pending found');
+        }
+
+        // Add the passenger to the passengers array in the corresponding carpool document
+        const filter2 = { _id: new ObjectId(carpool_id) };
+        const update2 = { $push: { passengers: { passenger_id: new ObjectId(passenger_id) } } };
+        const result2 = await db.collection('carpool').updateOne(filter2, update2);
+
+        // If no document was updated, return an error
+        if (result2.matchedCount === 0) {
+            return res.status(404).send('No carpool found');
+        }
+
+        // Check if there are any pending passengers left for this carpool
+        const pendingCarpool = await db.collection('pending').findOne({ carpool_id: new ObjectId(carpool_id) });
+
+        // If there are no more pending passengers, delete the pending document
+        if (!pendingCarpool || pendingCarpool.passengers.length === 0) {
+            await db.collection('pending').deleteOne({ carpool_id: new ObjectId(carpool_id) });
+        }
+
+        // Send a success response
+        res.send('Passenger added to carpool');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal server error ' + err);
+    }
+});
+
+app.post('/pending/reject', async (req, res) => {
+    try {
+        await client.connect();
+        const db = client.db('CarPoule');
+        const { carpool_id, passenger_id } = req.body;
+
+        // Remove the passenger from the passengers array in the corresponding carpool in the pending collection
+        const filter = { carpool_id: new ObjectId(carpool_id) };
+        const update = { $pull: { passengers: { passenger_id: new ObjectId(passenger_id) } } };
+        const result = await db.collection('pending').updateOne(filter, update);
+
+        // If no document was updated, return an error
+        if (result.matchedCount === 0) {
+            return res.status(404).send('No pending found');
+        }
+
+        // Check if there are any pending passengers left for this carpool
+        const pendingCarpool = await db.collection('pending').findOne({ carpool_id: new ObjectId(carpool_id) });
+
+        // If there are no more pending passengers, delete the pending document
+        if (!pendingCarpool || pendingCarpool.passengers.length === 0) {
+            await db.collection('pending').deleteOne({ carpool_id: new ObjectId(carpool_id) });
+        }
+
+        // Send a success response
+        res.send('Passenger rejected');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal server error ' + err);
+    }
+});
 
 
 app.post('/signup', async (req, res) => {
@@ -171,6 +264,7 @@ app.post('/signup', async (req, res) => {
             secure: false,
             sameSite: 'strict',
         });
+
 
         // Redirect the user to the /profile route
         res.status(201).send({ id: user._id });
@@ -441,6 +535,7 @@ app.delete('/carpool/:id', authenticateToken, async (req, res) => {
 app.post('/carpool/:id/book', authenticateToken, async (req, res) => {
     try {
         const { id } = req.params;
+        const userId = req.user._id;
         const db = client.db('CarPoule');
         const carpool = await db.collection('carpool').findOne({ _id: new ObjectId(id) });
 
@@ -448,7 +543,7 @@ app.post('/carpool/:id/book', authenticateToken, async (req, res) => {
             return res.status(404).send('Carpool not found');
         }
 
-        if (carpool.driver.toString() === req.user.id) {
+        if (carpool.driver.toString() === new ObjectId(userId)) {
             return res.status(400).send('Driver cannot book a seat in their own carpool');
         }
 
@@ -457,21 +552,33 @@ app.post('/carpool/:id/book', authenticateToken, async (req, res) => {
             return res.status(400).send('Carpool is full');
         }
 
-        // Check if there is already a pending document for this carpool
-        const pendingCarpool = await db.collection('pending').findOne({ carpool_id: new ObjectId(id) });
+        // Check if the user is already in the carpool
+        if (carpool.passengers.some(passenger => passenger.passenger_id.toString() === new ObjectId(userId))) {
+            return res.status(400).send('User is already in the carpool');
+        }
+
+        // Check if the user is already in pending
+        const pendingCarpool = await db.collection('pending').findOne({ carpool_id: new ObjectId(id), 'passengers.passenger_id': new ObjectId(req.user.id) });
 
         if (pendingCarpool) {
+            return res.status(400).send('User is already in pending');
+        }
+
+        // Check if there is already a pending document for this carpool
+        const existingPendingCarpool = await db.collection('pending').findOne({ carpool_id: new ObjectId(id) });
+
+        if (existingPendingCarpool) {
             // Update the existing pending document
             await db.collection('pending').findOneAndUpdate(
                 { carpool_id: new ObjectId(id) },
-                { $push: { passengers: { passenger_id: new ObjectId(req.user.id), booking_date: new Date() } } },
+                { $push: { passengers: { passenger_id: new ObjectId(userId), booking_date: new Date() } } },
                 { returnOriginal: false }
             );
         } else {
             // Add a new pending document
             const newPendingCarpool = await db.collection('pending').insertOne({
                 carpool_id: new ObjectId(id),
-                passengers: [{ passenger_id: new ObjectId(req.user.id), booking_date: new Date() }]
+                passengers: [{ passenger_id: new ObjectId(userId), booking_date: new Date() }]
             });
         }
 
@@ -482,13 +589,14 @@ app.post('/carpool/:id/book', authenticateToken, async (req, res) => {
     }
 });
 
+
 app.get('/trips', authenticateToken, async (req, res) => {
     try {
         const db = client.db('CarPoule');
         const carpools = await db.collection('carpool').find({
             $or: [
                 { driver: new ObjectId(req.user._id) },
-                { passengers: { $in: [new ObjectId(req.user._id)] } }
+                { "passengers.passenger_id": new ObjectId(req.user._id) }
             ]
         }).toArray();
 
@@ -515,20 +623,23 @@ app.get('/trips', authenticateToken, async (req, res) => {
 
 
 
+
 async function authenticateToken(req, res, next) {
     const token = req.cookies.auth;
-    if (!token) return res.sendStatus(401);
+    if (!token) {
+        return res.sendStatus(401);
+    }
 
     try {
         await client.connect();
         const db = client.db('CarPoule');
 
         const payload = jwt.verify(token, ACCESS_TOKEN_SECRET, { expiresIn: '2h' });
-
         const user = await db.collection('user').findOne({ _id: new ObjectId(payload.id) });
         req.user = user;
         next();
     } catch (error) {
+        console.error(error);
         return res.status(401).send({ error: 'Unauthorized' });
     }
 }

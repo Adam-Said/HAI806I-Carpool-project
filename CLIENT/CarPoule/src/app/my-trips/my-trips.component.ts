@@ -33,7 +33,6 @@ export class MyTripsComponent implements OnInit {
       (data: Trip[]) => {
         this.trips = data.filter(trip => new Date(trip.date) >= new Date());
         this.pastTrips = data.filter(trip => new Date(trip.date) < new Date());
-
         // format dates for display
         this.trips.forEach(trip => {
           trip.date = this.formatDate(trip.date);

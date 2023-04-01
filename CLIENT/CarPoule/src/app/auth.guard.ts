@@ -40,9 +40,21 @@ export class AuthGuard implements CanActivate {
         return this.cookieService.check('auth');
     }
 
+    getId(): string {
+        const token = this.cookieService.get('auth');
+        const decodedToken: any = jwt_decode(token);
+        return decodedToken.id;
+    }
+
     logout(): void {
-        this.cookieService.delete('auth');
+        try {
+            this.cookieService.delete('auth');
+            this.cookieService.deleteAll();
+        } catch (err) {
+            console.error('Error deleting auth cookie:', err);
+        }
         this.router.navigate(['/']);
     }
+
 
 }

@@ -9,47 +9,59 @@
 
     <div class="tripCard">
         <mat-card class="cardContainer">
-            <mat-card-title class="title">{{title}} - {{date}}</mat-card-title>
+            <mat-card-title class="title">{{carpool?.departure}} - {{carpool?.arrival}}</mat-card-title>
+            <mat-card-subtitle class="subtitle">{{carpool?.date | date:
+                'medium'}}</mat-card-subtitle>
             <mat-card-content class="content">
                 <p-divider></p-divider>
-                <p class="description">{{description}}</p>
+                <p class="description">{{carpool?.description}}</p>
                 <div class="passengers">
                     <p>Passengers : </p>
                     <div class="card justify-content-center">
-                    <p-avatarGroup styleClass="mb-3">
-                        <p-avatar *ngFor="let passenger of passengers" [image]="passenger.photo" size="large" shape="circle"></p-avatar>
-                    </p-avatarGroup>
+                        <p-avatarGroup styleClass="mb-3">
+                            <p-avatar *ngFor="let passenger of carpool?.passengers" [image]="passenger.photo"
+                                size="large" shape="circle"></p-avatar>
+                        </p-avatarGroup>
                     </div>
                 </div>
             </mat-card-content>
             <div *ngIf="!isDriver">
-                <mat-card-actions class="actions">
-                    <p-button label="Take this trip" icon="pi pi-check"></p-button>
-                </mat-card-actions>
+                <div *ngIf="!hasBookedSeat">
+                    <mat-card-actions class="actions">
+                        <p-button label="Take this trip" icon="pi pi-check" (click)="bookSeat(carpool._id)"></p-button>
+                    </mat-card-actions>
+                </div>
             </div>
         </mat-card>
     </div>
 
-    <div *ngIf="isDriver">
-        <div *ngFor="let passenger of passengers">
-            <div *ngIf="passenger.asking">
+    <div *ngIf="isDriver && isPending">
+        <div *ngFor="let passenger of pending.passengers">
+            <div *ngIf="passenger.passenger_id">
                 <div class="tripCard">
                     <mat-card class="reservationContainer">
                         <mat-card-title class="title">Reservation Alert</mat-card-title>
                         <mat-card-content class="resContent">
                             <p-divider></p-divider>
                             <div style="display: flex; align-items: center; margin-bottom: 2vh;">
-                                <p-avatar [image]="passenger.photo" size="large" shape="circle"></p-avatar>
-                                <p class="newRes">{{passenger.username}}</p>
+                                <p-avatar [image]="passenger?.photo" size="large" shape="circle"></p-avatar>
+                                <p class="newRes">{{passenger?.passenger_id}}</p>
                             </div>
                         </mat-card-content>
                         <mat-card-actions class="actions">
-                            <p-button class="resButton" [style]="{background: '#37873e', border: '#37873e'}" label="Accept Passenger" icon="pi pi-thumbs-up-fill"></p-button>
-                            <p-button class="resButton" [style]="{background: '#ba261e', border: '#ba261e'}" label="Decline Passenger" icon="pi pi-thumbs-down-fill"></p-button>
+                            <p-button class="resButton" [style]="{background: '#37873e', border: '#37873e'}"
+                                label="Accept Passenger" icon="pi pi-thumbs-up-fill"
+                                (click)="acceptPassenger(passenger.passenger_id, carpool._id)">
+                            </p-button>
+                            <p-button class="resButton" [style]="{background: '#ba261e', border: '#ba261e'}"
+                                label="Decline Passenger" icon="pi pi-thumbs-down-fill"
+                                (click)="rejectPassenger(passenger.passenger_id, carpool._id)">
+                            </p-button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
             </div>
         </div>
     </div>
+
 </body>
