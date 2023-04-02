@@ -8,6 +8,15 @@ body{
     margin-top: 5vh;
 }
 
+.reservationCard{
+    text-decoration: none;
+}
+
+.information{
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
 .p-element{
     display: flex;
     justify-content: center;

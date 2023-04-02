@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthGuard } from '../auth.guard';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { Location } from '@angular/common';
 
 interface Passenger {
   passenger_id: string;
@@ -18,6 +19,9 @@ interface Passenger {
 
 
 export class TripModalComponent implements OnInit {
+
+
+
   carpool: any;
   pending: any;
   isDriver: boolean = false;
@@ -28,8 +32,13 @@ export class TripModalComponent implements OnInit {
     private route: ActivatedRoute,
     private apiService: ApiService,
     private router: Router,
-    private authGuard: AuthGuard
-  ) { }
+    private authGuard: AuthGuard,
+    private location: Location
+  ) { }  
+  
+  goBack() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
 
   ngOnInit(): void {
 
