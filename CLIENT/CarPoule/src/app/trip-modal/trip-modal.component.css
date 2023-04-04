@@ -7,6 +7,9 @@ body {
     width: 90% !important;
     padding: 2vw;
     margin-top: 5vh;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
 }
 
 
@@ -76,4 +79,8 @@ body {
     margin-left: 1vw;
     font-size: 1.5em;
     font-weight: 300;
+}
+
+.map-container {
+    border-radius: 20px;
 }

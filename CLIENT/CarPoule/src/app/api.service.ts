@@ -112,7 +112,26 @@ export class ApiService {
     return this.httpClient.post<any>(`${this.baseUrl}/usersimple`, { ids }, { withCredentials: true });
   }
 
+  // Geocode the given location using OpenCage API
+  async forwardGeocode(address: string): Promise<number[]> {
+    const params = new HttpParams()
+      .set('access_key', '1a455409975ccb48f3648c6bfe8bd018')
+      .set('query', address)
+      .set('limit', '1')
+      .set('output', 'json');
 
+    const url = 'http://api.positionstack.com/v1/forward';
+    const response: any = await this.httpClient.get(url, { params }).toPromise();
+
+    if (response && response['data'] && response['data'].length > 0) {
+      const lat = response['data'][0].latitude;
+      const lng = response['data'][0].longitude;
+      const coords: number[] = [lat, lng];
+      return coords;
+    } else {
+      throw new Error('Geocoding failed');
+    }
+  }
 
 }
 

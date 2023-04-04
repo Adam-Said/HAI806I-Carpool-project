@@ -6,6 +6,9 @@ import { AuthGuard } from '../auth.guard';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, of, throwError } from 'rxjs';
 import { Location } from '@angular/common';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { LatLngTuple } from 'leaflet';
+
 
 interface Passenger {
   passenger_id: string;
@@ -20,20 +23,21 @@ interface Passenger {
 
 export class TripModalComponent implements OnInit {
 
-
-
   carpool: any;
   pending: any;
   isDriver: boolean = false;
   isPending: boolean = false;
   hasBookedSeat: boolean = false;
+  departureCoords: LatLngTuple = [0, 0];
+  arrivalCoords: LatLngTuple = [0, 0];
 
   constructor(
     private route: ActivatedRoute,
     private apiService: ApiService,
     private router: Router,
     private authGuard: AuthGuard,
-    private location: Location
+    private location: Location,
+    private http: HttpClient
   ) { }
 
   goBack() {
@@ -51,9 +55,19 @@ export class TripModalComponent implements OnInit {
             return throwError("No carpool found");
           })
         )
-        .subscribe(data => {
+        .subscribe(async data => {
           this.carpool = data[0];
-
+          console.log(this.carpool.departure_city);
+          const departureCoords = await this.apiService.forwardGeocode(this.carpool.departure_city);
+          if (departureCoords.length === 2) {
+            this.departureCoords = [departureCoords[0], departureCoords[1]];
+            console.log(this.departureCoords);
+          }
+          const arrivalCoords = await this.apiService.forwardGeocode(this.carpool.arrival_city);
+          if (arrivalCoords.length === 2) {
+            this.arrivalCoords = [arrivalCoords[0], arrivalCoords[1]];
+            console.log(this.arrivalCoords);
+          }
           if (this.carpool.driver === this.authGuard.getId()) {
             this.isDriver = true;
             this.apiService.getPending(carpoolId)
@@ -141,6 +155,8 @@ export class TripModalComponent implements OnInit {
         })
       );
   }
+
+
 
 
 }

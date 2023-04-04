@@ -10,29 +10,36 @@
 
     <div class="tripCard">
         <mat-card class="cardContainer">
-            <mat-card-title class="title">{{carpool?.departure}} - {{carpool?.arrival}}</mat-card-title>
-            <mat-card-subtitle class="subtitle">{{carpool?.date | date:
-                'medium'}}</mat-card-subtitle>
-            <mat-card-content class="content">
-                <p-divider></p-divider>
-                <p class="description">{{carpool?.description}}</p>
-                <div class="passengers">
-                    <p>Passengers : </p>
-                    <div class="card justify-content-center">
-                        <p-avatarGroup styleClass="mb-3">
-                            <p-avatar *ngFor="let passenger of carpool?.passengers" [image]="passenger.photo"
-                                size="large" shape="circle"></p-avatar>
-                        </p-avatarGroup>
+            <div class="card-content">
+                <mat-card-title class="title">{{carpool?.departure}} - {{carpool?.arrival}}</mat-card-title>
+                <mat-card-subtitle class="subtitle">{{carpool?.date | date:
+                    'medium'}}</mat-card-subtitle>
+                <mat-card-content class="content">
+                    <p-divider></p-divider>
+                    <p class="description">{{carpool?.description}}</p>
+                    <div class="passengers">
+                        <p>Passengers : </p>
+                        <div class="card justify-content-center">
+                            <p-avatarGroup styleClass="mb-3">
+                                <p-avatar *ngFor="let passenger of carpool?.passengers" [image]="passenger.photo"
+                                    size="large" shape="circle"></p-avatar>
+                            </p-avatarGroup>
+                        </div>
+                    </div>
+                </mat-card-content>
+                <div *ngIf="!isDriver">
+                    <div *ngIf="!hasBookedSeat">
+                        <mat-card-actions class="actions">
+                            <p-button label="Take this trip" icon="pi pi-check"
+                                (click)="bookSeat(carpool._id)"></p-button>
+                        </mat-card-actions>
                     </div>
                 </div>
-            </mat-card-content>
-            <div *ngIf="!isDriver">
-                <div *ngIf="!hasBookedSeat">
-                    <mat-card-actions class="actions">
-                        <p-button label="Take this trip" icon="pi pi-check" (click)="bookSeat(carpool._id)"></p-button>
-                    </mat-card-actions>
-                </div>
             </div>
+            <div class="map-container">
+                <app-map [departureCoords]="[48.8566, 2.3522]" [arrivalCoords]="[51.5074, -0.1278]"></app-map>
+            </div>
+
         </mat-card>
     </div>
 
