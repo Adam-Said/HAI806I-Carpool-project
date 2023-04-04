@@ -92,11 +92,10 @@ export class TripModalComponent implements OnInit {
     this.apiService.acceptPending(carpool_id, passenger_id)
       .subscribe(
         (data: any) => {
-          // Remove the passenger from the pending list
-          this.pending.passengers = this.pending.passengers.filter((passenger: any) => passenger.passenger_id !== passenger_id);
-          // Add the passenger to the carpool list
+          // Remove the passenger from the pending list          // Add the passenger to the carpool list
           this.carpool.passengers.push({ passenger_id: passenger_id });
           location.reload();
+          window.location.reload()
         },
         (error: any) => {
           console.error(error);
@@ -110,7 +109,7 @@ export class TripModalComponent implements OnInit {
         (data: any) => {
           // Remove the passenger from the pending list
           this.pending.passengers = this.pending.passengers.filter((passenger: any) => passenger.passenger_id !== passenger_id);
-          location.reload();
+          window.location.reload()
         },
         (error: any) => {
           console.error(error);
