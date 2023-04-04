@@ -1,5 +1,6 @@
 body{
     padding: 3vh;
+    margin-bottom: 10vh;
 }
 
 :host ::ng-deep .p-card {

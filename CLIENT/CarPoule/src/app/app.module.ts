@@ -37,6 +37,8 @@ import { MyTripsComponent } from './my-trips/my-trips.component';
 import { MatExpansionModule} from '@angular/material/expansion';
 import { TripModalComponent } from './trip-modal/trip-modal.component';
 import { AvatarGroupModule } from 'primeng/avatargroup';
+import { PasswordEditPageComponent } from './password-edit-page/password-edit-page.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,8 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
     EditProfileComponent,
     MyTripsComponent,
     TripModalComponent,
+    PasswordEditPageComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

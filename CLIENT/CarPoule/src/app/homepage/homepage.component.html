@@ -1,18 +1,35 @@
 <app-navbar-component></app-navbar-component>
 <body>
-    <div class="searchBar card flex flex-column md:flex-row gap-3">
+    <div class="searchBar card">
         <form (submit)="searchCarpools($event)">
-            <input [(ngModel)]="departure" name="departure" class="startInput" pInputText placeholder="Départ" />
-            <input [(ngModel)]="arrival" name="arrival" class="destinationInput" pInputText placeholder="Destination" />
-            <p-calendar [(ngModel)]="date" name="date" class="dateInput" placeholder="Date" [style]="{'width':'10vw'}" [showIcon]="true"></p-calendar>
-            <div class="flex-auto">
-                <p-inputNumber [(ngModel)]="seats" name="seats" class="inputPassenger" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" [showButtons]="true"
-                    buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [step]="1" [min]="1" [max]="8"
-                    decrementButtonClass="p-button-info" incrementButtonClass="p-button-info"
-                    incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></p-inputNumber>
+            <div class="searchArea">
+                <!-- <input [(ngModel)]="departure" name="departure" class="cityInput" pInputText placeholder="Départ" />
+ -->
+                <p-autoComplete class="inputs" placeholder="Departure City" [(ngModel)]="departure" [style]="{width:'100%'}" name="departure" class="cityInput" [inputStyle]="{'width':'100%', 'font-size' : '1.2em', 'font-weight': '500', 'border-radius': '1.2em'}"
+                            [suggestions]="filteredCountries" (completeMethod)="filterCountry($event)"></p-autoComplete>
+
+                <p-autoComplete class="inputs"  placeholder="Destination" [style]="{width:'100%'}" [inputStyle]="{'width': '100%', 'font-size' : '1.2em', 'font-weight': '500', 'border-radius': '1.2em'}"
+                [(ngModel)]="arrival" name="arrival" class="cityInput"
+                            [suggestions]="filteredCountries" (completeMethod)="filterCountry($event)"></p-autoComplete>
+
+                <p-calendar [(ngModel)]="date" name="date" class="dateInput" placeholder="Date" [showIcon]="true"></p-calendar>
+                <div class="flex-auto">
+                    <p-inputNumber [(ngModel)]="seats" name="seats" class="inputPassenger" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" [showButtons]="true"
+                        buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [step]="1" [min]="1" [max]="8"
+                        decrementButtonClass="p-button-info" incrementButtonClass="p-button-info"
+                        incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></p-inputNumber>
+                </div>
+                <p-button class="searchButton" type="submit" icon="pi pi-search"
+                    styleClass="p-button-rounded p-button-success">
+                </p-button>
             </div>
-            <p-button class="searchButton" type="submit" icon="pi pi-search"
-                styleClass="p-button-rounded p-button-success"></p-button>
         </form>
     </div>
+    <div class="addContainer">
+        <div class="addContainer"> 
+            <img src="assets/Add1.svg" class="image" />
+        </div>
+    </div>
 </body>
+
+<app-footer></app-footer>

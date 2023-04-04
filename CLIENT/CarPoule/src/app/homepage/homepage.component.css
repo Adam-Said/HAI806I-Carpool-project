@@ -6,7 +6,25 @@
 }
 
 body {
-    padding: 5vw;
+    padding-top: 4vw;
+    padding-bottom: 3vw;
+    margin-bottom: 3vh;
+}
+
+.addContainer{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.image{
+    width: 90%;
+}
+
+.searchArea{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .searchBar {
@@ -15,20 +33,16 @@ body {
     align-items: center;
 }
 
-.startInput {
-    width: 20vw;
-    height: 5vh;
-    border: solid 1px grey;
+.cityInput {
+    width: 18vw;
+    margin-left: 2vw;
     color: black;
     font-size: 1.5em;
     font-family: 'Gotham Rounded', sans-serif;
-    padding-left: 1vw;
-    border-top-left-radius: 1.5em;
-    border-bottom-left-radius: 1.5em;
 }
 
 .dateInput{
-    width: 2vw;
+    width: 10vw;
     margin-left: 2vw;
 }
 
