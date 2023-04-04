@@ -3,8 +3,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Carpool } from './models/carpool.model';
 import { User } from './models/user.model';
-import { tap } from 'rxjs/operators';
-import jwt_decode from 'jwt-decode';
 
 
 @Injectable({

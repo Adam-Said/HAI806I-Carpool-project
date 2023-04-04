@@ -39,6 +39,7 @@ import { TripModalComponent } from './trip-modal/trip-modal.component';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { PasswordEditPageComponent } from './password-edit-page/password-edit-page.component';
 import { FooterComponent } from './footer/footer.component';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { FooterComponent } from './footer/footer.component';
     TripModalComponent,
     PasswordEditPageComponent,
     FooterComponent,
+    MapComponent,
   ],
   imports: [
     BrowserModule,
