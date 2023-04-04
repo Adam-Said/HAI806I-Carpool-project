@@ -1,4 +1,4 @@
-body{
+body {
     padding: 3vh;
 }
 
@@ -9,7 +9,9 @@ body{
     margin-top: 5vh;
 }
 
-.resButton{
+
+
+.resButton {
     margin-right: 2vw;
 }
 
@@ -28,51 +30,50 @@ body{
     padding-left: 2vw;
 }
 
-.tripCard{
+.tripCard {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.description{
+.description {
     margin-top: 5vh;
     font-size: 1.2em;
 }
 
-.passengers{
+.passengers {
     margin-top: 5vh;
     margin-bottom: 2vh;
     font-size: 1.2em;
 }
 
-.title{
+.title {
     font-size: 2em;
     font-weight: bold;
 }
 
-.subtitle{
+.subtitle {
     font-size: 1.5em;
     font-weight: bold;
 }
 
-.icons{
+.icons {
     margin-right: 1vw;
     scale: 1.5;
 }
 
-.content{
+.content {
     margin-top: 2vh;
     margin-bottom: 2vh;
     font-size: 1.3em;
 }
 
-.resContent{
+.resContent {
     font-size: 1.3em;
 }
 
-.newRes{
+.newRes {
     margin-left: 1vw;
     font-size: 1.5em;
     font-weight: 300;
 }
-

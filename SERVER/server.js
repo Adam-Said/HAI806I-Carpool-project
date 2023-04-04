@@ -441,7 +441,42 @@ app.post('/profile/edit', authenticateToken, async (req, res) => {
 });
 
 
+app.post('/profile/password', authenticateToken, async (req, res) => {
+    try {
+        const { password, new_password } = req.body;
+        const db = client.db('CarPoule');
+        const user = await db.collection('user').findOne({ _id: new ObjectId(req.user._id) });
 
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        if (!password || !new_password) {
+            return res.status(400).send('Missing parameters');
+        }
+
+        if (!await bcrypt.compare(password, user.password)) {
+            return res.status(401).send('Invalid password');
+        }
+
+        if (password === new_password) {
+            return res.status(400).send('New password must be different from old password');
+        }
+        user.password = await bcrypt.hash(new_password, 10);
+
+        const result = await db.collection('user').findOneAndUpdate(
+            { _id: new ObjectId(req.user._id) },
+            { $set: user },
+            { returnOriginal: false }
+        );
+
+        res.status(200).json("User updated");
+
+    }
+    catch (err) {
+        console.error('Failed to connect to MongoDB', err);
+        res.status(500).send('Error connecting to database');
+    }
+});
 
 app.put('/publish', authenticateToken, async (req, res) => {
     try {

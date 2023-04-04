@@ -11,6 +11,15 @@
                         <p class="information">Number of seat booked : {{ trip.seats }}</p>
                         <p class="information">Price : {{ trip.price }} €</p>
                         <p class="information">Driver : {{ trip.driver }}</p>
+                        <div class="information passengers">
+                            <p>Passengers : </p>
+                            <div class="card">
+                                <p-avatarGroup styleClass="mb-3">
+                                    <p-avatar *ngFor="let passenger of trip?.passengers" [image]="passenger.photo"
+                                        size="large" shape="circle"></p-avatar>
+                                </p-avatarGroup>
+                            </div>
+                        </div>
                     </p-card>
                 </a>
             </div>
@@ -29,15 +38,13 @@
                 </mat-expansion-panel-header>
 
                 <div *ngFor="let trip of pastTrips">
-                    <a [routerLink]="['/carpool', trip._id]" style="text-decoration: none;">
-                        <p-card [style]="{ width: '100%'}" header="{{ trip.departure}} - {{trip.arrival}}"
-                            subheader="{{ trip.date }}">
-                            <p>{{ trip.description }}</p>
-                            <p class="information">Number of seat booked : {{ trip.seats }}</p>
-                            <p class="information">Price : {{ trip.price }} €</p>
-                            <p class="information">Driver : {{ trip.driver }}</p>
-                        </p-card>
-                    </a>
+                    <p-card [style]="{ width: '100%'}" style="margin-top: 5vh;"
+                        header="{{ trip.departure}} - {{trip.arrival}}" subheader="{{ trip.date }}">
+                        <p>{{ trip.description }}</p>
+                        <p class="information">Number of seat booked : {{ trip.seats }}</p>
+                        <p class="information">Price : {{ trip.price }} €</p>
+                        <p class="information">Driver : {{ trip.driver }}</p>
+                    </p-card>
                 </div>
 
             </mat-expansion-panel>

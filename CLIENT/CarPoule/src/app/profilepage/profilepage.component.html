@@ -73,12 +73,6 @@
 
                 <div class="card preference flex justify-content-center"
                     *ngIf="vehicle.brand || vehicle.model || vehicle.registration || vehicle.color || vehicle.seats">
-                    <mat-icon class="icons">airline_seat_legroom_normal</mat-icon>
-                    <p class="optionsPrefs">{{ vehicle.seats || 'No vehicle information' }} seats</p>
-                </div>
-
-                <div class="card preference flex justify-content-center"
-                    *ngIf="vehicle.brand || vehicle.model || vehicle.registration || vehicle.color || vehicle.seats">
                     <mat-icon class="icons">color_lens</mat-icon>
                     <p class="optionsPrefs">{{ vehicle.color || 'No vehicle information' }}</p>
                 </div>
@@ -101,11 +95,13 @@
                 </div>
 
                 <div class="button card flex justify-content-center">
-                    <p-button label="Edit informations" icon="pi pi-pencil" type="submit" [routerLink]="['/profile/edit']"></p-button>
+                    <p-button label="Edit informations" icon="pi pi-pencil" type="submit"
+                        [routerLink]="['/profile/edit']"></p-button>
                 </div>
 
                 <div class="button card flex justify-content-center">
-                    <p-button [style]="{background: '#eb7302', border: '#eb7302'}" label="Change password" icon="pi pi-lock" type="submit" [routerLink]="['/profile/edit/password']"></p-button>
+                    <p-button [style]="{background: '#eb7302', border: '#eb7302'}" label="Change password"
+                        icon="pi pi-lock" type="submit" [routerLink]="['/profile/edit/password']"></p-button>
                 </div>
             </p-card>
         </div>

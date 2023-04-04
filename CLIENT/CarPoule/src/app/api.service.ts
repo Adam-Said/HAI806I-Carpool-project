@@ -70,6 +70,14 @@ export class ApiService {
     return this.httpClient.post<any>(`${this.baseUrl}/profile/edit`, body, { withCredentials: true });
   }
 
+  updatePassword(data: any): Observable<any> {
+    const body = {
+      password: data.currentPassword,
+      new_password: data.password
+    }
+    return this.httpClient.post<any>(`${this.baseUrl}/profile/password`, body, { withCredentials: true });
+  }
+
   publishCarpool(data: any): Observable<any> {
     return this.httpClient.put(`${this.baseUrl}/publish`, data, { withCredentials: true });
   }

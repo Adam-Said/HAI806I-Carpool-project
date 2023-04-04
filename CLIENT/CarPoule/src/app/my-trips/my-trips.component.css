@@ -1,4 +1,4 @@
-body{
+body {
     padding: 3vh;
     margin-bottom: 10vh;
 }
@@ -6,39 +6,42 @@ body{
 :host ::ng-deep .p-card {
     border-radius: 1em !important;
     width: 90%;
-    margin-top: 5vh;
 }
 
-.reservationCard{
+.card {
+    display: flex;
+}
+
+.reservationCard {
     text-decoration: none;
 }
 
-.information{
+.information {
     font-size: 1.1em;
     font-weight: 600;
 }
 
-.p-element{
+.p-element {
     display: flex;
     justify-content: center;
 }
 
-.cardContainer{
+.cardContainer {
     display: flex;
     justify-content: center;
 }
 
-.mat-expansion-panel{
+.mat-expansion-panel {
     width: 90%;
     border-radius: 1em;
 }
 
-.pastTripsContainer{
+.pastTripsContainer {
     margin-top: 5vh;
     display: flex;
     justify-content: center;
 }
 
-.cardTitle{
+.cardTitle {
     font-size: 1.5em;
 }
