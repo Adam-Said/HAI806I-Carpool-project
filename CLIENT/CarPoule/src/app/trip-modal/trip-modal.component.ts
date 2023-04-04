@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../api.service';
 import { Router } from '@angular/router';
 import { AuthGuard } from '../auth.guard';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
 import { Location } from '@angular/common';
 
 interface Passenger {
@@ -34,8 +34,8 @@ export class TripModalComponent implements OnInit {
     private router: Router,
     private authGuard: AuthGuard,
     private location: Location
-  ) { }  
-  
+  ) { }
+
   goBack() {
     this.location.back(); // <-- go back to previous location on cancel
   }
@@ -53,35 +53,45 @@ export class TripModalComponent implements OnInit {
         )
         .subscribe(data => {
           this.carpool = data[0];
-          console.log(this.carpool);
 
           if (this.carpool.driver === this.authGuard.getId()) {
             this.isDriver = true;
             this.apiService.getPending(carpoolId)
-              .subscribe(data => {
-                if (data == "No pending found") {
-                  this.pending = [];
+              .subscribe(data2 => {
+                if (data2[0] == null) {
+                  this.pending = null;
                 }
                 else {
-                  this.pending = data[0];
+                  const passengersIDs: String[] = [];
+                  data2[0].passengers.forEach((carpool: any) => {
+                    passengersIDs.push(carpool.passenger_id);
+                  });
+                  this.getPassengersFromId(passengersIDs)
+                    .subscribe((data: any[]) => {
+                      this.pending = data;
+                    });
                   this.isPending = true;
                 }
               });
           }
 
+          if (this.carpool.passengers == null) {
+            this.carpool.passengers = [];
+          }
+
+          // Check if the user has already booked a seat
+          if ("passengers" in this.carpool) {
+            this.hasBookedSeat = this.carpool.passengers.some((passenger: Passenger) => passenger.passenger_id === this.authGuard.getId());
+          }
         });
     });
 
-    // Check if the user has already booked a seat
-    console.log(this.carpool.passengers);
-    this.hasBookedSeat = this.carpool.passengers.some((passenger: Passenger) => passenger.passenger_id === this.authGuard.getId());
   }
 
   acceptPassenger(passenger_id: string, carpool_id: string) {
     this.apiService.acceptPending(carpool_id, passenger_id)
       .subscribe(
         (data: any) => {
-          console.log(data);
           // Remove the passenger from the pending list
           this.pending.passengers = this.pending.passengers.filter((passenger: any) => passenger.passenger_id !== passenger_id);
           // Add the passenger to the carpool list
@@ -98,7 +108,6 @@ export class TripModalComponent implements OnInit {
     this.apiService.rejectPending(carpool_id, passenger_id)
       .subscribe(
         (data: any) => {
-          console.log(data);
           // Remove the passenger from the pending list
           this.pending.passengers = this.pending.passengers.filter((passenger: any) => passenger.passenger_id !== passenger_id);
           location.reload();
@@ -113,7 +122,6 @@ export class TripModalComponent implements OnInit {
     this.apiService.bookSeat(carpool_id)
       .subscribe(
         (data: any) => {
-          console.log(data);
           this.router.navigate(['/trips']);
         },
         (error: any) => {
@@ -121,5 +129,19 @@ export class TripModalComponent implements OnInit {
         }
       );
   }
+
+  getPassengersFromId(passengers: String[]): Observable<any[]> {
+    return this.apiService.getSimpleUser(passengers)
+      .pipe(
+        map((data: any) => {
+          return data;
+        }),
+        catchError((error: any) => {
+          console.error(error); // Log any errors
+          return of([]); // Return an empty array if there is an error
+        })
+      );
+  }
+
 
 }

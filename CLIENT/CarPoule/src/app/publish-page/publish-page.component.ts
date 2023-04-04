@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CountriesService } from '../countries.service';
-import { Observable } from 'rxjs';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ApiService } from '../api.service';
-import { NavbarComponentComponent } from '../navbar-component/navbar-component.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-publish-page',
@@ -19,7 +18,7 @@ export class PublishPageComponent implements OnInit {
 
   filteredCountries: any[] = [];
 
-  constructor(private countriesService: CountriesService, private apiService: ApiService, private formBuilder: FormBuilder) { }
+  constructor(private countriesService: CountriesService, private apiService: ApiService, private formBuilder: FormBuilder, private router: Router) { }
 
   ngOnInit() {
 
@@ -61,6 +60,7 @@ export class PublishPageComponent implements OnInit {
       this.apiService.publishCarpool(this.formGroup.value).subscribe(
         (response: any) => {
           console.log('Carpool published:', response);
+          this.router.navigate(['/trips']);
         },
         (error: any) => {
           console.error('Failed to publish carpool:', error);

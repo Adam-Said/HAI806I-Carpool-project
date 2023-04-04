@@ -11,23 +11,29 @@
     align-items: center;
 }
 
-body{
-    padding : 5vw;
+body {
+    padding: 5vw;
+    padding-bottom: 3vw;
+    margin-bottom: 3vh;
 }
 
-.startInput {
-    width: 20vw;
-    height: 5vh;
-    border: solid 1px grey;
+.searchArea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cityInput {
+    width: 18vw;
+    margin-left: 2vw;
     color: black;
     font-size: 1.5em;
     font-family: 'Gotham Rounded', sans-serif;
-    padding-left: 1vw;
-    border-top-left-radius: 1.5em;
-    border-bottom-left-radius: 1.5em;
 }
 
+
 .dateInput {
+    width: 10vw;
     margin-left: 2vw;
 }
 
@@ -52,4 +58,14 @@ body{
     margin-left: 2vw;
     width: 10vw;
     border-radius: 1.5em;
+}
+
+.cardContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.information {
+    font-size: 1.1em;
+    font-weight: 600;
 }

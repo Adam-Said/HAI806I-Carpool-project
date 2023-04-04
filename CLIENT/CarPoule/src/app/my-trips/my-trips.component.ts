@@ -31,8 +31,10 @@ export class MyTripsComponent implements OnInit {
   ngOnInit(): void {
     this.apiService.getTrips().subscribe(
       (data: Trip[]) => {
-        this.trips = data.filter(trip => new Date(trip.date) >= new Date());
-        this.pastTrips = data.filter(trip => new Date(trip.date) < new Date());
+        var date = new Date();
+        date.setDate(date.getDate() - 1);
+        this.trips = data.filter(trip => new Date(trip.date) >= date);
+        this.pastTrips = data.filter(trip => new Date(trip.date) < date);
         // format dates for display
         this.trips.forEach(trip => {
           trip.date = this.formatDate(trip.date);

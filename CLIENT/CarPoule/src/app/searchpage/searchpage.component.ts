@@ -1,23 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '../api.service';
 import { Carpool } from '../models/carpool.model';
+import { CountriesService } from '../countries.service';
 
 @Component({
   selector: 'app-searchpage',
   templateUrl: './searchpage.component.html',
   styleUrls: ['./searchpage.component.css']
 })
-export class SearchpageComponent {
+export class SearchpageComponent implements OnInit {
   carpools: Carpool[] = [];
   searchForm: FormGroup;
+  filteredCountries: any[] = [];
+  countries: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private countriesService: CountriesService
   ) {
     this.searchForm = this.formBuilder.group({
       departure: '',
@@ -61,6 +65,28 @@ export class SearchpageComponent {
         },
         queryParamsHandling: 'merge'
       });
+    });
+
+  }
+
+  filterCountry(event: { query: any; }) {
+    let filtered: any[] = [];
+    let query = event.query;
+
+    for (let i = 0; i < this.countries.length; i++) {
+      let country = this.countries[i];
+      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(country);
+      }
+    }
+
+    this.filteredCountries = filtered;
+  }
+
+  ngOnInit() {
+    this.countriesService.getCountries().then((cities) => {
+      this.countries = cities;
+      //console.log(JSON.stringify(this.countries));
     });
 
   }

@@ -114,12 +114,12 @@ app.get('/pending/:id', authenticateToken, async (req, res) => {
         };
         const documents = await db.collection("pending").find(filter).toArray();
         if (documents.length == 0)
-            res.status(201).send('No pending found');
+            res.type('json').status(201).send({ message: 'No pending found' });
         else {
-            res.json(documents);
+            res.status(201).json(documents);
         }
     } catch (err) {
-        res.status(500).send('No pending found');
+        res.type('json').status(500).send({ message: 'No pending found' });
     }
 
 
@@ -160,7 +160,7 @@ app.post('/pending/accept', async (req, res) => {
         }
 
         // Send a success response
-        res.send('Passenger added to carpool');
+        res.type('json').status(201).send({ message: 'Passenger accepted' });
     } catch (err) {
         console.error(err);
         res.status(500).send('Internal server error ' + err);
@@ -192,12 +192,34 @@ app.post('/pending/reject', async (req, res) => {
         }
 
         // Send a success response
-        res.send('Passenger rejected');
+        res.type('json').status(201).send({ message: 'Pending rejected' });
     } catch (err) {
         console.error(err);
         res.status(500).send('Internal server error ' + err);
     }
 });
+
+
+app.post('/usersimple', authenticateToken, async (req, res) => {
+    const { ids } = req.body;
+
+    try {
+        // Connect to the database and get the user collection
+        const db = client.db('CarPoule');
+        const userCollection = db.collection('user');
+
+        // Convert the IDs to ObjectIDs
+        const objectIds = ids.map(id => new ObjectId(id));
+        // Get the users from the database
+        const users = await userCollection.find({ _id: { $in: objectIds } }).toArray();
+        // Return the user information
+        res.json(users.map(user => ({ id: user._id, name: user.name, firstname: user.firstname })));
+    } catch (err) {
+        console.error('Failed to connect to MongoDB', err);
+        res.status(500).send('Error connecting to database');
+    }
+});
+
 
 
 app.post('/signup', async (req, res) => {
@@ -481,7 +503,7 @@ app.post('/profile/password', authenticateToken, async (req, res) => {
 app.put('/publish', authenticateToken, async (req, res) => {
     try {
         const { departure, arrival, date, seats, highway, price, description } = req.body;
-        if (!departure || !arrival || !date || !seats || !highway || !price || !description) {
+        if (!departure || !arrival || !date || !seats || !price || !description) {
             return res.status(400).send('Missing parameters');
         }
         const db = client.db('CarPoule');
@@ -491,7 +513,7 @@ app.put('/publish', authenticateToken, async (req, res) => {
             arrival: arrival,
             date: new Date(date),
             seats: parseInt(seats),
-            highway: highway,
+            highway: highway || false,
             price: parseInt(price),
             passengers: [],
             description: description,

@@ -37,8 +37,8 @@
     </div>
 
     <div *ngIf="isDriver && isPending">
-        <div *ngFor="let passenger of pending.passengers">
-            <div *ngIf="passenger.passenger_id">
+        <div *ngFor="let passenger of pending">
+            <div *ngIf="passenger.id">
                 <div class="tripCard">
                     <mat-card class="reservationContainer">
                         <mat-card-title class="title">Reservation Alert</mat-card-title>
@@ -46,17 +46,17 @@
                             <p-divider></p-divider>
                             <div style="display: flex; align-items: center; margin-bottom: 2vh;">
                                 <p-avatar [image]="passenger?.photo" size="large" shape="circle"></p-avatar>
-                                <p class="newRes">{{passenger?.passenger_id}}</p>
+                                <p class="newRes">{{passenger?.name}} {{passenger?.firstname}}</p>
                             </div>
                         </mat-card-content>
                         <mat-card-actions class="actions">
                             <p-button class="resButton" [style]="{background: '#37873e', border: '#37873e'}"
                                 label="Accept Passenger" icon="pi pi-thumbs-up-fill"
-                                (click)="acceptPassenger(passenger.passenger_id, carpool._id)">
+                                (click)="acceptPassenger(passenger.id, carpool._id)">
                             </p-button>
                             <p-button class="resButton" [style]="{background: '#ba261e', border: '#ba261e'}"
                                 label="Decline Passenger" icon="pi pi-thumbs-down-fill"
-                                (click)="rejectPassenger(passenger.passenger_id, carpool._id)">
+                                (click)="rejectPassenger(passenger.id, carpool._id)">
                             </p-button>
                         </mat-card-actions>
                     </mat-card>

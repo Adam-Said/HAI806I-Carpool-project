@@ -108,7 +108,13 @@ export class ApiService {
     const body = { carpool_id: idCarpool };
     return this.httpClient.post<any>(`${this.baseUrl}/carpool/` + idCarpool + `/book`, body, { withCredentials: true });
   }
+
+  getSimpleUser(ids: String[]): Observable<any> {
+
+    return this.httpClient.post<any>(`${this.baseUrl}/usersimple`, { ids }, { withCredentials: true });
+  }
+
+
+
 }
-
-
 

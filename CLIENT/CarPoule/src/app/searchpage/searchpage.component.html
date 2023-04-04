@@ -1,30 +1,53 @@
 <app-navbar-component></app-navbar-component>
 
 <body>
-    <div class="searchBar card flex flex-column md:flex-row gap-3">
+    <div class="searchBar card">
         <form [formGroup]="searchForm" (ngSubmit)="searchCarpools()">
-            <input formControlName="departure" class="startInput" pInputText placeholder="Départ" />
-            <input formControlName="arrival" class="destinationInput" pInputText placeholder="Destination" />
-            <p-calendar formControlName="date" class="dateInput" [style]="{width: '10vw'}" placeholder="Date" [showIcon]="true"></p-calendar>
-            <div class="flex-auto inputPassenger">
-                <p-inputNumber formControlName="seats" class="inputPassenger" [style]="{'width':'100%'}" [showButtons]="true" buttonLayout="horizontal"
-                    inputId="horizontal" spinnerMode="horizontal" [step]="1" [min]="1" [max]="8"
-                    decrementButtonClass="p-button-info" incrementButtonClass="p-button-info"
-                    incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus">
-                </p-inputNumber>
+            <div class="searchArea">
+                <!-- <input [(ngModel)]="departure" name="departure" class="cityInput" pInputText placeholder="Départ" />
+    -->
+                <p-autoComplete formControlName="departure" class="inputs" placeholder="Departure City"
+                    [style]="{width:'100%'}" name="departure" class="cityInput"
+                    [inputStyle]="{'width':'100%', 'font-size' : '1.2em', 'font-weight': '500', 'border-radius': '1.2em'}"
+                    [suggestions]="filteredCountries" (completeMethod)="filterCountry($event)"></p-autoComplete>
+
+                <p-autoComplete class="inputs" formControlName="arrival" placeholder="Destination"
+                    [style]="{width:'100%'}"
+                    [inputStyle]="{'width': '100%', 'font-size' : '1.2em', 'font-weight': '500', 'border-radius': '1.2em'}"
+                    name="arrival" class="cityInput" [suggestions]="filteredCountries"
+                    (completeMethod)="filterCountry($event)"></p-autoComplete>
+
+                <p-calendar formControlName="date" name="date" class="dateInput" placeholder="Date"
+                    [showIcon]="true"></p-calendar>
+                <div class="flex-auto">
+                    <p-inputNumber formControlName="seats" name="seats" class="inputPassenger"
+                        [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" [showButtons]="true"
+                        buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [step]="1" [min]="1"
+                        [max]="8" decrementButtonClass="p-button-info" incrementButtonClass="p-button-info"
+                        incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></p-inputNumber>
+                </div>
+                <p-button class="searchButton" type="submit" icon="pi pi-search"
+                    styleClass="p-button-rounded p-button-success">
+                </p-button>
             </div>
-            <p-button class="searchButton" type="submit" icon="pi pi-search" styleClass="p-button-rounded p-button-success">
-            </p-button>
         </form>
     </div>
 
-    <div class="resultCard card" *ngIf="carpools.length > 0">
-        <div *ngFor="let carpool of carpools">
-            <h3>{{ carpool.departure }} - {{ carpool.arrival }}</h3>
-            <p>Date: {{ carpool.date | date }}</p>
-            <p>Price: {{ carpool.price }}€</p>
-            <p>Seats: {{ carpool.seats }}</p>
-        </div>
+    <div class="cardsContainer" *ngIf="carpools.length > 0">
+        <p-card [style]="{background: '#fafafa'}" header="Results">
+            <div *ngFor="let carpool of carpools">
+                <div class="carpool">
+                    <a [routerLink]="['/carpool', carpool._id]" class="carpool-link" style="text-decoration: none;">
+                        <p-card [style]="{ width: '100%'}" header="{{ carpool.departure}} - {{carpool.arrival}}"
+                            subheader="{{ carpool.date }}">
+                            <p class="information">Date: {{ carpool.date | date }}</p>
+                            <p class="information">Price: {{ carpool.price }}€</p>
+                            <p class="information">Seats: {{ carpool.seats }}</p>
+                        </p-card>
+                    </a>
+                </div>
+            </div>
+        </p-card>
     </div>
 
 </body>
