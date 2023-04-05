@@ -9,4 +9,5 @@ export class User {
     pref_smoking?: boolean;
     pref_animals?: boolean;
     pref_talk?: boolean;
+    profile_pic?: FormData;
 }

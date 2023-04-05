@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const ini = require('ini');
 const http = require('http');
+const multer = require('multer');
 
 const app = express();
 const ACCESS_TOKEN_SECRET = '123';
@@ -29,6 +30,22 @@ const username = config.username;
 const password = config.password;
 const uri = "mongodb+srv://" + username + ":" + password + "@cluster0.ydior1v.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri);
+
+module.exports.uploadImage = () => {
+    const imageStorage = multer.diskStorage({
+        destination: (req, file, cb) => { cb(null, 'public/images') },
+        filename: (req, file, cb) => { cb(null, file.originalname) }
+    });
+
+    const imageFileFilter = (req, file, cb) => {
+        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+            return cb(new Error('You can upload only image files!'), false);
+        }
+        cb(null, true);
+    };
+
+    return multer({ storage: imageStorage, fileFilter: imageFileFilter });
+}
 
 app.get('/', (req, res) => {
     res.send('CarPoule API is running!');
@@ -227,7 +244,7 @@ app.post('/signup', async (req, res) => {
     try {
         await client.connect();
         const db = client.db('CarPoule');
-        const { email, password, name, firstname, birthdate, pref_smoking, pref_animals, pref_talk, phone } = req.body;
+        const { email, password, name, firstname, birthdate, pref_smoking, pref_animals, pref_talk, phone, profile_pic } = req.body;
 
         // Check if user already exists with the given email
         const existingUser = await db.collection('user').findOne({ email });
@@ -241,7 +258,7 @@ app.post('/signup', async (req, res) => {
 
         // Hash the password before storing it in the database
         const hashedPassword = await bcrypt.hash(password, 10);
-
+        console.log(profile_pic);
         // Create a new user document with the hashed password
         const newUser = {
             email: email.toLowerCase(),
@@ -267,7 +284,6 @@ app.post('/signup', async (req, res) => {
                 place_number: 0
             },
             carpool_num: 0,
-            profile_pic: 0
         };
 
         // Insert the new user document into the "user" collection

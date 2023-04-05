@@ -33,7 +33,7 @@ export class ApiService {
   }
 
   registerUser(user: User): Observable<any> {
-    return this.httpClient.post<any>(`${this.baseUrl}/signup`, user, { withCredentials: true });
+    return this.httpClient.post<any>(`${this.baseUrl}/signup`, user);
   }
 
   login(email: string, password: string): Observable<any> {

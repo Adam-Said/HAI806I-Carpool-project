@@ -11,6 +11,7 @@ import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/fo
   styleUrls: ['./new-account.component.css']
 })
 export class NewAccountComponent {
+  image: File | undefined;
   user: User = new User();
   regForm: any = new FormGroup({
     firstname: new FormControl('', [Validators.required]),
@@ -22,7 +23,8 @@ export class NewAccountComponent {
     birthdate: new FormControl('', [Validators.required]),
     pref_animals: new FormControl('', [Validators.required]),
     pref_talk: new FormControl('', [Validators.required]),
-    pref_smoking: new FormControl('', [Validators.required])
+    pref_smoking: new FormControl('', [Validators.required]),
+    profile_pic: new FormControl(''),
   });
 
   Options: any[] = [
@@ -47,6 +49,13 @@ export class NewAccountComponent {
     this.user.pref_talk = this.regForm.get('pref_talk').value === '1' ? true : false;
     // Set pref_smoking to true if the selected option is 1, false otherwise
     this.user.pref_smoking = this.regForm.get('pref_smoking').value === '1' ? true : false;
+
+    let fd = new FormData();
+    if (this.image) {
+      fd.append('profile_pic', this.image, this.image.name);
+      this.user.profile_pic = fd;
+    }
+
     // call the API service to register the user
     this.apiService.registerUser(this.user)
       .subscribe(
@@ -61,4 +70,11 @@ export class NewAccountComponent {
         }
       );
   }
+
+  fileChoosen(event: any) {
+    if (event.target.value) {
+      this.image = <File>event.target.files[0];
+    }
+  }
+
 }

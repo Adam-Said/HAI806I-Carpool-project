@@ -21,6 +21,13 @@
                     </div>
 
                     <div class="card flex justify-content-center">
+                        <input name="profile_pic" type="file" accept=".jpg,.png,.jpeg" class="inputs"
+                            formControlName="profile_pic" (input)="fileChoosen($event)" />
+
+                    </div>
+
+
+                    <div class="card flex justify-content-center">
                         <p-calendar name="birthdate" class="inputs" [style]="{'width':'100%'}"
                             [inputStyle]="{'width':'100%'}" placeholder="Birth Date" id="birthdate" [showIcon]="true"
                             formControlName="birthdate"></p-calendar>
