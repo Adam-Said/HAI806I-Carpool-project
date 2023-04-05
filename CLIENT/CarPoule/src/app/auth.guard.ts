@@ -41,6 +41,7 @@ export class AuthGuard implements CanActivate {
     }
 
     getId(): string {
+        if (this.cookieService.get('auth') === '') return '';
         const token = this.cookieService.get('auth');
         const decodedToken: any = jwt_decode(token);
         return decodedToken.id;

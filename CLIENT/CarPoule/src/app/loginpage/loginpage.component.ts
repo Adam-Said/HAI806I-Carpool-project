@@ -19,14 +19,13 @@ export class LoginpageComponent {
     this.apiService.login(this.email, this.password)
       .subscribe(
         (response) => {
-          console.log(response);
-          console.log('User logged in successfully');
+          // console.log('User logged in successfully');
           this.router.navigate(['/profile']);
           // Redirect to profile page
         },
         (error) => {
-          console.error('Failed to log in user : ' + error.message);
-          // TODO: handle error (e.g., show an error message, clear form fields)
+          // console.error('Failed to log in user : ' + error.message);
+          alert('Failed during login');
         }
       );
   }

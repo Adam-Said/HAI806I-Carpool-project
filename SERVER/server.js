@@ -636,7 +636,7 @@ app.post('/carpool/:id/book', authenticateToken, async (req, res) => {
         }
 
         // Check if the user is already in pending
-        const pendingCarpool = await db.collection('pending').findOne({ carpool_id: new ObjectId(id), 'passengers.passenger_id': new ObjectId(req.user.id) });
+        const pendingCarpool = await db.collection('pending').findOne({ carpool_id: new ObjectId(id), 'passengers.passenger_id': new ObjectId(userId) });
 
         if (pendingCarpool) {
             return res.status(400).send('User is already in pending');

@@ -84,15 +84,28 @@ export class TripModalComponent implements OnInit {
                 }
               });
           }
+          else {
+            this.apiService.getPending(carpoolId)
+              .subscribe(data2 => {
+                if (data2[0] == null) {
+                  this.pending = null;
+                }
+                else {
+                  this.pending = data2[0];
+                  if (this.pending.passengers.some((passenger: Passenger) => passenger.passenger_id === this.authGuard.getId())
+                    || this.carpool.passengers.some((passenger: Passenger) => passenger.passenger_id === this.authGuard.getId())) {
+                    this.hasBookedSeat = true;
+                  }
 
+                }
+              });
+          }
           if (this.carpool.passengers == null) {
             this.carpool.passengers = [];
           }
 
-          // Check if the user has already booked a seat
-          if ("passengers" in this.carpool) {
-            this.hasBookedSeat = this.carpool.passengers.some((passenger: Passenger) => passenger.passenger_id === this.authGuard.getId());
-          }
+
+
           return;
         });
     });
@@ -103,9 +116,11 @@ export class TripModalComponent implements OnInit {
     this.apiService.acceptPending(carpool_id, passenger_id)
       .subscribe(
         (data: any) => {
-          // Remove the passenger from the pending list          // Add the passenger to the carpool list
-          this.carpool.passengers.push({ passenger_id: passenger_id });
-          location.reload();
+          // Remove the passenger from the pending list
+          // this.pending.passengers = this.pending.passengers.filter((passenger: any) => passenger.passenger_id !== passenger_id);
+          // Add the passenger to the carpool list
+          // this.carpool.passengers.push({ passenger_id: passenger_id });
+          // location.reload();
           window.location.reload()
         },
         (error: any) => {
@@ -119,7 +134,8 @@ export class TripModalComponent implements OnInit {
       .subscribe(
         (data: any) => {
           // Remove the passenger from the pending list
-          this.pending.passengers = this.pending.passengers.filter((passenger: any) => passenger.passenger_id !== passenger_id);
+          // console.log(this.pending);
+          // this.pending.passengers = this.pending.passengers.filter((passenger: any) => passenger.passenger_id !== passenger_id);
           window.location.reload()
         },
         (error: any) => {
@@ -129,15 +145,21 @@ export class TripModalComponent implements OnInit {
   }
 
   bookSeat(carpool_id: string) {
-    this.apiService.bookSeat(carpool_id)
-      .subscribe(
-        (data: any) => {
-          this.router.navigate(['/trips']);
-        },
-        (error: any) => {
-          console.error(error);
-        }
-      );
+    if (this.authGuard.getId() != '') {
+      this.apiService.bookSeat(carpool_id)
+        .subscribe(
+          (data: any) => {
+            alert("Seat booked. The driver will be notified.");
+            location.reload();
+          },
+          (error: any) => {
+            console.error(error);
+          }
+        );
+    }
+    else {
+      this.router.navigate(['/login']);
+    }
   }
 
   getPassengersFromId(passengers: String[]): Observable<any[]> {
