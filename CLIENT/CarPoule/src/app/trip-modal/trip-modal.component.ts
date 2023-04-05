@@ -28,8 +28,8 @@ export class TripModalComponent implements OnInit {
   isDriver: boolean = false;
   isPending: boolean = false;
   hasBookedSeat: boolean = false;
-  departureCoords: LatLngTuple = [0, 0];
-  arrivalCoords: LatLngTuple = [0, 0];
+  departureCoords: number[] = [];
+  arrivalCoords: number[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -55,19 +55,15 @@ export class TripModalComponent implements OnInit {
             return throwError("No carpool found");
           })
         )
-        .subscribe(async data => {
+        .subscribe(data => {
+          if (data[0] == null) {
+            return this.router.navigate(['/']);
+          }
           this.carpool = data[0];
-          console.log(this.carpool.departure_city);
-          const departureCoords = await this.apiService.forwardGeocode(this.carpool.departure_city);
-          if (departureCoords.length === 2) {
-            this.departureCoords = [departureCoords[0], departureCoords[1]];
-            console.log(this.departureCoords);
-          }
-          const arrivalCoords = await this.apiService.forwardGeocode(this.carpool.arrival_city);
-          if (arrivalCoords.length === 2) {
-            this.arrivalCoords = [arrivalCoords[0], arrivalCoords[1]];
-            console.log(this.arrivalCoords);
-          }
+          this.departureCoords = [this.carpool.departure_coords[0], this.carpool.departure_coords[1]];
+          this.arrivalCoords = [this.carpool.arrival_coords[0], this.carpool.arrival_coords[1]];
+
+
           if (this.carpool.driver === this.authGuard.getId()) {
             this.isDriver = true;
             this.apiService.getPending(carpoolId)
@@ -97,6 +93,7 @@ export class TripModalComponent implements OnInit {
           if ("passengers" in this.carpool) {
             this.hasBookedSeat = this.carpool.passengers.some((passenger: Passenger) => passenger.passenger_id === this.authGuard.getId());
           }
+          return;
         });
     });
 

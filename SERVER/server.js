@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const ini = require('ini');
+const http = require('http');
 
 const app = express();
 const ACCESS_TOKEN_SECRET = '123';
@@ -506,11 +507,14 @@ app.put('/publish', authenticateToken, async (req, res) => {
         if (!departure || !arrival || !date || !seats || !price || !description) {
             return res.status(400).send('Missing parameters');
         }
+
         const db = client.db('CarPoule');
         const carpool = {
             driver: req.user._id,
             departure: departure,
             arrival: arrival,
+            departure_coords: await forwardGeocode(departure),
+            arrival_coords: await forwardGeocode(arrival),
             date: new Date(date),
             seats: parseInt(seats),
             highway: highway || false,
@@ -701,6 +705,33 @@ async function authenticateToken(req, res, next) {
     }
 }
 
+
+async function forwardGeocode(city) {
+    const apiKey = '1a455409975ccb48f3648c6bfe8bd018';
+    const url = `http://api.positionstack.com/v1/forward?access_key=${apiKey}&query=${city}&limit=1&output=json`;
+
+    return new Promise((resolve, reject) => {
+        http.get(url, (response) => {
+            let data = '';
+            response.on('data', (chunk) => {
+                data += chunk;
+            });
+            response.on('end', () => {
+                const result = JSON.parse(data);
+                if (result && result.data && result.data.length > 0) {
+                    const lat = result.data[0].latitude;
+                    const lng = result.data[0].longitude;
+                    const coords = [lat, lng];
+                    resolve(coords);
+                } else {
+                    reject(new Error('Geocoding failed'));
+                }
+            });
+        }).on('error', (error) => {
+            reject(error);
+        });
+    });
+}
 
 
 

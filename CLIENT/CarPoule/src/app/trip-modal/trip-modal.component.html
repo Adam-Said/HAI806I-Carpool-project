@@ -36,9 +36,12 @@
                     </div>
                 </div>
             </div>
-            <div class="map-container">
-                <app-map [departureCoords]="[48.8566, 2.3522]" [arrivalCoords]="[51.5074, -0.1278]"></app-map>
+            <div class="card-map">
+                <ng-container *ngIf="departureCoords.length === 2">
+                    <app-map [departureCoords]="departureCoords" [arrivalCoords]="arrivalCoords"></app-map>
+                </ng-container>
             </div>
+
 
         </mat-card>
     </div>

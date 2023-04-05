@@ -9,25 +9,31 @@ type LatLngTuple = [number, number];
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
-  @Input() departureCoords: LatLngTuple = [51.505, -0.09];
-  @Input() arrivalCoords: LatLngTuple = [51.505, -0.09];
+  @Input() departureCoords: number[] = [0, 0];
+  @Input() arrivalCoords: number[] = [0, 0];
   private map: any;
 
   ngOnInit() {
+    const latlngs = [
+      L.latLng(this.departureCoords[0], this.departureCoords[1]),
+      L.latLng(this.arrivalCoords[0], this.arrivalCoords[1])
+    ];
 
-    const departure: LatLngTuple = this.departureCoords;
-    const arrival: LatLngTuple = this.arrivalCoords;
-
-    this.map = L.map('map').setView(this.departureCoords, 13);
+    this.map = L.map('map');
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
       maxZoom: 18,
     }).addTo(this.map);
 
-    L.marker(this.departureCoords).addTo(this.map);
-    L.marker(this.arrivalCoords).addTo(this.map);
+    L.marker(latlngs[0]).addTo(this.map);
+    L.marker(latlngs[1]).addTo(this.map);
 
-    L.polyline([this.departureCoords, this.arrivalCoords]).addTo(this.map);
+    L.polyline(latlngs).addTo(this.map);
+
+    // Fit the map bounds to the polyline
+    const bounds = L.latLngBounds(latlngs);
+    this.map.fitBounds(bounds, { padding: [20, 20] });
   }
+
 
 }
