@@ -50,11 +50,6 @@ export class NewAccountComponent {
     // Set pref_smoking to true if the selected option is 1, false otherwise
     this.user.pref_smoking = this.regForm.get('pref_smoking').value === '1' ? true : false;
 
-    let fd = new FormData();
-    if (this.image) {
-      fd.append('profile_pic', this.image, this.image.name);
-      this.user.profile_pic = fd;
-    }
 
     // call the API service to register the user
     this.apiService.registerUser(this.user)

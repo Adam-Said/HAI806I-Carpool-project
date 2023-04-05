@@ -1,5 +1,5 @@
-@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import url('https://fonts.cdnfonts.com/css/gotham-rounded');
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 .cardTest {
     margin-top: 3vh;

@@ -19,6 +19,7 @@ export class LoginpageComponent {
     this.apiService.login(this.email, this.password)
       .subscribe(
         (response) => {
+          console.log(response);
           console.log('User logged in successfully');
           this.router.navigate(['/profile']);
           // Redirect to profile page

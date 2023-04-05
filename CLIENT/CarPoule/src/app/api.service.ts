@@ -3,6 +3,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Carpool } from './models/carpool.model';
 import { User } from './models/user.model';
+import { environment } from '../environments/environment';
+
 
 
 @Injectable({
@@ -10,8 +12,7 @@ import { User } from './models/user.model';
 })
 export class ApiService {
 
-  private baseUrl = 'http://localhost:3000';
-  private TOKEN_KEY = '123';
+  private readonly baseUrl: string = environment.API_BASE_URL;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -33,7 +34,7 @@ export class ApiService {
   }
 
   registerUser(user: User): Observable<any> {
-    return this.httpClient.post<any>(`${this.baseUrl}/signup`, user);
+    return this.httpClient.post<any>(`${this.baseUrl}/signup`, user, { withCredentials: true });
   }
 
   login(email: string, password: string): Observable<any> {

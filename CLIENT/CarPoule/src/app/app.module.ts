@@ -41,6 +41,7 @@ import { PasswordEditPageComponent } from './password-edit-page/password-edit-pa
 import { FooterComponent } from './footer/footer.component';
 import { MapComponent } from './map/map.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { PathLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     MatToolbarModule,
     LeafletModule
   ],
-  providers: [],
+  providers: [{ provide: LocationStrategy, useClass: PathLocationStrategy }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

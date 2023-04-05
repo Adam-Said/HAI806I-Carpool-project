@@ -9,22 +9,23 @@ const http = require('http');
 const multer = require('multer');
 
 const app = express();
-const ACCESS_TOKEN_SECRET = '123';
 
+const config = ini.parse(fs.readFileSync('../db.ini', 'utf-8'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200'); // Set the specific origin of your Angular app here
+    res.setHeader('Access-Control-Allow-Origin', config.ACCESS_CONTROL_ALLOW_ORIGIN); // Set the specific origin of your Angular app here
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+    res.setHeader('SameSite', 'None');
+    res.setHeader('Secure', 'true');
     next();
 });
 
 
-const config = ini.parse(fs.readFileSync('./db.ini', 'utf-8'));
 const port = process.env.PORT || 3000;
 const username = config.username;
 const password = config.password;
@@ -295,7 +296,7 @@ app.post('/signup', async (req, res) => {
         };
 
         // If passwords match, create a JWT token with the user's data
-        const token = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '2h' });
+        const token = jwt.sign(payload, config.ACCESS_TOKEN_SECRET, { expiresIn: '2h' });
 
         // Set the JWT token as a cookie in the response
         res.cookie('auth', token, {
@@ -345,7 +346,7 @@ app.post('/login', async (req, res) => {
         };
 
         // If passwords match, create a JWT token with the user's data
-        const token = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '2h' });
+        const token = jwt.sign(payload, config.ACCESS_TOKEN_SECRET, { expiresIn: '2h' });
 
         // Set the JWT token as a cookie in the response
         res.cookie('auth', token, {
@@ -711,7 +712,7 @@ async function authenticateToken(req, res, next) {
         await client.connect();
         const db = client.db('CarPoule');
 
-        const payload = jwt.verify(token, ACCESS_TOKEN_SECRET, { expiresIn: '2h' });
+        const payload = jwt.verify(token, config.ACCESS_TOKEN_SECRET, { expiresIn: '2h' });
         const user = await db.collection('user').findOne({ _id: new ObjectId(payload.id) });
         req.user = user;
         next();
@@ -723,7 +724,7 @@ async function authenticateToken(req, res, next) {
 
 
 async function forwardGeocode(city) {
-    const apiKey = '1a455409975ccb48f3648c6bfe8bd018';
+    const apiKey = config.API_KEY;
     const url = `http://api.positionstack.com/v1/forward?access_key=${apiKey}&query=${city}&limit=1&output=json`;
 
     return new Promise((resolve, reject) => {

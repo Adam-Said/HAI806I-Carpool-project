@@ -1,5 +1,5 @@
-@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import url('https://fonts.cdnfonts.com/css/gotham-rounded');
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 .cardTest {
     margin-top: 3vh;
@@ -11,17 +11,17 @@ body {
     margin-bottom: 3vh;
 }
 
-.addContainer{
+.addContainer {
     justify-content: center;
     align-items: center;
     display: flex;
 }
 
-.image{
+.image {
     width: 90%;
 }
 
-.searchArea{
+.searchArea {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -41,12 +41,12 @@ body {
     font-family: 'Gotham Rounded', sans-serif;
 }
 
-.dateInput{
+.dateInput {
     width: 10vw;
     margin-left: 2vw;
 }
 
-.destinationInput{
+.destinationInput {
     width: 20vw;
     height: 5vh;
     border: solid 1px grey;
@@ -59,13 +59,12 @@ body {
     border-left: none;
 }
 
-.searchButton{
+.searchButton {
     margin-left: 2vw;
 }
 
-.inputPassenger{
+.inputPassenger {
     margin-left: 2vw;
     width: 10vw;
     border-radius: 1.5em;
 }
-
