@@ -14,8 +14,6 @@ body {
     grid-row-gap: 0px;
 }
 
-
-
 .resButton {
     margin-right: 2vw;
 }
@@ -55,11 +53,13 @@ body {
 .title {
     font-size: 2em;
     font-weight: bold;
+    padding-left: 1vw;
 }
 
 .subtitle {
     font-size: 1.5em;
     font-weight: bold;
+    padding-left: 1vw;
 }
 
 .icons {

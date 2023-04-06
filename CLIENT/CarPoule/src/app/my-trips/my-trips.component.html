@@ -2,9 +2,9 @@
 
 <body>
     <div class="cardsContainer">
-        <p-card [style]="{background: '#fafafa'}" header="My reservations">
+        <p-card [style]="{background: '#fafafa', 'border-radius': '2em'}" header="My reservations">
             <div *ngFor="let trip of trips">
-                <a [routerLink]="['/carpool', trip._id]" style="text-decoration: none;">
+                <a [routerLink]="['/carpool', trip._id]" style="text-decoration: none; margin-bottom: 5vh;">
                     <p-card [style]="{ width: '100%'}" header="{{ trip.departure}} - {{trip.arrival}}"
                         subheader="{{ trip.date }}">
                         <p>{{ trip.description }}</p>
@@ -38,7 +38,7 @@
                 </mat-expansion-panel-header>
 
                 <div *ngFor="let trip of pastTrips">
-                    <p-card [style]="{ width: '100%'}" style="margin-top: 5vh;"
+                    <p-card [style]="{ width: '100%', 'margin-bottom': '5vh'}" style="margin-top: 5vh;"
                         header="{{ trip.departure}} - {{trip.arrival}}" subheader="{{ trip.date }}">
                         <p>{{ trip.description }}</p>
                         <p class="information">Number of seat booked : {{ trip.seats }}</p>

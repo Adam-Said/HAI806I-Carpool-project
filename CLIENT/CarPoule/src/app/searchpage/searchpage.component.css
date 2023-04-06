@@ -63,9 +63,14 @@ body {
 .cardContainer {
     display: flex;
     justify-content: center;
+    margin-top: 5vh;
 }
 
 .information {
     font-size: 1.1em;
     font-weight: 600;
+}
+
+.cardsContainer{
+    margin-top: 5vh;
 }
