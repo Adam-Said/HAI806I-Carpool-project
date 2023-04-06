@@ -59,20 +59,24 @@
                     <h4 class="subTitle">Vehicle informations</h4>
                 </div>
 
+                <div class="card preference flex justify-content-center" *ngIf="vehicle.brand == ''">
+                    <p class="optionsPrefs">No vehicle information</p>
+                </div>
+
                 <div class="card preference flex justify-content-center"
-                    *ngIf="vehicle.brand || vehicle.model || vehicle.registration || vehicle.color || vehicle.seats">
+                    *ngIf="vehicle.brand && vehicle.model && vehicle.registration">
                     <mat-icon class="icons">directions_car</mat-icon>
                     <p class="optionsPrefs">{{ vehicle.brand || 'No vehicle information' }}</p>
                 </div>
 
                 <div class="card preference flex justify-content-center"
-                    *ngIf="vehicle.brand || vehicle.model || vehicle.registration || vehicle.color || vehicle.seats">
+                    *ngIf="vehicle.brand && vehicle.model && vehicle.registration">
                     <mat-icon class="icons">local_car_wash</mat-icon>
                     <p class="optionsPrefs">{{ vehicle.model || 'No vehicle information' }}</p>
                 </div>
 
                 <div class="card preference flex justify-content-center"
-                    *ngIf="vehicle.brand || vehicle.model || vehicle.registration || vehicle.color || vehicle.seats">
+                    *ngIf="vehicle.brand && vehicle.model && vehicle.registration">
                     <mat-icon class="icons">color_lens</mat-icon>
                     <p class="optionsPrefs">{{ vehicle.color || 'No vehicle information' }}</p>
                 </div>
