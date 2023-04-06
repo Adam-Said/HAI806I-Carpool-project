@@ -3,6 +3,7 @@ import { ApiService } from '../api.service';
 import { Router } from '@angular/router';
 import jwt_decode from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-loginpage',
@@ -13,7 +14,7 @@ export class LoginpageComponent {
   email: string = '';
   password: string = '';
 
-  constructor(private apiService: ApiService, private router: Router) { }
+  constructor(private apiService: ApiService, private router: Router, private snackBar: MatSnackBar) { }
 
   onSubmit() {
     this.apiService.login(this.email, this.password)
@@ -25,7 +26,9 @@ export class LoginpageComponent {
         },
         (error) => {
           // console.error('Failed to log in user : ' + error.message);
-          alert('Failed during login');
+          this.snackBar.open('Wrong email or password', 'Retry', {
+            duration: 3000
+          });
         }
       );
   }

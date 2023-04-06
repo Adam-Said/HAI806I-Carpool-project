@@ -34,11 +34,11 @@
     </div>
 
     <div class="cardsContainer" *ngIf="carpools.length > 0">
-        <p-card [style]="{background: '#fafafa'}" header="Results">
+        <p-card [style]="{background: '#fafafa', 'border-radius': '2em'}" header="Results">
             <div *ngFor="let carpool of carpools">
                 <div class="carpool">
                     <a [routerLink]="['/carpool', carpool._id]" class="carpool-link" style="text-decoration: none;">
-                        <p-card [style]="{ width: '100%'}" header="{{ carpool.departure}} - {{carpool.arrival}}"
+                        <p-card [style]="{ width: '100%', 'border-radius': '2em'}" header="{{ carpool.departure}} - {{carpool.arrival}}"
                             subheader="{{ carpool.date }}">
                             <p class="information">Date: {{ carpool.date | date }}</p>
                             <p class="information">Price: {{ carpool.price }}€</p>
