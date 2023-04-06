@@ -55,7 +55,7 @@ export class NewAccountComponent {
     this.apiService.registerUser(this.user)
       .subscribe(
         (data) => {
-          console.log('User registered successfully');
+          // console.log('User registered successfully');
           // Redirect to profile page
           this.router.navigate(['/profile']);
         },

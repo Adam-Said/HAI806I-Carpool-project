@@ -245,7 +245,7 @@ app.post('/signup', async (req, res) => {
     try {
         await client.connect();
         const db = client.db('CarPoule');
-        const { email, password, name, firstname, birthdate, pref_smoking, pref_animals, pref_talk, phone, profile_pic } = req.body;
+        const { email, password, name, firstname, birthdate, pref_smoking, pref_animals, pref_talk, phone } = req.body;
 
         // Check if user already exists with the given email
         const existingUser = await db.collection('user').findOne({ email });
@@ -259,7 +259,7 @@ app.post('/signup', async (req, res) => {
 
         // Hash the password before storing it in the database
         const hashedPassword = await bcrypt.hash(password, 10);
-        console.log(profile_pic);
+        // console.log(profile_pic);
         // Create a new user document with the hashed password
         const newUser = {
             email: email.toLowerCase(),
@@ -289,10 +289,12 @@ app.post('/signup', async (req, res) => {
 
         // Insert the new user document into the "user" collection
         const user = await db.collection('user').insertOne(newUser);
-
+        console.log(user);
+        // Find the user in the database to get its ID
+        const insertedUser = await db.collection('user').findOne({ _id: user.insertedId });
         const payload = {
-            email: user.email,
-            id: user._id // Add the user's ID as a claim in the JWT
+            email: insertedUser.email,
+            id: insertedUser._id // Add the user's ID as a claim in the JWT
         };
 
         // If passwords match, create a JWT token with the user's data
