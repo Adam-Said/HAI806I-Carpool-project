@@ -17,13 +17,13 @@ export class EditProfileComponent implements OnInit {
     pref_animals: new FormControl(false, Validators.required),
     pref_talk: new FormControl(false, Validators.required),
     pref_smoking: new FormControl(false, Validators.required),
-    vehicleBrand: new FormControl('', Validators.required),
-    vehicleModel: new FormControl('', Validators.required),
-    vehicleColor: new FormControl('', Validators.required),
-    vehicleRegistration: new FormControl('', Validators.required),
-    cardNumber: new FormControl('', Validators.required),
-    cardCode: new FormControl('', Validators.required),
-    expirationDate: new FormControl(new Date(), Validators.required)
+    vehicleBrand: new FormControl(''),
+    vehicleModel: new FormControl(''),
+    vehicleColor: new FormControl(''),
+    vehicleRegistration: new FormControl(''),
+    cardNumber: new FormControl(''),
+    cardCode: new FormControl(''),
+    expirationDate: new FormControl(new Date())
   });
 
 
@@ -41,23 +41,24 @@ export class EditProfileComponent implements OnInit {
     this.apiService.getUserInfo().subscribe(
       (data) => {
         const user = data;
-        this.formGroup = new FormGroup({
-          name: new FormControl(user.name, Validators.required),
-          firstname: new FormControl(user.firstname, Validators.required),
-          email: new FormControl(user.email, [Validators.required, Validators.email]),
-          phone: new FormControl(user.phone, [Validators.required]),
-          birthdate: new FormControl(new Date(user.birthdate), Validators.required),
-          pref_animals: new FormControl(user.pref_animals, Validators.required),
-          pref_talk: new FormControl(user.pref_talk, Validators.required),
-          pref_smoking: new FormControl(user.pref_smoking, Validators.required),
-          vehicleBrand: new FormControl(user.vehicle.brand, Validators.required),
-          vehicleModel: new FormControl(user.vehicle.model, Validators.required),
-          vehicleColor: new FormControl(user.vehicle.color, Validators.required),
-          vehicleRegistration: new FormControl(user.vehicle.registration, Validators.required),
-          cardNumber: new FormControl(user.payment_method.card_num, Validators.required),
-          cardCode: new FormControl(user.payment_method.card_cvc, Validators.required),
-          expirationDate: new FormControl(new Date(user.payment_method.card_exp), Validators.required)
+        this.formGroup.patchValue({
+          name: user.name,
+          firstname: user.firstname,
+          email: user.email,
+          phone: user.phone,
+          birthdate: new Date(user.birthdate),
+          pref_animals: user.pref_animals,
+          pref_talk: user.pref_talk,
+          pref_smoking: user.pref_smoking,
+          vehicleBrand: user.vehicle.brand,
+          vehicleModel: user.vehicle.model,
+          vehicleColor: user.vehicle.color,
+          vehicleRegistration: user.vehicle.registration,
+          cardNumber: user.payment_method.card_num,
+          cardCode: user.payment_method.card_cvc,
+          expirationDate: user.payment_method.card_exp ? new Date(user.payment_method.card_exp) : new Date()
         });
+        this.formGroup.updateValueAndValidity();
       });
 
   }

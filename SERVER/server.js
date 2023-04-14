@@ -434,38 +434,34 @@ app.post('/profile/edit', authenticateToken, async (req, res) => {
             user.pref_smoking = pref_smoking;
         }
 
-        // Update vehicles if provided
-        if (brand || model || color || registration) {
-            const vehicle = user.vehicle || {};
-            if (brand) {
-                vehicle.brand = brand;
-            }
-            if (model) {
-                vehicle.model = model;
-            }
-            if (color) {
-                vehicle.color = color;
-            }
-            if (registration) {
-                vehicle.registration = registration;
-            }
-            user.vehicle = vehicle;
+        const vehicle = {};
+        if (brand) {
+            vehicle.brand = brand;
         }
+        if (model) {
+            vehicle.model = model;
+        }
+        if (color) {
+            vehicle.color = color;
+        }
+        if (registration) {
+            vehicle.registration = registration;
+        }
+        user.vehicle = vehicle;
 
-        if (card_num || card_cvc || card_exp) {
-            const payment = user.payment_method || {};
-            if (card_num) {
-                payment.card_num = card_num;
-            }
-            if (card_cvc) {
-                payment.card_cvc = card_cvc;
-            }
-            if (card_exp) {
-                const [year, month, day] = card_exp.split('-')
-                payment.card_exp = new Date(year, month - 1, day);
-            }
-            user.payment_method = payment;
+        const payment = {};
+        if (card_num) {
+            payment.card_num = card_num;
         }
+        if (card_cvc) {
+            payment.card_cvc = card_cvc;
+        }
+        if (card_exp) {
+            const [year, month, day] = card_exp.split('-')
+            payment.card_exp = new Date(year, month - 1, day);
+        }
+        user.payment_method = payment;
+
 
 
         // Save the updated user object to the database

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-password-edit-page',
@@ -15,12 +16,15 @@ export class PasswordEditPageComponent {
     confirmPassword: new FormControl('', Validators.required)
   });
 
-  constructor(private apiService: ApiService, private router: Router) { }
+
+  constructor(private apiService: ApiService, private router: Router, private snackBar: MatSnackBar) { }
 
   onSubmit() {
     if (this.form.valid) {
       if (this.form.value.password !== this.form.value.confirmPassword) {
-        alert('Passwords do not match');
+        this.snackBar.open('Password mismatch', 'Retry', {
+          duration: 3000
+        });
         return;
       }
 
@@ -29,12 +33,16 @@ export class PasswordEditPageComponent {
           this.router.navigate(['/profile']);
         },
         (error: any) => {
-          console.error('Failed to update user:', error);
+          this.snackBar.open(error.error, 'Retry', {
+            duration: 3000
+          });
         }
       );
     }
     else {
-      alert('Please fill out the form');
+      this.snackBar.open('Please fill the form', 'Retry', {
+        duration: 3000
+      });
     }
   }
 
