@@ -1,0 +1,17 @@
+<app-navbar-component></app-navbar-component>
+
+<body>
+    <div class="formContainer">
+        <div class="profile-picture">
+            <img [src]="imageUrl" alt="Profile picture" class="picture-preview">
+            <form (submit)="onSubmit()">
+                <div class="form-group">
+                    <label for="picture">Select picture:</label>
+                    <input type="file" id="picture" name="picture" (change)="onFileSelected($event)">
+                </div>
+                <button type="submit" class="btn btn-primary" [disabled]="!file">Save</button>
+            </form>
+        </div>
+
+    </div>
+</body>

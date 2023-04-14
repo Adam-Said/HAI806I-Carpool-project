@@ -5,8 +5,7 @@
         <div class="flex justify-content-center">
             <p-card class="card" [style]="{ width: '70%'}">
                 <div class="card wrapper flex justify-content-center">
-                    <img src="https://i2.cdn.turner.com/cnnnext/dam/assets/140926165711-john-sutter-profile-image-large-169.jpg"
-                        alt="" class="image--cover" />
+                    <img [src]="profilePictureUrl" alt="" class="image--cover" />
                 </div>
 
                 <div class="card flex justify-content-center">
@@ -106,6 +105,10 @@
                 <div class="button card flex justify-content-center">
                     <p-button [style]="{background: '#eb7302', border: '#eb7302'}" label="Change password"
                         icon="pi pi-lock" type="submit" [routerLink]="['/profile/edit/password']"></p-button>
+                </div>
+                <div class="button card flex justify-content-center">
+                    <p-button [style]="{background: '#48d753', border: '#48d753'}" label="Change picture"
+                        icon="pi pi-image" type="submit" [routerLink]="['/profile/edit/picture']"></p-button>
                 </div>
             </p-card>
         </div>

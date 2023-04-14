@@ -7,6 +7,8 @@ const fs = require('fs');
 const ini = require('ini');
 const http = require('http');
 const multer = require('multer');
+const upload = multer({ dest: 'uploads/' }); // You may want to customize the destination folder.
+
 
 const app = express();
 
@@ -689,6 +691,33 @@ app.get('/trips', authenticateToken, async (req, res) => {
 
         res.json(carpools);
     } catch (err) {
+        console.error('Failed to connect to MongoDB', err);
+        res.status(500).send('Error connecting to database');
+    }
+});
+
+app.post('/picture', authenticateToken, upload.single('file'), async (req, res) => {
+    const file = req.file;
+
+    try {
+        const db = client.db('CarPoule');
+        const user = await db.collection('user').findOne({ _id: new ObjectId(req.user._id) });
+
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        user.profilePicture = file.path;
+
+        const result = await db.collection('user').findOneAndUpdate(
+            { _id: new ObjectId(req.user._id) },
+            { $set: user },
+            { returnOriginal: false }
+        );
+
+        res.status(200).json("User updated");
+
+    }
+    catch (err) {
         console.error('Failed to connect to MongoDB', err);
         res.status(500).send('Error connecting to database');
     }

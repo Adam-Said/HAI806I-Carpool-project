@@ -113,6 +113,14 @@ export class ApiService {
     return this.httpClient.post<any>(`${this.baseUrl}/usersimple`, { ids }, { withCredentials: true });
   }
 
+  uploadProfilePicture(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.httpClient.post<any>(`${this.baseUrl}/picture`, formData, { withCredentials: true });
+  }
+
+
 
 }
 

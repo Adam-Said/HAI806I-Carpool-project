@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { CookieService } from 'ngx-cookie-service';
-import { NavbarComponentComponent } from '../navbar-component/navbar-component.component';
-import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-profilepage',
@@ -31,6 +29,7 @@ export class ProfilepageComponent implements OnInit {
     card_cvc: string;
     card_exp: Date;
   } = { card_num: '', card_cvc: '', card_exp: new Date() };
+  profilePictureUrl: string = 'assets/avatar.png';
 
   constructor(private apiService: ApiService, private cookieService: CookieService) { }
 
@@ -50,6 +49,7 @@ export class ProfilepageComponent implements OnInit {
         this.pref_smoking = data.pref_smoking;
         this.vehicle = data.vehicle;
         this.payment_method = data.payment_method;
+        // this.profilePictureUrl = data.profilePicture;
       },
       (err) => {
         console.error(err);

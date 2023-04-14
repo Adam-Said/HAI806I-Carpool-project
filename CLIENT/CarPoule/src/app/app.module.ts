@@ -43,6 +43,7 @@ import { MapComponent } from './map/map.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { PathLocationStrategy, LocationStrategy } from '@angular/common';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { EditPicComponent } from './edit-pic/edit-pic.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     PasswordEditPageComponent,
     FooterComponent,
     MapComponent,
+    EditPicComponent,
   ],
   imports: [
     BrowserModule,

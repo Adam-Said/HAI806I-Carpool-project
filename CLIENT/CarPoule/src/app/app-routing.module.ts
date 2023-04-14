@@ -11,6 +11,7 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { MyTripsComponent } from './my-trips/my-trips.component';
 import { TripModalComponent } from './trip-modal/trip-modal.component';
 import { PasswordEditPageComponent } from './password-edit-page/password-edit-page.component';
+import { EditPicComponent } from './edit-pic/edit-pic.component';
 import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
@@ -23,7 +24,8 @@ const routes: Routes = [
   { path: 'profile/edit', component: EditProfileComponent, canActivate: [AuthGuard] },
   { path: 'trips', component: MyTripsComponent, canActivate: [AuthGuard] },
   { path: 'carpool/:id', component: TripModalComponent },
-  { path: 'profile/edit/password', component: PasswordEditPageComponent, canActivate: [AuthGuard] }
+  { path: 'profile/edit/password', component: PasswordEditPageComponent, canActivate: [AuthGuard] },
+  { path: 'profile/edit/picture', component: EditPicComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
