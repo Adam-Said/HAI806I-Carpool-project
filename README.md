@@ -1,8 +1,5 @@
 
 # HAI806I-Carpool-project
-/!\ CE PROJET EST ENCORE EN COURS DE DEVELOPPEMENT /!\
-**Certaines bugs peuvent subsister**\
-**Merci de vous réferer à la partie [BUGS](#Bugs) pour plus de détails**
 
 Ce projet développé en Angular et Node JS permet la mise en place d'un système de covoiturage pour mettre en relation conducteurs et voyageurs. Il permet toutes les fonctionnalités basique que l'on pourrait attendre d'une application comme celle-ci.
 
@@ -57,7 +54,6 @@ Pour tester le projet vous pouvez vous créer un compte ou utiliser un compte ex
 
 | Email | Mot de passe     |
 | :-------- | :------- | 
-| adam@adam-net.fr      | azert | 
 | test@carpoule.fr      | azert |
 
 ## API
@@ -281,22 +277,6 @@ http://localhost:3000/
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `auth`      | `cookie` | Cookie d'authentification |
-
-
-
-
-
-
-
-## Bugs
-
-Ce projet étant encore en développement il subsiste quelques bugs que nous essayons de corriger.
-
-|   Bug     | Description  | Solution               |
-| :-------- | :------- | :------------------------- |
-| Logout | Bug survenant parfois lors de la déconnexion. Qui empêche de se déconnectant. | Rafraichir la page et retenter la déconnexion |
-| Profil edit | Bug empechant de modifier son profil sans ajouter de véhicule et méthode de paiement. | - |
-| Pass edit | Le changement de mot de passe fonctionne mais si le formulaire n'est pas correcte rien ne le dit | - |
 
 
 

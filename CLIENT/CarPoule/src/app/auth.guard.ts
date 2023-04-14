@@ -48,9 +48,11 @@ export class AuthGuard implements CanActivate {
     }
 
     logout(): void {
+        console.log('Logging out...');
         try {
             this.cookieService.delete('auth');
             this.cookieService.deleteAll();
+            console.log('Cookies deleted.');
         } catch (err) {
             console.error('Error deleting auth cookie:', err);
         }
