@@ -1,14 +1,18 @@
 
 # HAI806I-Carpool-project
 
-Ce projet développé en Angular et Node JS permet la mise en place d'un système de covoiturage pour mettre en relation conducteurs et voyageurs. Il permet toutes les fonctionnalités basique que l'on pourrait attendre d'une application comme celle-ci.
+Ce projet basé sur un stack MEAN (MongoDB Express, Angular et NodeJS) permet la mise en place d'un système de covoiturage pour mettre en relation conducteurs et voyageurs. Il permet toutes les fonctionnalités basique que l'on pourrait attendre d'une application comme celle-ci. Ce projet a été développé par [Adam SAID](https://github.com/Gaiko19) et [Arnaud Cossu](https://github.com/ArnaudCs) de l'Université de Montpellier pour l'UE HAI806I Architectures avancées du web.
+
+Pour l'utilisez de votre côté merci de vous référer à la partie [Installation](#installation) !
 
 
 - [HAI806I-Carpool-project](#hai806i-carpool-project)
   - [Fonctionnalités](#fonctionnalités)
   - [Installation](#installation)
+    - [Pré-requis](#pré-requis)
     - [Serveur](#serveur)
     - [Client](#client)
+    - [Base de données](#base-de-données)
   - [Demo](#demo)
     - [Comptes existants](#comptes-existants)
   - [Services et composants](#services-et-composants)
@@ -22,7 +26,7 @@ Ce projet développé en Angular et Node JS permet la mise en place d'un systèm
       - [Publier](#publier)
       - [Mes voyages](#mes-voyages)
       - [Covoiturage](#covoiturage)
-  - [Base de données](#base-de-données)
+  - [Base de données](#base-de-données-1)
       - [Covoiturages](#covoiturages)
       - [Utilisateurs](#utilisateurs)
   - [API](#api)
@@ -58,6 +62,13 @@ Ce projet développé en Angular et Node JS permet la mise en place d'un systèm
 
 ## Installation
 
+### Pré-requis
+Afin d'uilisez ce projet sur votre machine récupérer tout le projet et installer chaque partie une à une en suivant les chapitres suivants. Il vous faut avoir sur votre machine :
+- npm
+- angular CLI
+- node
+- mongodb ou Atlas (voir la partie [Base de données](#base-de-données))
+
 ### Serveur
 
 1. Récupérer le dossier SERVER présent dans l'archive.
@@ -85,6 +96,19 @@ npm install
 4. Lancer le client avec :
 ```bash
 ng serve -o
+```
+
+### Base de données
+Une installation de MongoDB ou l'utilisation de Atlas est nécessaire pour une utilisation personelle du projet. Les fichiers étant fourni il ne vous reste plus qu'à les importer dans votre base de données avec une table nommée CarPoule et trois tables : carpool, user et pending. En suite, créez un fichier db.ini à la racine du projet avec le nom d'utilisateur et le mot de passe de connexion à la BDD, l'ACCES_TOKEN_SECRET pour le hashage des mot de passes et l'ACCESS_CONTROL_ALLOW_ORIGIN pour déterminer qui peut accéder au serveur. Une API_KEY peut être nécessaire pour calculer les coordonnées des villes si besoin.
+
+Voici la structure du fichier db.ini :
+
+```bash
+username = user
+password = pass
+ACCESS_TOKEN_SECRET = 000
+ACCESS_CONTROL_ALLOW_ORIGIN = http://localhost:4200
+API_KEY = xxxxxx
 ```
 
 ## Demo
