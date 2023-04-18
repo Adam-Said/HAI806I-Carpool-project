@@ -291,7 +291,7 @@ app.post('/signup', async (req, res) => {
 
         // Insert the new user document into the "user" collection
         const user = await db.collection('user').insertOne(newUser);
-        console.log(user);
+        // console.log(user);
         // Find the user in the database to get its ID
         const insertedUser = await db.collection('user').findOne({ _id: user.insertedId });
         const payload = {

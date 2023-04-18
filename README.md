@@ -52,9 +52,90 @@ Pour tester le projet vous pouvez vous créer un compte ou utiliser un compte ex
 ### Comptes existants 
 
 
-| Email | Mot de passe     |
-| :-------- | :------- | 
-| test@carpoule.fr      | azert |
+| Email            | Mot de passe |
+| :--------------- | :----------- |
+| test@carpoule.fr | azert        |
+
+Mais vous pouvez vous créer un nouveau compte.
+
+## Services et composants
+#### Défaut
+```bash
+http://localhost:4200/
+```
+Page d'accueil avec barre de recherche et barre de navigation
+![Home page screen](IMAGES/home.jpg)
+
+#### Connexion
+```bash
+http://localhost:4200/login
+```
+Page de connexion au compte perso
+
+#### Inscription
+```bash
+http://localhost:4200/register
+```
+Page de création d'un nouveau compte
+
+#### Recherche
+```bash
+http://localhost:4200/search?{departure}&{arrival}&{date}&{seats}
+```
+Page de recherche de covoiturage avec paramètres en GET optionnels. Permet de renvoyer vers des covoiturages en cas de résultats.
+
+![Search page screen](IMAGES/search.jpg)
+
+
+#### Profile
+```bash
+http://localhost:4200/profile
+```
+Page d'informations du compte connecté permettant également de renvoyer vers les pages de modification du mot de passe et des informations.
+
+![Profile page screen](IMAGES/profile.jpg)
+
+#### Edition infos
+```bash
+http://localhost:4200/profile/edit
+```
+Page de modification des informations du compte connecté.
+
+#### Edition mot de passe
+```bash
+http://localhost:4200/profile/password
+```
+Page de modification du mot de passe du compte connecté.
+
+#### Publier
+```bash
+http://localhost:4200/publish
+```
+Page de publication d'un nouveau covoiturage.
+
+#### Mes voyages
+```bash
+http://localhost:4200/trips
+```
+Page permettant à un utilisateur de voir tous les covoiturages dont il est passager ou conducteur et de le renvoyer vers un covoiturage en particulier.
+
+#### Covoiturage
+```bash
+http://localhost:4200/carpool/:id
+```
+Page dynamique d'un covoiturage, récupéré en fonction de l'ID fourni dans l'URL. Permet de voir les détails d'un covoiturage avec en plus le composant de carte. Permet également à un utilisateur (différent du conducteur) de réserver une place et au conducteur de gérer les demandes de réservation.
+
+![Carpool page screen](IMAGES/carpool.jpg)
+
+
+## Base de données
+Vous pouvez retrouver des dump de la base de données dans les fichiers suivants 
+
+#### Covoiturages
+[-> carpool.json](DATABASE/carpool.json)
+
+#### Utilisateurs
+[-> users.json](DATABASE/users.json)
 
 ## API
 #### Endpoint
@@ -73,9 +154,9 @@ http://localhost:3000/
   GET /search
 ```
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `none` | - | - |
+| Parameter | Type | Description |
+| :-------- | :--- | :---------- |
+| `none`    | -    | -           |
 
 #### Recherche de covoiturages par trajet
 
@@ -83,13 +164,13 @@ http://localhost:3000/
   GET /search/${departure}/${arrival}&date=${date}&seat=${seat}
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `departure`      | `string` | Ville de France avec majuscule |
-| `arrival`      | `string` | Ville de France avec majuscule |
-| `arrival`      | `string` | Ville de France avec majuscule |
-| `date`      | `Date` | [OPTIONAL] Date de départ format yyyy-mm-dd |
-| `seat`      | `int` | [OPTIONAL] Nombre de places nécessaires |
+| Parameter   | Type     | Description                                 |
+| :---------- | :------- | :------------------------------------------ |
+| `departure` | `string` | Ville de France avec majuscule              |
+| `arrival`   | `string` | Ville de France avec majuscule              |
+| `arrival`   | `string` | Ville de France avec majuscule              |
+| `date`      | `Date`   | [OPTIONAL] Date de départ format yyyy-mm-dd |
+| `seat`      | `int`    | [OPTIONAL] Nombre de places nécessaires     |
 
 #### Récupération des infos d'un covoiturage
 
@@ -97,8 +178,8 @@ http://localhost:3000/
   GET /carpool/${id}
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
+| Parameter | Type     | Description                  |
+| :-------- | :------- | :--------------------------- |
 | `id`      | `string` | Identifiant d'un covoiturage |
 
 
@@ -108,9 +189,9 @@ http://localhost:3000/
   GET /pending/${id}
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `auth`      | `cookie` | Cookie d'authentification |
+| Parameter | Type     | Description                  |
+| :-------- | :------- | :--------------------------- |
+| `auth`    | `cookie` | Cookie d'authentification    |
 | `id`      | `string` | Identifiant d'un covoiturage |
 
 
@@ -120,11 +201,11 @@ http://localhost:3000/
   POST /pending/accept
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `auth`      | `cookie` | Cookie d'authentification |
-| `carpool_id`      | `string` | Identifiant d'un covoiturage |
-| `passenger_id`      | `string` | Identifiant d'un passager |
+| Parameter      | Type     | Description                  |
+| :------------- | :------- | :--------------------------- |
+| `auth`         | `cookie` | Cookie d'authentification    |
+| `carpool_id`   | `string` | Identifiant d'un covoiturage |
+| `passenger_id` | `string` | Identifiant d'un passager    |
 
 #### Rejet d'un passager dans un covoiturage
 
@@ -132,11 +213,11 @@ http://localhost:3000/
   POST /pending/reject
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `auth`      | `cookie` | Cookie d'authentification |
-| `carpool_id`      | `string` | Identifiant d'un covoiturage |
-| `passenger_id`      | `string` | Identifiant d'un passager |
+| Parameter      | Type     | Description                  |
+| :------------- | :------- | :--------------------------- |
+| `auth`         | `cookie` | Cookie d'authentification    |
+| `carpool_id`   | `string` | Identifiant d'un covoiturage |
+| `passenger_id` | `string` | Identifiant d'un passager    |
 
 
 #### Réservation d'un siège
@@ -145,9 +226,9 @@ http://localhost:3000/
   POST /carpool/${id}/book
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `auth`      | `cookie` | Cookie d'authentification |
+| Parameter | Type     | Description                  |
+| :-------- | :------- | :--------------------------- |
+| `auth`    | `cookie` | Cookie d'authentification    |
 | `id`      | `string` | Identifiant d'un covoiturage |
 
 #### Suppression d'un covoiturage
@@ -156,9 +237,9 @@ http://localhost:3000/
   DELETE /carpool/${id}
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `auth`      | `cookie` | Cookie d'authentification |
+| Parameter | Type     | Description                  |
+| :-------- | :------- | :--------------------------- |
+| `auth`    | `cookie` | Cookie d'authentification    |
 | `id`      | `string` | Identifiant d'un covoiturage |
 
 #### Création d'un covoiturage
@@ -167,16 +248,16 @@ http://localhost:3000/
   POST /publish
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `auth`      | `cookie` | Cookie d'authentification |
-| `departure`      | `string` | Ville de France de départ avec majuscule |
-| `arrival`      | `string` | Ville de France d'arrivé avec majuscule |
-| `date`      | `Date` | Date format yyyy-mm-dd |
-| `seats`      | `int` | Nombre de sièges disponibles |
-| `highway`      | `boolean` | true si utilisation d'autoroutes, false sinon |
-| `price`      | `float` | Prix du trajet |
-| `description`      | `string` | Description du trajet |
+| Parameter     | Type      | Description                                   |
+| :------------ | :-------- | :-------------------------------------------- |
+| `auth`        | `cookie`  | Cookie d'authentification                     |
+| `departure`   | `string`  | Ville de France de départ avec majuscule      |
+| `arrival`     | `string`  | Ville de France d'arrivé avec majuscule       |
+| `date`        | `Date`    | Date format yyyy-mm-dd                        |
+| `seats`       | `int`     | Nombre de sièges disponibles                  |
+| `highway`     | `boolean` | true si utilisation d'autoroutes, false sinon |
+| `price`       | `float`   | Prix du trajet                                |
+| `description` | `string`  | Description du trajet                         |
 
 #### Création de compte
 
@@ -184,17 +265,17 @@ http://localhost:3000/
   POST /signup
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `email`      | `string` | Email de l'utilisateur |
-| `password`      | `string` | Mot de passe |
-| `name`      | `string` | Nom |
-| `firstname`      | `string` | Prénom |
-| `birthdate`      | `Date` | Date de naissance format yyyy-mm-dd |
-| `pref_smoking`      | `boolean` | true si pas dérangé par la fumée, false sinon |
-| `pref_animals`      | `boolean` | true si pas dérangé par les animaux, false sinon |
-| `pref_talk`      | `boolean` | true si pas dérangé pour discuter, false sinon |
-| `phone`      | `string` | Numéro de téléphone |
+| Parameter      | Type      | Description                                      |
+| :------------- | :-------- | :----------------------------------------------- |
+| `email`        | `string`  | Email de l'utilisateur                           |
+| `password`     | `string`  | Mot de passe                                     |
+| `name`         | `string`  | Nom                                              |
+| `firstname`    | `string`  | Prénom                                           |
+| `birthdate`    | `Date`    | Date de naissance format yyyy-mm-dd              |
+| `pref_smoking` | `boolean` | true si pas dérangé par la fumée, false sinon    |
+| `pref_animals` | `boolean` | true si pas dérangé par les animaux, false sinon |
+| `pref_talk`    | `boolean` | true si pas dérangé pour discuter, false sinon   |
+| `phone`        | `string`  | Numéro de téléphone                              |
 
 
 #### Connexion
@@ -203,10 +284,10 @@ http://localhost:3000/
   POST /login
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `email`      | `string` | Email |
-| `password`      | `string` | Mot de passe |
+| Parameter  | Type     | Description  |
+| :--------- | :------- | :----------- |
+| `email`    | `string` | Email        |
+| `password` | `string` | Mot de passe |
 
 #### Récupération des infos du profile
 
@@ -214,9 +295,9 @@ http://localhost:3000/
   GET /profile
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `auth`      | `cookie` | Cookie d'authentification |
+| Parameter | Type     | Description               |
+| :-------- | :------- | :------------------------ |
+| `auth`    | `cookie` | Cookie d'authentification |
 
 
 #### Modification du profile
@@ -225,24 +306,24 @@ http://localhost:3000/
   POST /profile/edit
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `auth`      | `cookie` | Cookie d'authentification |
-| `email`      | `string` | Email de l'utilisateur |
-| `name`      | `string` | Nom |
-| `firstname`      | `string` | Prénom |
-| `birthdate`      | `Date` | Date de naissance format yyyy-mm-dd |
-| `pref_smoking`      | `boolean` | true si pas dérangé par la fumée, false sinon |
-| `pref_animals`      | `boolean` | true si pas dérangé par les animaux, false sinon |
-| `pref_talk`      | `boolean` | true si pas dérangé pour discuter, false sinon |
-| `phone`      | `string` | Numéro de téléphone |
-| `brand`      | `string` | Marque du véhicule |
-| `model`      | `string` | Modèle du véhicule |
-| `color`      | `string` | Couleur du véhicule format "#xxxxx" |
-| `registration`      | `string` | Immatriculation du véhicule |
-| `card_num`      | `string` | Numéro de la carte de crédit |
-| `card_cvc`      | `string` | CVC de la carte |
-| `card_exp`      | `Date` | Date d'expiration de la carte format yyyy-mm-dd |
+| Parameter      | Type      | Description                                      |
+| :------------- | :-------- | :----------------------------------------------- |
+| `auth`         | `cookie`  | Cookie d'authentification                        |
+| `email`        | `string`  | Email de l'utilisateur                           |
+| `name`         | `string`  | Nom                                              |
+| `firstname`    | `string`  | Prénom                                           |
+| `birthdate`    | `Date`    | Date de naissance format yyyy-mm-dd              |
+| `pref_smoking` | `boolean` | true si pas dérangé par la fumée, false sinon    |
+| `pref_animals` | `boolean` | true si pas dérangé par les animaux, false sinon |
+| `pref_talk`    | `boolean` | true si pas dérangé pour discuter, false sinon   |
+| `phone`        | `string`  | Numéro de téléphone                              |
+| `brand`        | `string`  | Marque du véhicule                               |
+| `model`        | `string`  | Modèle du véhicule                               |
+| `color`        | `string`  | Couleur du véhicule format "#xxxxx"              |
+| `registration` | `string`  | Immatriculation du véhicule                      |
+| `card_num`     | `string`  | Numéro de la carte de crédit                     |
+| `card_cvc`     | `string`  | CVC de la carte                                  |
+| `card_exp`     | `Date`    | Date d'expiration de la carte format yyyy-mm-dd  |
 
 #### Modification du mot de passe
 
@@ -250,11 +331,11 @@ http://localhost:3000/
   POST /profile/password
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `auth`      | `cookie` | Cookie d'authentification |
-| `password`      | `string` | Mot de passe actuel |
-| `new_password`      | `string` | Nouveau mot de passe |
+| Parameter      | Type     | Description               |
+| :------------- | :------- | :------------------------ |
+| `auth`         | `cookie` | Cookie d'authentification |
+| `password`     | `string` | Mot de passe actuel       |
+| `new_password` | `string` | Nouveau mot de passe      |
 
 
 #### Récupération des infos pblique d'un utilisateur
@@ -263,10 +344,10 @@ http://localhost:3000/
   POST /usersimple
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `auth`      | `cookie` | Cookie d'authentification |
-| `ids`      | `Array of string` |Tableau avec les ids des utilisateurs à récupérer |
+| Parameter | Type              | Description                                       |
+| :-------- | :---------------- | :------------------------------------------------ |
+| `auth`    | `cookie`          | Cookie d'authentification                         |
+| `ids`     | `Array of string` | Tableau avec les ids des utilisateurs à récupérer |
 
 #### Récupération des voyages concernant un utilisateur
 
@@ -274,14 +355,14 @@ http://localhost:3000/
   GET /trips
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `auth`      | `cookie` | Cookie d'authentification |
+| Parameter | Type     | Description               |
+| :-------- | :------- | :------------------------ |
+| `auth`    | `cookie` | Cookie d'authentification |
 
 
 
 
 ## Auteurs
 
-- [@gaiko19](https://github.com/Gaiko19)
+- [@adams](https://github.com/Gaiko19)
 - [@arnaudcs](https://github.com/ArnaudCs)
