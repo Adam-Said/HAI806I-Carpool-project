@@ -1,7 +1,7 @@
 
 # HAI806I-Carpool-project
 
-Ce projet basé sur un stack MEAN (MongoDB Express, Angular et NodeJS) permet la mise en place d'un système de covoiturage pour mettre en relation conducteurs et voyageurs. Il permet toutes les fonctionnalités basique que l'on pourrait attendre d'une application comme celle-ci. Ce projet a été développé par [Adam SAID](https://github.com/Gaiko19) et [Arnaud Cossu](https://github.com/ArnaudCs) de l'Université de Montpellier pour l'UE HAI806I Architectures avancées du web.
+Ce projet basé sur un stack MEAN (MongoDB Express, Angular et NodeJS) permet la mise en place d'un système de covoiturage pour mettre en relation conducteurs et voyageurs. Il permet toutes les fonctionnalités basique que l'on pourrait attendre d'une application comme celle-ci. Ce projet a été développé par [Adam SAID](https://github.com/Adam-Said) et [Arnaud Cossu](https://github.com/ArnaudCs) de l'Université de Montpellier pour l'UE HAI806I Architectures avancées du web.
 
 Pour l'utilisez de votre côté merci de vous référer à la partie [Installation](#installation) !
 
