@@ -430,5 +430,5 @@ http://localhost:3000/
 
 ## Auteurs
 
-- [@adams](https://github.com/Gaiko19)
+- [@adams](https://github.com/Adam-Said)
 - [@arnaudcs](https://github.com/ArnaudCs)
